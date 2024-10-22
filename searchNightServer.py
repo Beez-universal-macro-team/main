@@ -106,14 +106,14 @@ def findNightServer():
         if isWindowOpen("RobloxPlayerBeta.exe"):
             leave()
 
-        if "roblox" in readFile("lastUrl.txt"):
-            writeFile("lastUrl.txt", "blank")
+        if "roblox" in readFile("url.txt"):
+            writeFile("url.txt", "blank")
             joinRandomServer(1537690962)
 
         else:
             sendMessage("Joining alt...")
 
-            webbrowser.open(open("lastUrl.txt", "r").read())
+            webbrowser.open(readFile("url.txt", "r"))
 
         if not waitForLoading(maxWaitTime=10):
             continue
