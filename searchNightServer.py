@@ -1,7 +1,7 @@
 from pynput.mouse import Button, Controller
 import time
 from randomServer import joinRandomServer
-from functions import isWindowOpen, isColorClose, sendMessage, sendScreenshot, leave, reset, press, screenshot, click, offsetDims, findImg
+from functions import isWindowOpen, isColorClose, sendMessage, sendScreenshot, leave, reset, press, screenshot, click, offsetDims, findImg, readFile
 import webbrowser
 
 mouse = Controller()
@@ -100,23 +100,20 @@ def findNightServer():
 
     serverLoop = 0
 
-    lastUrl = ""
-
     while True:
         serverLoop += 1
 
         if isWindowOpen("RobloxPlayerBeta.exe"):
             leave()
 
-        if open("lastUrl.txt", "r").read() == lastUrl:
+        if "roblox" in readFile("lastUrl.txt"):
+            writeFile("lastUrl.txt", "blank")
             joinRandomServer(1537690962)
 
         else:
             sendMessage("Joining alt...")
 
             webbrowser.open(open("lastUrl.txt", "r").read())
-
-        lastUrl = open("lastUrl.txt", "r").read()
 
         if not waitForLoading(maxWaitTime=10):
             continue
