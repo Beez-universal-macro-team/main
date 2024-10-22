@@ -20,7 +20,7 @@ def waitForLoading(maxWaitTime=20):
     while True:
         screen = screenshot()
 
-        if isColorClose(screen.getpixel(offsetDims((1300, 812), "list")), (34, 87, 168), 3):
+        if screen.getpixel(offsetDims((1300, 812), "list")) == (34, 87, 168):
             break
 
         elif time.time() - tm >= maxWaitTime:
@@ -33,7 +33,7 @@ def waitForLoading(maxWaitTime=20):
     while True:
         screen = screenshot()
 
-        if not isColorClose(screen.getpixel(offsetDims((1300, 812), "list")), (34, 87, 168), 3):
+        if screen.getpixel(offsetDims((1300, 812), "list")) != (34, 87, 168):
             return True
 
         elif time.time() - tm >= maxWaitTime:
@@ -49,7 +49,53 @@ def detectNight():
 
     return False
 
-def findNightServer(maxWaitTime=10, alt=False):
+def claimHive():
+    press("w", "d", 4)
+
+    time.sleep(0.1)
+
+    press("s", 0.5)
+
+    time.sleep(0.1)
+
+    press("a", 0.3)
+
+    claimingHive = True
+
+    while claimingHive:
+        hiveSlot = 7
+
+        for loop in range(6):
+            hiveSlot -= 1
+
+            time.sleep(0.5)
+
+            if findImg("images/claim_hive.png", 0.8):
+                press("e", 0.5)
+
+                sendScreenshot(f"Claimed hive slot {hiveSlot}")
+
+                return hiveSlot
+
+            elif loop == 5:
+                break
+
+            else:
+                press("a", 1.1)
+
+        reset(hive=False)
+
+        press("w", "d", 4)
+
+        time.sleep(0.025)
+
+        press("s", 0.5)
+
+        time.sleep(0.025)
+
+        press("a", 0.3)
+
+def findNightServer():
     hiveSlot = 0
 
     serverLoop = 0
@@ -62,24 +108,18 @@ def findNightServer(maxWaitTime=10, alt=False):
         if isWindowOpen("RobloxPlayerBeta.exe"):
             leave()
 
-        if not alt:
-            if open("lastUrl.txt", "r").read() == lastUrl:
-                joinRandomServer(1537690962)
-
-            else:
-                sendMessage("Joining alt...")
-
-                webbrowser.open(open("lastUrl.txt", "r").read())
+        if open("lastUrl.txt", "r").read() == lastUrl:
+            joinRandomServer(1537690962)
 
         else:
-            url = joinRandomServer(1537690962)
+            sendMessage("Joining alt...")
+
+            webbrowser.open(open("lastUrl.txt", "r").read())
 
         lastUrl = open("lastUrl.txt", "r").read()
 
-        if not waitForLoading(maxWaitTime=maxWaitTime):
+        if not waitForLoading(maxWaitTime=10):
             continue
-
-        click(offsetDims((1000, 500), "list"))
 
         time.sleep(1)
 
@@ -92,4 +132,6 @@ def findNightServer(maxWaitTime=10, alt=False):
 
         time.sleep(0.5)
 
-    return url
+        break
+            
+    return hiveSlot
