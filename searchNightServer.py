@@ -1,7 +1,7 @@
 from pynput.mouse import Button, Controller
 import time
 from randomServer import joinRandomServer
-from functions import isWindowOpen, isColorClose, sendMessage, sendScreenshot, leave, reset, press, screenshot, click, offsetDims, findImg, readFile
+from functions import isWindowOpen, isColorClose, sendMessage, sendScreenshot, leave, reset, press, screenshot, click, offsetDims, findImg, readFile, writeFile
 import webbrowser
 
 mouse = Controller()
