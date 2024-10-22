@@ -35,12 +35,12 @@ class AltConnection:
                 if time.time() - lastCheck >= timeout:
                     raise TimeoutError
 
+                url = url.decode()
+
                 if "roblox" in url:
                     print(f"Url: {url}")
 
                     lastCheck = time.time()
-
-                url = url.decode()
 
                 writeFile("guiFiles/url.txt", url)
 
