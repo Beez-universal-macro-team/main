@@ -127,6 +127,7 @@ class GUI:
             "Slymi",
             "_epic",
             "Fire_king66",
+            "Lvl18bubblebee",
         ]
 
         self.ownerText = tk.Label(self.creditsTab, text="Owner/Head Developer:")
