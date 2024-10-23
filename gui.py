@@ -38,8 +38,10 @@ class GUI:
         self.settingsTab = tk.ttk.Frame(self.tabControl)
         self.privateServersTab = tk.ttk.Frame(self.tabControl)
         self.creditsTab = tk.ttk.Frame(self.tabControl)
+        self.vicTab = tk.ttk.Frame(self.tabControl)
 
         self.tabControl.add(self.joinSettingsTab, text='Join Settings')
+        self.tabControl.add(self.vicTab, text='Vic Hop')
         self.tabControl.add(self.connectTab, text='Connecting')
         self.tabControl.add(self.settingsTab, text='Settings')
         self.tabControl.add(self.privateServersTab, text='Private Servers')
@@ -123,8 +125,8 @@ class GUI:
 
         specialThanks = [
             "Slymi",
+            "_epic",
             "Fire_king66",
-            "Lvl18BubbleBee",
         ]
 
         self.ownerText = tk.Label(self.creditsTab, text="Owner/Head Developer:")
@@ -143,6 +145,30 @@ class GUI:
 
         for specialThank in specialThanks:
             globals()[f"self.{specialThank}"] = tk.Label(self.creditsTab, text=specialThank)
+
+        self.vicHopText = tk.Label(self.vicTab, text="Vic Hop")
+        self.vicHopText.config(font=(self.font, 20))
+
+        self.vicHopping = tk.IntVar(self.vicTab)
+
+        self.vicHoppingButton = tk.Checkbutton(self.vicTab, text="Vic Hopping", variable=self.vicHopping, onvalue=1, offvalue=0)
+
+        self.vicHopping.set(1)
+
+        self.checkByWalking = tk.Label(self.vicTab, text="Check vic bee by walking in field:")
+        self.checkByWalking.config(font=(self.font, 14))
+
+        self.walkInPepper = tk.IntVar(self.vicTab)
+        self.walkInRose = tk.IntVar(self.vicTab)
+        self.walkInMountain = tk.IntVar(self.vicTab)
+        self.walkInCactus = tk.IntVar(self.vicTab)
+        self.walkInSpider = tk.IntVar(self.vicTab)
+
+        self.pepperWalk = tk.Checkbutton(self.vicTab, text="Walk to pepper field", variable=self.walkInPepper, onvalue=1, offvalue=0)
+        self.roseWalk = tk.Checkbutton(self.vicTab, text="Walk to rose field", variable=self.walkInRose, onvalue=1, offvalue=0)
+        self.mountainWalk = tk.Checkbutton(self.vicTab, text="Walk to mountain field", variable=self.walkInMountain, onvalue=1, offvalue=0)
+        self.cactusWalk = tk.Checkbutton(self.vicTab, text="Walk to cactus field", variable=self.walkInCactus, onvalue=1, offvalue=0)
+        self.spiderWalk = tk.Checkbutton(self.vicTab, text="Walk to spider field", variable=self.walkInSpider, onvalue=1, offvalue=0)
 
         ###### DISPLAYING TEXT ######
 
@@ -198,6 +224,26 @@ class GUI:
         for specialThank in specialThanks:
             globals()[f"self.{specialThank}"].pack()
 
+        self.vicHopText.pack()
+
+        self.vicHoppingButton.pack()
+
+        tk.Label(self.connectTab, text=" ").pack()
+
+        self.checkByWalking.pack()
+
+        self.pepperWalk.pack()
+        self.roseWalk.pack()
+        self.mountainWalk.pack()
+        self.cactusWalk.pack()
+        self.spiderWalk.pack()
+
+        self.pepperWalk.place(relx=0.4, rely=0.3, anchor="w")
+        self.roseWalk.place(relx=0.4, rely=0.4, anchor="w")
+        self.mountainWalk.place(relx=0.4, rely=0.5, anchor="w")
+        self.cactusWalk.place(relx=0.4, rely=0.6, anchor="w")
+        self.spiderWalk.place(relx=0.4, rely=0.7, anchor="w")
+
     def maxLoadTimeChange(self):
         tm = self.maxLoad.get()
 
@@ -223,6 +269,18 @@ class GUI:
         writeFile("guiFiles/privateServers.txt", str(privateServers))
         writeFile("guiFiles/joinPrivateServers.txt", True if self.usingPs.get() else False)
 
+    def walkInFieldsChange(self):
+        walkInFields = {
+            "pepper": self.walkInPepper.get(),
+            "rose": self.walkInRose.get(),
+            "mountain": self.walkInMountain.get(),
+            "cactus": self.walkInCactus.get(),
+            "spider": self.walkInSpider.get(),
+        }
+
+        writeFile("guiFiles/walk.txt", str(walkInFields))
+        writeFile("guiFiles/vicHopping.txt", True if self.vicHopping.get() else False)
+
     def getPrivateServer(self, n):
         privateServers = eval(readFile("guiFiles/privateServers.txt"))
 
@@ -232,6 +290,7 @@ class GUI:
         self.maxLoadTimeChange()
         self.webhookChange()
         self.privateServersChange()
+        self.walkInFieldsChange()
 
     def stopMacro(self):
         quit()
@@ -259,3 +318,11 @@ class GUI:
             sendMessage("Alt connection failed...")
 
             pyautogui.alert("Alt connection failed...")
+
+    def saveSettings(self):
+        self.maxLoadTimeChange()
+        self.webhookChange()
+        self.privateServersChange()
+        self.walkInFieldsChange()
+
+        self.window.after(1000, self.saveSettings)
