@@ -318,7 +318,7 @@ class GUI:
         except:
             sendMessage("Alt connection failed...")
 
-            pyautogui.alert("Alt connection failed...")
+            pyautogui.alert("Alt connection failed... Try a different port or try reconnecting to alt")
 
     def saveSettings(self):
         self.maxLoadTimeChange()
