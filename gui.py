@@ -80,6 +80,36 @@ class GUI:
 
         self.webhook = tk.Entry(self.settingsTab)
 
+        self.userIdText = tk.Label(self.settingsTab, text="Discord user ID:")
+        self.userIdText.config(font=(self.font, 14))
+
+        self.userId = tk.Entry(self.settingsTab)
+
+        try:
+            self.userId.insert(0, readFile("guiFiles/userId.txt"))
+        except:
+            self.userId.insert(0, "")
+
+        self.moveSpeedText = tk.Label(self.settingsTab, text="Base Movespeed:")
+        self.moveSpeedText.config(font=(self.font, 14))
+
+        self.moveSpeed = tk.Entry(self.settingsTab)
+
+        try:
+            self.moveSpeed.insert(0, readFile("guiFiles/moveSpeed.txt"))
+        except:
+            self.moveSpeed.insert(0, "")
+
+        self.timeoutText = tk.Label(self.settingsTab, text="Max wait time before reconnecting to alt (minutes):")
+        self.timeoutText.config(font=(self.font, 14))
+
+        self.timeout = tk.Entry(self.settingsTab)
+
+        try:
+            self.timeout.insert(0, readFile("guiFiles/timeout.txt"))
+        except:
+            self.timeout.insert(0, "20")
+
         try:
             self.webhook.insert(0, readFile("guiFiles/webhook.txt"))
         except:
@@ -127,7 +157,6 @@ class GUI:
             "Slymi",
             "_epic",
             "Fire_king66",
-            "Lvl18bubblebee",
         ]
 
         self.ownerText = tk.Label(self.creditsTab, text="Owner/Head Developer:")
@@ -193,6 +222,15 @@ class GUI:
 
         self.webhookText.pack()
         self.webhook.pack()
+
+        self.userIdText.pack()
+        self.userId.pack()
+
+        self.moveSpeedText.pack()
+        self.moveSpeed.pack()
+
+        self.timeoutText.pack()
+        self.timeout.pack()
 
         self.connectingText.pack()
 
@@ -282,16 +320,28 @@ class GUI:
         writeFile("guiFiles/walk.txt", str(walkInFields))
         writeFile("guiFiles/vicHopping.txt", True if self.vicHopping.get() else False)
 
+    def userIdChange(self):
+        userId = self.userId.get()
+
+        writeFile("guiFiles/userId.txt", userId)
+
+    def moveSpeedChange(self):
+        moveSpeed = self.moveSpeed.get()
+
+        writeFile("guiFiles/moveSpeed.txt", moveSpeed)
+
+    def timeoutChange(self):
+        timeout = self.timeout.get()
+
+        writeFile("guiFiles/timeout.txt", timeout)
+
     def getPrivateServer(self, n):
         privateServers = eval(readFile("guiFiles/privateServers.txt"))
 
         return privateServers[n]
 
     def startMacro(self, main=False):
-        self.maxLoadTimeChange()
-        self.webhookChange()
-        self.privateServersChange()
-        self.walkInFieldsChange()
+        self.saveSettings()
 
     def stopMacro(self):
         quit()
@@ -311,19 +361,22 @@ class GUI:
         try:
             self.ip, self.port = self.AltConnection.connectToAlt()
 
-            pyautogui.alert(f"Recieved connection from {self.ip} port {self.port}")
+            #pyautogui.alert(f"Recieved connection from {self.ip} port {self.port}")
 
-            self.AltConnection.recieveNightServers()
+            self.AltConnection.recieveNightServers(timeout=int(self.timeout.get()) * 60)
 
         except:
             sendMessage("Alt connection failed...")
 
-            pyautogui.alert("Alt connection failed... Try a different port or try reconnecting to alt")
+            pyautogui.alert("Alt connection failed...")
 
     def saveSettings(self):
         self.maxLoadTimeChange()
         self.webhookChange()
         self.privateServersChange()
         self.walkInFieldsChange()
+        self.userIdChange()
+        self.moveSpeedChange()
+        self.timeoutChange()
 
         self.window.after(1000, self.saveSettings)

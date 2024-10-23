@@ -13,7 +13,7 @@ required_libraries = [
     'requests',
     'fonttools',  # for fontTools.misc.textTools
     'platform',  # usually comes pre-installed with Python
-    'ultralytics' # AI model stuff
+    'numpy',
 ]
 
 # Function to install libraries

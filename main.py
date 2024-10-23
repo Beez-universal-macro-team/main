@@ -22,5 +22,6 @@ listener.start()
 ui = gui.GUI()
 
 ui.initWindow()
+ui.saveSettings()
 
 ui.window.mainloop()

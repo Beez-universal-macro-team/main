@@ -1,7 +1,7 @@
 from pynput.mouse import Button, Controller
 import time
 from randomServer import joinRandomServer
-from functions import isWindowOpen, isColorClose, sendMessage, sendScreenshot, leave, reset, press, screenshot, click, offsetDims, findImg, readFile, writeFile
+from functions import isWindowOpen, isColorClose, sendMessage, sendScreenshot, leave, reset, press, screenshot, click, offsetDims, findImg
 import webbrowser
 
 mouse = Controller()
@@ -20,7 +20,7 @@ def waitForLoading(maxWaitTime=20):
     while True:
         screen = screenshot()
 
-        if screen.getpixel(offsetDims((1300, 812), "list")) == (34, 87, 168):
+        if isColorClose(screen.getpixel(offsetDims((1300, 812), "list")), (34, 87, 168), 3):
             break
 
         elif time.time() - tm >= maxWaitTime:
@@ -33,7 +33,7 @@ def waitForLoading(maxWaitTime=20):
     while True:
         screen = screenshot()
 
-        if screen.getpixel(offsetDims((1300, 812), "list")) != (34, 87, 168):
+        if not isColorClose(screen.getpixel(offsetDims((1300, 812), "list")), (34, 87, 168), 3):
             return True
 
         elif time.time() - tm >= maxWaitTime:
@@ -49,56 +49,12 @@ def detectNight():
 
     return False
 
-def claimHive():
-    press("w", "d", 4)
-
-    time.sleep(0.1)
-
-    press("s", 0.5)
-
-    time.sleep(0.1)
-
-    press("a", 0.3)
-
-    claimingHive = True
-
-    while claimingHive:
-        hiveSlot = 7
-
-        for loop in range(6):
-            hiveSlot -= 1
-
-            time.sleep(0.5)
-
-            if findImg("images/claim_hive.png", 0.8):
-                press("e", 0.5)
-
-                sendScreenshot(f"Claimed hive slot {hiveSlot}")
-
-                return hiveSlot
-
-            elif loop == 5:
-                break
-
-            else:
-                press("a", 1.1)
-
-        reset(hive=False)
-
-        press("w", "d", 4)
-
-        time.sleep(0.025)
-
-        press("s", 0.5)
-
-        time.sleep(0.025)
-
-        press("a", 0.3)
-
-def findNightServer():
+def findNightServer(maxWaitTime=10, alt=False):
     hiveSlot = 0
 
     serverLoop = 0
+
+    lastUrl = ""
 
     while True:
         serverLoop += 1
@@ -106,17 +62,24 @@ def findNightServer():
         if isWindowOpen("RobloxPlayerBeta.exe"):
             leave()
 
-        if "roblox" in readFile("url.txt"):
-            writeFile("url.txt", "blank")
-            joinRandomServer(1537690962)
+        if not alt:
+            if open("lastUrl.txt", "r").read() == lastUrl:
+                joinRandomServer(1537690962)
+
+            else:
+                sendMessage("Joining alt...")
+
+                webbrowser.open(open("lastUrl.txt", "r").read())
 
         else:
-            sendMessage("Joining alt...")
+            url = joinRandomServer(1537690962)
 
-            webbrowser.open(readFile("url.txt", "r"))
+        lastUrl = open("lastUrl.txt", "r").read()
 
-        if not waitForLoading(maxWaitTime=10):
+        if not waitForLoading(maxWaitTime=maxWaitTime):
             continue
+
+        click(offsetDims((1000, 500), "list"))
 
         time.sleep(1)
 
@@ -129,6 +92,4 @@ def findNightServer():
 
         time.sleep(0.5)
 
-        break
-            
-    return hiveSlot
+    return url
