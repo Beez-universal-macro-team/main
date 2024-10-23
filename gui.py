@@ -5,6 +5,7 @@ import altConnection
 import os
 import socket
 import threading
+from functions import MainLoopMacro
 
 main_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -155,9 +156,8 @@ class GUI:
 
         specialThanks = [
             "Slymi",
-            "Lvl18BubbleBee",
+            "_epic",
             "Fire_king66",
-            "Lvl18BubbleBee"
         ]
 
         self.ownerText = tk.Label(self.creditsTab, text="Owner/Head Developer:")
@@ -343,6 +343,7 @@ class GUI:
 
     def startMacro(self, main=False):
         self.saveSettings()
+        MainLoopMacro()
 
     def stopMacro(self):
         quit()
