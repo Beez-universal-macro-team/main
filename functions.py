@@ -423,10 +423,10 @@ def KillVicBees():
 def JoinServersUntilNight():
     while True:
         joinRandomServer()
-        if not DetectLoading(60):  # 30 second timeout
+        if not DetectLoading(60):  # 60 second timeout
             print("Loading timed out, trying new server...")
             continue  # Goes back to joinRandomServer()
-            
+           
         while True:
             if NightDetect():
                 print("Night found!!")
@@ -442,8 +442,7 @@ def JoinServersUntilNight():
                 sendScreenshot("Night not detected. Retrying...")
                 leave()
                 time.sleep(2)
-                return False
-
+                break  # Breaks inner while loop to go back to joinRandomServer()
 
 def MainLoopMacro():
     JoinServersUntilNight()
