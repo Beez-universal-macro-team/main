@@ -5,7 +5,7 @@ from ultralytics import YOLO
 from ..functions import screenshot
 
 # Load the YOLOv8 model
-model = YOLO('AI/vic.pt')
+model = YOLO('vic.pt')
 
 # Map class indices to class names (based on your training)
 class_names = ['vic', 'vic_gifted']  # Assuming class 0 = vic, class 1 = vic_gifted
