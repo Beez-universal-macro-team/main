@@ -369,6 +369,13 @@ def ClaimHiveWithRetries():
                 print("Max retries reached. Unable to claim hive.")
     return False  # All attempts failed
 
+def close_roblox():
+    if sys.platform == "win32":
+        subprocess.run(["taskkill", "/F", "/IM", "RobloxPlayerBeta.exe"], check=False)
+    elif sys.platform == "darwin":  # For MacOS
+        subprocess.run(["pkill", "-9", "RobloxPlayer"], check=False)
+    else:
+        print("Unsupported operating system for closing Roblox")
 
 def DetectLoading(timeout):
     target_color = (34, 87, 168)  # RGB equivalent of 0x2257A8
@@ -396,7 +403,8 @@ def DetectLoading(timeout):
             break
             
         if time.time() - start_time >= timeout:
-            print("Loading took too long to complete")
+            print("restricted experience")
+            close_roblox()
             return False
             
         time.sleep(0.1)
