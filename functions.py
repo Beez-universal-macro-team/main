@@ -16,7 +16,7 @@ main_dir = os.path.dirname(os.path.abspath(__file__))
 mouse = mouseController()
 keyboard = keyboardController()
 
-walkSpeed = 33.35
+walkspeed = readfile("guiFiles/moveSpeed")
 
 screenDims = pyautogui.size()
 
@@ -122,6 +122,22 @@ def press(*args):
         time.sleep(0.1)
 
 
+def press(*args):
+    keys = list(args)
+    keys.pop(len(keys) - 1)
+
+    for key in keys:
+        keyboard.press(key)
+
+        time.sleep(0.1)
+
+    time.sleep(args[len(args) - 1] * movespeed / )
+
+    for key in keys:
+        keyboard.release(key)
+
+        time.sleep(0.1)
+
 def screenshot(monitor=False):
     with mss.mss() as sct:
         # Get primary monitor
@@ -184,8 +200,7 @@ import subprocess
 from randomServer import joinRandomServer
 
 def Waitspeed(time):
-    playerspeed = readfile("guiFiles/moveSpeed")
-    time.sleep(time * 4)
+    time.sleep((time * 4) / walkspeed)
 
 def Reset():
     keyboard.tap(Key.esc)
