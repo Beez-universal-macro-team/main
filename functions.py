@@ -124,14 +124,11 @@ def press(*args):
 
 def screenshot(monitor=False):
     with mss.mss() as sct:
-        if monitor:
-            screen = sct.grab(monitor)
-
-        else:
-            screen = sct.grab(sct.monitors[0])
+        # Get primary monitor
+        primary_monitor = sct.monitors[1]  # Monitor 1 is typically the primary display
+        screen = sct.grab(primary_monitor)
 
     screen = Image.frombytes("RGB", screen.size, screen.bgra, "raw", "BGRX")
-
     return screen
 
 
