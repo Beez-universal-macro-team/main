@@ -183,6 +183,10 @@ import sys
 import subprocess
 from randomServer import joinRandomServer
 
+def MoveSpeed(time):
+    playerspeed = readfile("guiFiles/moveSpeed")
+    time.sleep(time * 4)
+
 def Reset():
     keyboard.tap(Key.esc)
 
