@@ -11,7 +11,7 @@ model = YOLO('vic.pt')
 class_names = ['vic', 'vic_gifted']  # Assuming class 0 = vic, class 1 = vic_gifted
 
 # Convert screenshot to YOLO input format and run inference
-def detect_in_screenshot():
+def detect_vic_in_screenshot():
     # Take screenshot
     img = screenshot()
 
@@ -38,6 +38,6 @@ def detect_in_screenshot():
     
     if not found_vic and not found_vic_gifted:
         print("No vic or vic_gifted found.")
+        return False
     else:
-        # Optionally visualize the detections
-        results[0].show()
+        return True
