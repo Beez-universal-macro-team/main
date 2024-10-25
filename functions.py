@@ -476,7 +476,7 @@ def DetectLoading(timeout):
 
             close_roblox()
 
-            return False
+            break
 
         time.sleep(0.1)
 
