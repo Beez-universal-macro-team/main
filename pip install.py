@@ -8,6 +8,7 @@ required_libraries = [
     'Pillow',  # for PIL
     'mss',
     'discord.py',  # for discord
+    'discord',
     'psutil',
     'tkinter',  # tkinter comes with Python, no need to install, but added here for clarity
     'requests',
