@@ -2,13 +2,15 @@ import mss
 from PIL import Image
 import numpy as np
 from ultralytics import YOLO
-from ..functions import screenshot
+import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+from functions import screenshot
 
 # Load the YOLOv8 model
-model = YOLO('vic.pt')
+model_path = os.path.join(os.path.dirname(__file__), 'vic.pt')
+model = YOLO(model_path)
 
-# Map class indices to class names (based on your training)
-class_names = ['vic', 'vic_gifted']  # Assuming class 0 = vic, class 1 = vic_gifted
 
 # Convert screenshot to YOLO input format and run inference
 def detect_vic_in_screenshot():
