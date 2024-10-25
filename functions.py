@@ -195,7 +195,7 @@ def readFile(fileName):
 import sys
 import subprocess
 from randomServer import joinRandomServer
-
+from AI.vic_detect import detect_vic_in_screenshot
 
 def Waitspeed(tm):
     try:
@@ -578,7 +578,11 @@ def PepperVic():
 
 
 def KillVicBees():
-    print("placeholder")
+    PepperVic()
+    if detect_vic_in_screenshot():
+        print("Vic detected, killing bees...")
+        #kill pattern goes here
+        return True
 
 
 def JoinServersUntilNight():
