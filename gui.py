@@ -24,9 +24,10 @@ class GUI:
 
         # Set the GUI logo
         logo_path = os.path.join(main_dir, "basicbeeface.ico")
+
         self.window.iconbitmap(logo_path)
         
-        self.window.geometry(f"{offsetDims(700, 'x')}x{offsetDims(350, 'y')}")
+        self.window.geometry(f"{offsetDims(850, 'x')}x{offsetDims(420, 'y')}")
 
         self.window.resizable(False, False) #Locks GUI size
 
@@ -117,10 +118,10 @@ class GUI:
             self.webhook.insert(0, "")
 
         self.connectingText = tk.Label(self.connectTab, text="Connecting")
-        self.connectingText.config(font=(self.font, 14))
+        self.connectingText.config(font=(self.font, 20))
 
         self.hostNameText = tk.Label(self.connectTab, text="Host name:")
-        self.hostNameText.config(font=(self.font, 14))
+        self.hostNameText.config(font=(self.font, 17))
 
         self.hostName = tk.Label(self.connectTab, text=socket.gethostname())
         self.hostName.config(font=(self.font, 14))
@@ -158,6 +159,7 @@ class GUI:
             "Slymi",
             "_epic",
             "Fire_king66",
+            "Lvl18BubbleBee"
         ]
 
         self.ownerText = tk.Label(self.creditsTab, text="Owner/Head Developer:")
