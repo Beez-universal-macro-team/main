@@ -16,8 +16,6 @@ main_dir = os.path.dirname(os.path.abspath(__file__))
 mouse = mouseController()
 keyboard = keyboardController()
 
-walkSpeed = int(open("guiFiles/moveSpeed", "r").read())
-
 screenDims = pyautogui.size()
 
 def isColorClose(color1, color2, maxDiff):
@@ -30,6 +28,7 @@ def isColorClose(color1, color2, maxDiff):
 
     return True
 
+
 def isWindowOpen(windowName):
     for process in psutil.process_iter(['name']):
         try:
@@ -41,13 +40,15 @@ def isWindowOpen(windowName):
 
     return False
 
+
 def sendMessage(message, picture=None):
     try:
         webhook = discord.SyncWebhook.from_url(readFile("guiFiles/webhook.txt"))
-    
+
         tm = datetime.now()
-    
-        webhook.send(f"[{tm.hour}:{tm.minute}:{tm.second}] {message}") if picture == None else webhook.send(f"[{tm.hour}:{tm.minute}:{tm.second}] {message}", file=picture)
+
+        webhook.send(f"[{tm.hour}:{tm.minute}:{tm.second}] {message}") if picture == None else webhook.send(
+            f"[{tm.hour}:{tm.minute}:{tm.second}] {message}", file=picture)
 
     except:
         pass
@@ -64,6 +65,7 @@ def sendScreenshot(message):
     t.daemon = True
 
     t.start()
+
 
 def leave():
     keyboard.tap(Key.esc)
@@ -94,6 +96,7 @@ def reset(hive=True):
         if not findImg("images/make_honey1.png", 0.7) and not findImg("images/make_honey2.png", 0.7):
             press("w", "d", 3)
 
+
 def findImg(img, confidence):
     try:
         pos = pyautogui.locateCenterOnScreen(img, confidence=confidence)
@@ -105,6 +108,7 @@ def findImg(img, confidence):
     except:
         return False
 
+
 def press(*args):
     keys = list(args)
     keys.pop(len(keys) - 1)
@@ -114,6 +118,8 @@ def press(*args):
 
         time.sleep(0.1)
 
+    walkSpeed = int(readFile("guiFiles/moveSpeed"))
+
     time.sleep(args[len(args) - 1] * 33.35 / walkSpeed)
 
     for key in keys:
@@ -121,10 +127,12 @@ def press(*args):
 
         time.sleep(0.1)
 
+
 def screenshot(monitor=False):
     with mss.mss() as sct:
         # Get primary monitor
         primary_monitor = sct.monitors[1]  # Monitor 1 is typically the primary display
+
         screen = sct.grab(primary_monitor)
 
     screen = Image.frombytes("RGB", screen.size, screen.bgra, "raw", "BGRX")
@@ -140,6 +148,7 @@ def click(pos):
 
     time.sleep(0.05)
 
+
 def offsetDims(pos, xy):
     if xy == "list":
         return (int(pos[0] * (screenDims[0] / 1920)), int(pos[1] * (screenDims[1] / 1080)))
@@ -150,16 +159,17 @@ def offsetDims(pos, xy):
     else:
         return int(pos * (screenDims[1] / 1080))
 
+
 def writeFile(fileName, val):
     if platform.system().lower() == "windows":
         while "/" in fileName:
             fileName = fileName.replace("/", "\\")
 
     full_path = os.path.join(main_dir, fileName)
-    
+
     # Create the directory if it doesn't exist
     os.makedirs(os.path.dirname(full_path), exist_ok=True)
-    
+
     # Open the file in write mode, creating it if it doesn't exist
     with open(full_path, "w+") as file:
         file.write(str(val))
@@ -171,19 +181,23 @@ def readFile(fileName):
             fileName = fileName.replace("/", "\\")
 
     full_path = os.path.join(main_dir, fileName)
-    
+
     with open(full_path, "r") as file:
         return file.read()
 
 
-#Paths and FUNCTIONS
+# Paths and FUNCTIONS
 
 import sys
 import subprocess
 from randomServer import joinRandomServer
 
-def Waitspeed(time):
-    time.sleep((time * 4) / walkSpeed)
+
+def Waitspeed(tm):
+    walkSpeed = int(readFile("guiFiles/moveSpeed"))
+
+    time.sleep((tm * 4) / walkSpeed)
+
 
 def Reset():
     keyboard.tap(Key.esc)
@@ -198,24 +212,35 @@ def Reset():
 
     time.sleep(7)
 
+
 def MoveUntilHive():
     global current_hive
+
     image_path = os.path.join(main_dir, 'images', 'gui', 'claimhive.png')
+
     confidence = 0.8
+
     for attempt in range(1, 6):  # Loop 5 times, from 1 to 5
         try:
             location = pyautogui.locateOnScreen(image_path, confidence=confidence)
+
             keyboard.tap("e")
+
             current_hive = attempt  # Update the current hive number
+
             time.sleep(1)
+
             return True  # Image found
+
         except pyautogui.ImageNotFoundException:
             if attempt < 5:
                 press('a', 2)  # Press 'w' for 1 second
+
             else:
                 print("Maximum attempts reached. Image not found.")
+
                 return False
-            
+
 
 def ClaimHive():
     press('d', 2)
@@ -228,15 +253,18 @@ def ClaimHive():
         if MoveUntilHive():
             # Hive found, perform necessary actions
             break
+
         else:
             print("Retrying to find hive...")
             # You can add additional movements or actions here before retrying
 
     # Continue with the rest of the ClaimHive function
 
+
 def WalkToCornerRamp():
     press('w', 6)
     press(((current_hive - 1) * 10) + 7, 'd')
+
 
 def CornerToRedCannon():
     press(Key.space, 0.1)
@@ -244,56 +272,73 @@ def CornerToRedCannon():
     press('w', 0.06)
     press('d', 7)
 
+
 def WalkToRedCannon():
     for attempt in range(5):  # This will loop 5 times (0 to 4)
         WalkToCornerRamp()
         CornerToRedCannon()
+
         image_path = os.path.join(main_dir, 'images', 'gui', 'red_cannon.png')
+
         try:
             location = pyautogui.locateOnScreen(image_path, confidence=0.8)
+
             return True  # Image found, exit the function
+
         except pyautogui.ImageNotFoundException:
             time.sleep(1)
+
             print(f"Attempt {attempt + 1} failed. Retrying...")
-    
+
     print("Maximum attempts reached. Red cannon not found.")
+
     return False
 
 
 def close_roblox():
     if sys.platform == "win32":
         subprocess.run(["taskkill", "/F", "/IM", "RobloxPlayerBeta.exe"], check=False)
+
     elif sys.platform == "darwin":
         subprocess.run(["pkill", "-9", "RobloxPlayer"], check=False)
+
     else:
         print("Unsupported operating system for closing Roblox")
 
 
 def NightDetect():
     target_color = (86, 100, 107)
+
     max_diff = 10  # Adjust this value for color tolerance
+
     screen_width, screen_height = pyautogui.size()
-    
+
     # Check multiple points on the screen for better accuracy
     check_points = [
         (screen_width // 2, screen_height // 2),
         (screen_width // 4, screen_height // 4),
         (3 * screen_width // 4, 3 * screen_height // 4)
     ]
-    
+
     for point in check_points:
         pixel_color = pyautogui.pixel(point[0], point[1])
+
         if isColorClose(pixel_color, target_color, max_diff):
             print(f"Night detected at point {point}!")
+
             return True
-    
+
     print("Night not detected.")
+
     return False
+
 
 def FloorDetect():
     target_color1 = (37, 150, 190)
     target_color2 = (88, 100, 108)
-    max_diff = 30  # Adjust this value for color tolerance
+
+    max_diff = 30 # Adjust this value for color tolerance
+
     screen_width, screen_height = pyautogui.size()
 
     # Calculate the check points based on screen dimensions
@@ -326,11 +371,14 @@ def FloorDetect():
 
     for point in check_points:
         pixel_color = pyautogui.pixel(point[0], point[1])
+
         if isColorClose(pixel_color, target_color1, max_diff) or isColorClose(pixel_color, target_color2, max_diff):
             print(f"Floor detected at point {point}!")
+
             return True
 
     print("Floor not detected.")
+
     return False
 
 
@@ -339,109 +387,131 @@ def Reset_char():
 
     if FloorDetect():
         print("Floor detected.")
+
     else:
         print("Floor not detected. Rotating...")
         for _ in range(4):
             press('.', 0.1)
 
 
-def isColorClose(color1, color2, maxDiff):
-    for index, col in enumerate(color1):
-        if abs(col - color2[index]) > maxDiff:
-            return False
-    return True
-
 def ClaimHiveWithRetries():
     max_retries = 4
+
     for attempt in range(max_retries):
         try:
             ClaimHive()
+
             print(f"Successfully claimed hive on attempt {attempt + 1}")
+
             return True  # Success, exit the function
+
         except Exception as e:
             print(f"Attempt {attempt + 1} failed: {str(e)}")
+
             if attempt < max_retries - 1:  # Don't reset on the last attempt
                 print("Resetting and trying again...")
+
                 Reset()
+
                 time.sleep(8)  # Wait for reset to complete
             else:
                 print("Max retries reached. Unable to claim hive.")
+
     return False  # All attempts failed
 
-def close_roblox():
-    if sys.platform == "win32":
-        subprocess.run(["taskkill", "/F", "/IM", "RobloxPlayerBeta.exe"], check=False)
-    elif sys.platform == "darwin":  # For MacOS
-        subprocess.run(["pkill", "-9", "RobloxPlayer"], check=False)
-    else:
-        print("Unsupported operating system for closing Roblox")
 
 def DetectLoading(timeout):
     target_color = (34, 87, 168)  # RGB equivalent of 0x2257A8
+
     start_time = time.time()
-    
+
     # Wait for loading color to appear
     while True:
         pixel_color = pyautogui.pixel(458, 151)
+
         if isColorClose(pixel_color, target_color, 10):
             print("Loading color detected!")
+
             break
-            
+
         if time.time() - start_time >= timeout:
             return False
-            
+
         time.sleep(0.1)
-    
-    # Wait for loading color to disappear with timeout    
+
+    # Wait for loading color to disappear with timeout
     start_time = time.time()  # Reset timer for disappearance check
+
     while True:
         pixel_color = pyautogui.pixel(458, 151)
+
         if not isColorClose(pixel_color, target_color, 10):
             print("Loading complete!")
+
             time.sleep(2)
+
             break
-            
+
         if time.time() - start_time >= timeout:
             print("restricted experience")
+
             close_roblox()
+
             return False
-            
+
         time.sleep(0.1)
-    
+
     return True
 
 
 def ServerSetup():
     if not ClaimHiveWithRetries():
         print("Failed to claim hive after multiple attempts. Exiting MainLoop.")
+
         return False
-    
+
+
 def KillVicBees():
     print("placeholder")
-    
+
+
 def JoinServersUntilNight():
     while True:
         joinRandomServer()
-        if not DetectLoading(60):  # 60 second timeout
+
+        if not DetectLoading(int(readFile("guiFiles/maxLoadTime.txt"))):
             print("Loading timed out, trying new server...")
+
             continue  # Goes back to joinRandomServer()
-           
+
         while True:
             if NightDetect():
                 print("Night found!!")
+
                 sendScreenshot("Night found!")
+
                 if not ServerSetup():
                     print("ServerSetup failed. Exiting JoinServersUntilNight.")
+
                     return False
+
                 KillVicBees()
+
                 time.sleep(1)
+
                 return True
+                
             else:
                 print("Night not detected. Retrying...")
-                sendScreenshot("Night not detected. Retrying...")
+
+                #sendScreenshot("Night not detected. Retrying...") lowering screenshot send rate
+
                 leave()
+
                 time.sleep(2)
+
                 break  # Breaks inner while loop to go back to joinRandomServer()
+
 
 def MainLoopMacro():
     JoinServersUntilNight()
