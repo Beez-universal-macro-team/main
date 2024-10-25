@@ -197,6 +197,7 @@ import subprocess
 from randomServer import joinRandomServer
 from AI.vic_detect import detect_vic_in_screenshot
 
+
 def Waitspeed(tm):
     try:
         walkSpeed = int(readFile("guiFiles/moveSpeed.txt"))
@@ -574,15 +575,40 @@ def PepperVic():
     keyboard.release(Key.page_down)
     keyboard.press(Key.page_down) 
     keyboard.release(Key.page_down)
+    keyboard.tap("o")
+    keyboard.tap("o")
+    keyboard.tap("o")
     
-
+def PepperToCannon():
+    press(Key.space, 0.1)
+    keyboard.press("d")
+    time.sleep(0.50)
+    keyboard.release("d")
+    time.sleep(0.10)
+    keyboard.press("s")
+    Waitspeed(14)
+    keyboard.release("s")
+    time.sleep(0.10)
+    keyboard.press("w")
+    Waitspeed(3)
+    keyboard.release("w")
+    time.sleep(0.10)
+    keyboard.tap(",")
+    keyboard.tap(",")
+    keyboard.tap(",")
 
 def KillVicBees():
     PepperVic()
     if detect_vic_in_screenshot():
+        keyboard.press(Key.page_up)
+        keyboard.release(Key.page_up)
         print("Vic detected, killing bees...")
         #kill pattern goes here
         return True
+    keyboard.press(Key.page_up)
+    keyboard.release(Key.page_up)
+    PepperToCannon()
+
 
 
 def JoinServersUntilNight():
@@ -623,5 +649,5 @@ def JoinServersUntilNight():
 
 
 def MainLoopMacro():
-    #PepperVic()
-    JoinServersUntilNight()
+    KillVicBees()
+    #JoinServersUntilNight()
