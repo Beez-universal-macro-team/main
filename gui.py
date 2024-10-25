@@ -29,8 +29,6 @@ class GUI:
         
         self.window.geometry(f"{offsetDims(850, 'x')}x{offsetDims(420, 'y')}")
 
-        self.window.resizable(False, False) #Locks GUI size
-
         ###### CREATING TABS ######
 
         self.tabControl = tk.ttk.Notebook(self.window)
