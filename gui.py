@@ -7,6 +7,14 @@ import socket
 import threading
 from functions import MainLoopMacro
 
+try:
+    windowSize = eval(readFile("guiFiles/windowSize.txt"))
+
+except:
+    windowSize = [offsetDims(700, 'x'), offsetDims(350, 'y')]
+
+print(f"{windowSize[0]}x{windowSize[1]}")
+
 main_dir = os.path.dirname(os.path.abspath(__file__))
 
 class GUI:
@@ -27,7 +35,7 @@ class GUI:
 
         self.window.iconbitmap(logo_path)
         
-        self.window.geometry(f"{offsetDims(850, 'x')}x{offsetDims(420, 'y')}")
+        self.window.geometry(f"{windowSize[0]}x{windowSize[1]}")
 
         ###### CREATING TABS ######
 
@@ -336,6 +344,11 @@ class GUI:
 
         writeFile("guiFiles/timeout.txt", timeout)
 
+    def saveWindowSize(self):
+        x, y = self.window.winfo_width(), self.window.winfo_height()
+
+        writeFile("guiFiles/windowSize.txt", str([x, y]))
+
     def getPrivateServer(self, n):
         privateServers = eval(readFile("guiFiles/privateServers.txt"))
 
@@ -380,5 +393,6 @@ class GUI:
         self.userIdChange()
         self.moveSpeedChange()
         self.timeoutChange()
+        self.saveWindowSize()
 
         self.window.after(1000, self.saveSettings)
