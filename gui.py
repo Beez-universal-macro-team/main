@@ -356,6 +356,7 @@ class GUI:
 
     def startMacro(self, main=False):
         self.saveSettings()
+
         MainLoopMacro()
 
     def stopMacro(self):
