@@ -416,7 +416,6 @@ def ClaimHiveWithRetries():
     max_retries = 4
     for attempt in range(max_retries):
         Reset()
-        time.sleep(8)  # Wait for reset to complete
         
         if ClaimHive():
             print(f"Successfully claimed hive on attempt {attempt + 1}")
