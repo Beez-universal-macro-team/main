@@ -247,9 +247,22 @@ def MoveUntilHive():
 
 
 def ClaimHive():
-    press("w", "d", 4)
-    press("s", 0.5)
-    press("a", 0.25)
+    Waitspeed(4)
+    keyboard.press("w")
+    keyboard.press("d")
+    time.sleep(0.1)
+    keyboard.release("w")
+    keyboard.release("d")
+
+    Waitspeed(0.5)
+    keyboard.press("s")
+    time.sleep(0.1)
+    keyboard.release("s")
+
+    Waitspeed(0.25)
+    keyboard.press("a")
+    time.sleep(0.1)
+    keyboard.release("a")
 
     while True:
         if MoveUntilHive():
