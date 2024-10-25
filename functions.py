@@ -649,5 +649,5 @@ def JoinServersUntilNight():
 
 
 def MainLoopMacro():
-    KillVicBees()
-    #JoinServersUntilNight()
+    #KillVicBees()
+    JoinServersUntilNight()
