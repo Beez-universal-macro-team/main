@@ -476,7 +476,7 @@ def DetectLoading(timeout):
 
             close_roblox()
 
-            break
+            return False
 
         time.sleep(0.1)
 
@@ -512,7 +512,7 @@ def JoinServersUntilNight():
                 if not ServerSetup():
                     print("ServerSetup failed. Exiting JoinServersUntilNight.")
 
-                    return False
+                    break
 
                 KillVicBees()
 
