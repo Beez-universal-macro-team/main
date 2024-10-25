@@ -5,6 +5,7 @@ running = False
 
 def on_release(key):
     global running
+    
     if key == Key.f1:
         if not running:
             running = True
