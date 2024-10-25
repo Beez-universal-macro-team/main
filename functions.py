@@ -500,7 +500,7 @@ def JoinServersUntilNight():
 
         if not DetectLoading(int(readFile("guiFiles/maxLoadTime.txt"))):
             print("Loading timed out, trying new server...")
-
+            close_roblox()
             continue  # Goes back to joinRandomServer()
 
         while True:
