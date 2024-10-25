@@ -198,9 +198,13 @@ from randomServer import joinRandomServer
 
 
 def Waitspeed(tm):
-    walkSpeed = int(readFile("guiFiles/moveSpeed.txt"))
-
+    try:
+        walkSpeed = int(readFile("guiFiles/moveSpeed.txt"))
+    except:
+        walkSpeed = 33.35  # Default value if file is empty or invalid
+    
     time.sleep((tm * 4) / walkSpeed)
+
 
 
 def Reset():
