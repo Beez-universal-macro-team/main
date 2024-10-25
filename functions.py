@@ -242,7 +242,9 @@ def MoveUntilHive():
 
         except pyautogui.ImageNotFoundException:
             if attempt < 5:
-                press('a', 2)  # Press 'w' for 1 second
+                keyboard.press("a")
+                Waitspeed(11)
+                keyboard.release("a")
 
             else:
                 print("Maximum attempts reached. Image not found.")
@@ -251,22 +253,26 @@ def MoveUntilHive():
 
 
 def ClaimHive():
+    keyboard.press("d")
     Waitspeed(4)
     keyboard.press("w")
-    keyboard.press("d")
-    time.sleep(0.1)
+    Waitspeed(25)
     keyboard.release("w")
     keyboard.release("d")
 
-    Waitspeed(0.5)
-    keyboard.press("s")
-    time.sleep(0.1)
-    keyboard.release("s")
+    keyboard.press("w")
+    Waitspeed(8)
+    keyboard.release("w")
 
-    Waitspeed(0.25)
+    keyboard.press("d")
+    Waitspeed(8)
+    keyboard.release("d")
+
     keyboard.press("a")
-    time.sleep(0.1)
+    keyboard.press("s")
+    Waitspeed(7.6)
     keyboard.release("a")
+    keyboard.release("s")
 
 
     if MoveUntilHive():
@@ -280,15 +286,28 @@ def ClaimHive():
 
 
 def WalkToCornerRamp():
-    press('w', 6)
-    press(((current_hive - 1) * 10) + 7, 'd')
+    keyboard.press("w")
+    Waitspeed(4)
+    keyboard.release("w")
+    time.sleep(0.1)
+    keyboard.press("d")
+    Waitspeed(((current_hive - 1) * 11) + 7)
+    keyboard.release("d")
+
 
 
 def CornerToRedCannon():
     press(Key.space, 0.1)
-    press('d', 0.20)
-    press('w', 0.06)
-    press('d', 7)
+    keyboard.press("d")
+    time.sleep(0.10)
+    keyboard.release("d")
+    time.sleep(0.50)
+    keyboard.press("w")
+    Waitspeed(0.5)
+    keyboard.release("w")
+    keyboard.press("d")
+    Waitspeed(7.5)
+    keyboard.release("d")
 
 
 def WalkToRedCannon():
@@ -301,12 +320,16 @@ def WalkToRedCannon():
         try:
             location = pyautogui.locateOnScreen(image_path, confidence=0.8)
 
+            print("Red cannon found!")
+
             return True  # Image found, exit the function
 
         except pyautogui.ImageNotFoundException:
             time.sleep(1)
 
             print(f"Attempt {attempt + 1} failed. Retrying...")
+
+            reset()
 
     print("Maximum attempts reached. Red cannon not found.")
 
@@ -415,8 +438,9 @@ def Reset_char():
 def ClaimHiveWithRetries():
     max_retries = 4
     for attempt in range(max_retries):
-        Reset()
-        
+        if attempt > 0:  # Only reset after first attempt
+            Reset()
+            
         if ClaimHive():
             print(f"Successfully claimed hive on attempt {attempt + 1}")
             return True  # Success, exit the function
@@ -426,6 +450,7 @@ def ClaimHiveWithRetries():
             print("Max retries reached. Unable to claim hive.")
             
     return False  # All attempts failed
+
 
 
 
@@ -480,6 +505,77 @@ def ServerSetup():
     return True
 
 
+def ShiftLock():
+    keyboard.press(Key.shift)
+    time.sleep(0.1)  # Increased delay
+    keyboard.release(Key.shift)
+    print("Shift lock released")
+    time.sleep(0.5)  # Wait to confirm state change
+    return True
+
+
+
+
+
+def PepperVic():
+    keyboard.press("d")
+    Waitspeed(24)
+    keyboard.release("d")
+    press(Key.space, 0.1)
+    keyboard.press("d")
+    time.sleep(0.10)
+    keyboard.release("d")
+    time.sleep(0.50)
+    keyboard.press("w")
+    Waitspeed(7)
+    keyboard.release("w")
+    time.sleep(0.10)
+    press(Key.space, 0.1)
+    keyboard.press("w")
+    time.sleep(0.65)
+    Waitspeed(10)
+    keyboard.release("w")
+    time.sleep(0.10)
+    keyboard.press("d")
+    Waitspeed(5)
+    keyboard.release("d")
+    time.sleep(0.10)
+    keyboard.press("w")
+    press(Key.space, 0.1)
+    time.sleep(0.50)
+    press(Key.space, 0.1)
+    keyboard.release("w")
+    time.sleep(0.50)
+    keyboard.press("w")
+    Waitspeed(15)
+    keyboard.release("w")
+    time.sleep(0.1)
+    press(Key.space, 0.1)
+    keyboard.press("w")
+    time.sleep(0.65)
+    keyboard.release("w")
+    time.sleep(0.10)
+    keyboard.press("w")
+    keyboard.press("d")
+    Waitspeed(17)
+    keyboard.release("w")
+    keyboard.release("d")
+    time.sleep(0.10)
+    press(Key.space, 0.1)
+    keyboard.press("d")
+    time.sleep(0.50)
+    keyboard.release("d")
+    time.sleep(0.10)
+    keyboard.press("d")
+    Waitspeed(18)
+    keyboard.release("d")
+    ShiftLock()
+    keyboard.press(Key.page_down) 
+    keyboard.release(Key.page_down)
+    keyboard.press(Key.page_down) 
+    keyboard.release(Key.page_down)
+    
+
 
 def KillVicBees():
     print("placeholder")
@@ -523,4 +619,5 @@ def JoinServersUntilNight():
 
 
 def MainLoopMacro():
-    JoinServersUntilNight()
+    PepperVic()
+    #JoinServersUntilNight()
