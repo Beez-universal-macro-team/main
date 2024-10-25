@@ -268,14 +268,13 @@ def ClaimHive():
     time.sleep(0.1)
     keyboard.release("a")
 
-    while True:
-        if MoveUntilHive():
-            # Hive found, perform necessary actions
-            break
 
-        else:
-            print("Retrying to find hive...")
-            # You can add additional movements or actions here before retrying
+    if MoveUntilHive():
+        return True
+
+    else:
+        print("Retrying to find hive...")
+        return False
 
     # Continue with the rest of the ClaimHive function
 
@@ -415,28 +414,20 @@ def Reset_char():
 
 def ClaimHiveWithRetries():
     max_retries = 4
-
     for attempt in range(max_retries):
-        try:
-            ClaimHive()
-
+        Reset()
+        time.sleep(8)  # Wait for reset to complete
+        
+        if ClaimHive():
             print(f"Successfully claimed hive on attempt {attempt + 1}")
-
             return True  # Success, exit the function
-
-        except Exception as e:
-            print(f"Attempt {attempt + 1} failed: {str(e)}")
-
-            if attempt < max_retries - 1:  # Don't reset on the last attempt
-                print("Resetting and trying again...")
-
-                Reset()
-
-                time.sleep(8)  # Wait for reset to complete
-            else:
-                print("Max retries reached. Unable to claim hive.")
-
+        
+        print(f"Attempt {attempt + 1} failed to claim hive")
+        if attempt == max_retries - 1:  # Last attempt
+            print("Max retries reached. Unable to claim hive.")
+            
     return False  # All attempts failed
+
 
 
 def DetectLoading(timeout):
@@ -486,8 +477,9 @@ def DetectLoading(timeout):
 def ServerSetup():
     if not ClaimHiveWithRetries():
         print("Failed to claim hive after multiple attempts. Exiting MainLoop.")
-
         return False
+    return True
+
 
 
 def KillVicBees():
