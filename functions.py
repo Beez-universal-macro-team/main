@@ -1,399 +1,518 @@
-import tkinter as tk
-from functions import offsetDims, screenDims, writeFile, readFile, sendMessage
-import pyautogui
-import altConnection
-import os
-import socket
+from pynput.mouse import Button, Controller as mouseController
+from pynput.keyboard import Controller as keyboardController, Key
+import time
+from PIL import Image, ImageGrab
+import mss
+import discord
+import psutil
 import threading
-from functions import MainLoopMacro
-
-try:
-    windowSize = eval(readFile("guiFiles/windowSize.txt"))
-
-except:
-    windowSize = [offsetDims(700, 'x'), offsetDims(350, 'y')]
-
-print(f"{windowSize[0]}x{windowSize[1]}")
+import pyautogui
+from datetime import datetime
+import platform
+import os
 
 main_dir = os.path.dirname(os.path.abspath(__file__))
 
-class GUI:
-    def __init__(self, font="Courier"):
-        self.font = font
-
-        self.connected = False
-
-    def initWindow(self):
-        sendMessage("Started main!")
-        
-        self.window = tk.Tk()
-
-        self.window.title("Beez Universal Macro - Main")
-
-        # Set the GUI logo
-        logo_path = os.path.join(main_dir, "basicbeeface.ico")
-
-        self.window.iconbitmap(logo_path)
-        
-        self.window.geometry(f"{windowSize[0]}x{windowSize[1]}")
-
-        ###### CREATING TABS ######
-
-        self.tabControl = tk.ttk.Notebook(self.window)
-
-        self.joinSettingsTab = tk.ttk.Frame(self.tabControl)
-        self.connectTab = tk.ttk.Frame(self.tabControl)
-        self.settingsTab = tk.ttk.Frame(self.tabControl)
-        self.privateServersTab = tk.ttk.Frame(self.tabControl)
-        self.creditsTab = tk.ttk.Frame(self.tabControl)
-        self.vicTab = tk.ttk.Frame(self.tabControl)
-
-        self.tabControl.add(self.joinSettingsTab, text='Join Settings')
-        self.tabControl.add(self.vicTab, text='Vic Hop')
-        self.tabControl.add(self.connectTab, text='Connecting')
-        self.tabControl.add(self.settingsTab, text='Settings')
-        self.tabControl.add(self.privateServersTab, text='Private Servers')
-        self.tabControl.add(self.creditsTab, text='Credits')
-
-        ###### CREATING TEXT ######
-
-        for i in range(1, 6):
-            globals()[f"self.{i}"] = 0
-
-        self.maxLoadTime = tk.StringVar()
-
-        self.joinTitle = tk.Label(self.joinSettingsTab, text="Join Settings")
-        self.joinTitle.config(font=(self.font, 17))
-
-        self.maxLoadText = tk.Label(self.joinSettingsTab, text="Maximum load time:")
-        self.maxLoadText.config(font=(self.font, 14))
-
-        self.maxLoad = tk.Entry(self.joinSettingsTab, width=3)
-
-        try:
-            self.maxLoad.insert(0, readFile("guiFiles/maxLoadTime.txt"))
-        except:
-            self.maxLoad.insert(0, "10")
-
-        self.start = tk.Button(self.window, text="Start (f1)", command=self.startMacro)
-        self.stop = tk.Button(self.window, text="Stop (f2)", command=self.stopMacro)
-
-        self.connect = tk.Button(self.connectTab, text="Connect new alt", command=self.connectToAltThread)
-
-        self.settingsTitle = tk.Label(self.settingsTab, text="Settings")
-        self.settingsTitle.config(font=(self.font, 17))
-
-        self.webhookText = tk.Label(self.settingsTab, text="Discord webhook:")
-        self.webhookText.config(font=(self.font, 14))
-
-        self.webhook = tk.Entry(self.settingsTab)
-
-        self.userIdText = tk.Label(self.settingsTab, text="Discord user ID:")
-        self.userIdText.config(font=(self.font, 14))
-
-        self.userId = tk.Entry(self.settingsTab)
-
-        try:
-            self.userId.insert(0, readFile("guiFiles/userId.txt"))
-        except:
-            self.userId.insert(0, "")
-
-        self.moveSpeedText = tk.Label(self.settingsTab, text="Base Movespeed:")
-        self.moveSpeedText.config(font=(self.font, 14))
-
-        self.moveSpeed = tk.Entry(self.settingsTab)
-
-        try:
-            self.moveSpeed.insert(0, readFile("guiFiles/moveSpeed.txt"))
-        except:
-            self.moveSpeed.insert(0, "")
-
-        self.timeoutText = tk.Label(self.settingsTab, text="Max wait time before reconnecting to alt (minutes):")
-        self.timeoutText.config(font=(self.font, 14))
-
-        self.timeout = tk.Entry(self.settingsTab)
-
-        try:
-            self.timeout.insert(0, readFile("guiFiles/timeout.txt"))
-        except:
-            self.timeout.insert(0, "20")
-
-        try:
-            self.webhook.insert(0, readFile("guiFiles/webhook.txt"))
-        except:
-            self.webhook.insert(0, "")
-
-        self.connectingText = tk.Label(self.connectTab, text="Connecting")
-        self.connectingText.config(font=(self.font, 20))
-
-        self.hostNameText = tk.Label(self.connectTab, text="Host name:")
-        self.hostNameText.config(font=(self.font, 17))
-
-        self.hostName = tk.Label(self.connectTab, text=socket.gethostname())
-        self.hostName.config(font=(self.font, 14))
-
-        self.privateServersText = tk.Label(self.privateServersTab, text="Private servers")
-        self.privateServersText.config(font=(self.font, 14))
-
-        for i in range(1, 6):
-            globals()[f"self.{i}"] = tk.Entry(self.privateServersTab)
-
-            try:
-                globals()[f"self.{i}"].insert(0, self.getPrivateServer(i - 1))
-
-            except:
-                pass
-
-        self.usingPs = tk.IntVar(self.privateServersTab)
-
-        self.usingPsBox = tk.Checkbutton(self.privateServersTab, text="Use private servers", variable=self.usingPs, onvalue=1, offvalue=0)
-
-        try:
-            self.usingPs.set(1 if eval(readFile("guiFiles/joinPrivateServers.txt")) else 0)
-
-        except:
-            pass
-
-        owner = "Beez131"
-
-        contributors = [
-            "Sharkboy1663",
-            "Pirosow"
-        ]
-
-        specialThanks = [
-            "Slymi",
-            "_epic",
-            "Fire_king66",
-            "Lvl18BubbleBee"
-        ]
-
-        self.ownerText = tk.Label(self.creditsTab, text="Owner/Head Developer:")
-        self.ownerText.config(font=(self.font, 15))
-
-        self.owner = tk.Label(self.creditsTab, text=owner)
-
-        self.contributors = tk.Label(self.creditsTab, text="Developers:")
-        self.contributors.config(font=(self.font, 15))
-
-        for contributor in contributors:
-            globals()[f"self.{contributor}"] = tk.Label(self.creditsTab, text=contributor)
-
-        self.specialThanks = tk.Label(self.creditsTab, text="Special Thanks To:")
-        self.specialThanks.config(font=(self.font, 15))
-
-        for specialThank in specialThanks:
-            globals()[f"self.{specialThank}"] = tk.Label(self.creditsTab, text=specialThank)
-
-        self.vicHopText = tk.Label(self.vicTab, text="Vic Hop")
-        self.vicHopText.config(font=(self.font, 20))
-
-        self.vicHopping = tk.IntVar(self.vicTab)
-
-        self.vicHoppingButton = tk.Checkbutton(self.vicTab, text="Vic Hopping", variable=self.vicHopping, onvalue=1, offvalue=0)
-
-        self.vicHopping.set(1)
-
-        self.checkByWalking = tk.Label(self.vicTab, text="Check vic bee by walking in field:")
-        self.checkByWalking.config(font=(self.font, 14))
-
-        self.walkInPepper = tk.IntVar(self.vicTab)
-        self.walkInRose = tk.IntVar(self.vicTab)
-        self.walkInMountain = tk.IntVar(self.vicTab)
-        self.walkInCactus = tk.IntVar(self.vicTab)
-        self.walkInSpider = tk.IntVar(self.vicTab)
-
-        self.pepperWalk = tk.Checkbutton(self.vicTab, text="Walk to pepper field", variable=self.walkInPepper, onvalue=1, offvalue=0)
-        self.roseWalk = tk.Checkbutton(self.vicTab, text="Walk to rose field", variable=self.walkInRose, onvalue=1, offvalue=0)
-        self.mountainWalk = tk.Checkbutton(self.vicTab, text="Walk to mountain field", variable=self.walkInMountain, onvalue=1, offvalue=0)
-        self.cactusWalk = tk.Checkbutton(self.vicTab, text="Walk to cactus field", variable=self.walkInCactus, onvalue=1, offvalue=0)
-        self.spiderWalk = tk.Checkbutton(self.vicTab, text="Walk to spider field", variable=self.walkInSpider, onvalue=1, offvalue=0)
-
-        ###### DISPLAYING TEXT ######
-
-        self.tabControl.pack(expand=2, fill="both")
-
-        self.joinTitle.pack()
-
-        self.maxLoadText.pack()
-        self.maxLoad.pack()
-
-        self.maxLoadText.place(relx=0.5, rely=0.35, anchor="n")
-        self.maxLoad.place(relx=0.5, rely=0.5, anchor="n")
-
-        self.start.pack()
-        self.start.place(relx=0.35, rely=0.8, anchor="n")
-
-        self.stop.pack()
-        self.stop.place(relx=0.65, rely=0.8, anchor="n")
-
-        self.settingsTitle.pack()
-
-        self.webhookText.pack()
-        self.webhook.pack()
-
-        self.userIdText.pack()
-        self.userId.pack()
-
-        self.moveSpeedText.pack()
-        self.moveSpeed.pack()
-
-        self.timeoutText.pack()
-        self.timeout.pack()
-
-        self.connectingText.pack()
-
-        tk.Label(self.connectTab, text=" ").pack()
-
-        self.hostNameText.pack()
-        self.hostName.pack()
-
-        tk.Label(self.connectTab, text=" ").pack()
-
-        self.connect.pack()
-
-        self.privateServersText.pack()
-
-        for i in range(5):
-            globals()[f"self.{i + 1}"].pack()
-
-        self.usingPsBox.pack()
-
-        self.ownerText.pack()
-        self.owner.pack()
-
-        self.contributors.pack()
-
-        for contributor in contributors:
-            globals()[f"self.{contributor}"].pack()
-
-        self.specialThanks.pack()
-
-        for specialThank in specialThanks:
-            globals()[f"self.{specialThank}"].pack()
-
-        self.vicHopText.pack()
-
-        self.vicHoppingButton.pack()
-
-        tk.Label(self.connectTab, text=" ").pack()
-
-        self.checkByWalking.pack()
-
-        self.pepperWalk.pack()
-        self.roseWalk.pack()
-        self.mountainWalk.pack()
-        self.cactusWalk.pack()
-        self.spiderWalk.pack()
-
-        self.pepperWalk.place(relx=0.4, rely=0.3, anchor="w")
-        self.roseWalk.place(relx=0.4, rely=0.4, anchor="w")
-        self.mountainWalk.place(relx=0.4, rely=0.5, anchor="w")
-        self.cactusWalk.place(relx=0.4, rely=0.6, anchor="w")
-        self.spiderWalk.place(relx=0.4, rely=0.7, anchor="w")
-
-    def maxLoadTimeChange(self):
-        tm = self.maxLoad.get()
-
-        if str(tm).isnumeric():
-            writeFile("guiFiles/maxLoadTime.txt", tm)
+mouse = mouseController()
+keyboard = keyboardController()
+
+screenDims = pyautogui.size()
+
+def isColorClose(color1, color2, maxDiff):
+    for index, col in enumerate(color1):
+        if abs(col - color2[index]) <= maxDiff:
+            continue
 
         else:
-            pyautogui.alert("Make sure to set max load time to a number!")
+            return False
 
-    def webhookChange(self):
-        webhook = self.webhook.get()
+    return True
 
-        writeFile("guiFiles/webhook.txt", webhook)
 
-    def privateServersChange(self):
-        privateServers = []
+def isWindowOpen(windowName):
+    for process in psutil.process_iter(['name']):
+        try:
+            if process.info['name'] == windowName:
+                return True
 
-        for i in range(5):
-            privateServer = globals()[f"self.{i + 1}"].get()
+        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+            pass
 
-            privateServers.append(privateServer)
+    return False
 
-        writeFile("guiFiles/privateServers.txt", str(privateServers))
-        writeFile("guiFiles/joinPrivateServers.txt", True if self.usingPs.get() else False)
 
-    def walkInFieldsChange(self):
-        walkInFields = {
-            "pepper": self.walkInPepper.get(),
-            "rose": self.walkInRose.get(),
-            "mountain": self.walkInMountain.get(),
-            "cactus": self.walkInCactus.get(),
-            "spider": self.walkInSpider.get(),
-        }
+def sendMessage(message, picture=None):
+    try:
+        webhook = discord.SyncWebhook.from_url(readFile("guiFiles/webhook.txt"))
 
-        writeFile("guiFiles/walk.txt", str(walkInFields))
-        writeFile("guiFiles/vicHopping.txt", True if self.vicHopping.get() else False)
+        tm = datetime.now()
 
-    def userIdChange(self):
-        userId = self.userId.get()
+        webhook.send(f"[{tm.hour}:{tm.minute}:{tm.second}] {message}") if picture == None else webhook.send(
+            f"[{tm.hour}:{tm.minute}:{tm.second}] {message}", file=picture)
 
-        writeFile("guiFiles/userId.txt", userId)
+    except:
+        pass
 
-    def moveSpeedChange(self):
-        moveSpeed = self.moveSpeed.get()
 
-        writeFile("guiFiles/moveSpeed.txt", moveSpeed)
+def sendScreenshot(message):
+    try:
+        screen = screenshot()
 
-    def timeoutChange(self):
-        timeout = self.timeout.get()
+        screen.save("screenshot.png")
 
-        writeFile("guiFiles/timeout.txt", timeout)
+        screen = open("Images/screenshot.png", "rb")
 
-    def saveWindowSize(self):
-        x, y = self.window.winfo_width(), self.window.winfo_height()
+        t = threading.Thread(target=sendMessage, args=(message, discord.File(screen)))
+        t.daemon = True
 
-        writeFile("guiFiles/windowSize.txt", str([x, y]))
+        t.start()
 
-    def getPrivateServer(self, n):
-        privateServers = eval(readFile("guiFiles/privateServers.txt"))
+    except:
+        pass
 
-        return privateServers[n]
 
-    def startMacro(self, main=False):
-        self.saveSettings()
+def leave():
+    keyboard.tap(Key.esc)
 
-        MainLoopMacro()
+    time.sleep(0.025)
 
-    def stopMacro(self):
-        quit()
+    keyboard.tap("l")
 
-    def connectToAltThread(self):
-        port = int(pyautogui.prompt(text='Port connecting to new alt?', title='Pls answer...' , default=''))
+    time.sleep(0.025)
 
-        self.t = threading.Thread(target=self.connectToAlt, args=(port,))
+    keyboard.tap(Key.enter)
 
-        self.t.daemon = True
 
-        self.t.start()
+def reset(hive=True):
+    press(Key.esc, 0.05)
 
-    def connectToAlt(self, port):
-        self.AltConnection = altConnection.AltConnection(port)
+    time.sleep(0.05)
+
+    press("r", 0.05)
+
+    time.sleep(0.05)
+
+    press(Key.enter, 0.05)
+
+    time.sleep(8)
+
+    if hive:
+        if not findImg("images/make_honey1.png", 0.7) and not findImg("images/make_honey2.png", 0.7):
+            press("w", "d", 3)
+
+
+def findImg(img, confidence):
+    try:
+        pos = pyautogui.locateCenterOnScreen(img, confidence=confidence)
+
+        pyautogui.moveTo(pos)
+
+        return True
+
+    except:
+        return False
+
+
+def press(*args):
+    keys = list(args)
+    keys.pop(len(keys) - 1)
+
+    for key in keys:
+        keyboard.press(key)
+
+        time.sleep(0.1)
+
+    walkSpeed = float(readFile("guiFiles/moveSpeed.txt"))
+
+    time.sleep(args[len(args) - 1] * 33.35 / walkSpeed)
+
+    for key in keys:
+        keyboard.release(key)
+
+        time.sleep(0.1)
+
+
+def screenshot(monitor=False):
+    with mss.mss() as sct:
+        # Get primary monitor
+        primary_monitor = sct.monitors[1]  # Monitor 1 is typically the primary display
+
+        screen = sct.grab(primary_monitor)
+
+    screen = Image.frombytes("RGB", screen.size, screen.bgra, "raw", "BGRX")
+    return screen
+
+
+def click(pos):
+    mouse.position = pos
+
+    time.sleep(0.05)
+
+    mouse.click(Button.left)
+
+    time.sleep(0.05)
+
+
+def offsetDims(pos, xy):
+    if xy == "list":
+        return (int(pos[0] * (screenDims[0] / 1920)), int(pos[1] * (screenDims[1] / 1080)))
+
+    elif xy == "x":
+        return int(pos * (screenDims[0] / 1920))
+
+    else:
+        return int(pos * (screenDims[1] / 1080))
+
+
+def writeFile(fileName, val):
+    if platform.system().lower() == "windows":
+        while "/" in fileName:
+            fileName = fileName.replace("/", "\\")
+
+    full_path = os.path.join(main_dir, fileName)
+
+    # Create the directory if it doesn't exist
+    os.makedirs(os.path.dirname(full_path), exist_ok=True)
+
+    # Open the file in write mode, creating it if it doesn't exist
+    with open(full_path, "w+") as file:
+        file.write(str(val))
+
+
+def readFile(fileName):
+    if platform.system().lower() == "windows":
+        while "/" in fileName:
+            fileName = fileName.replace("/", "\\")
+
+    full_path = os.path.join(main_dir, fileName)
+
+    with open(full_path, "r") as file:
+        return file.read()
+
+
+# Paths and FUNCTIONS
+
+import sys
+import subprocess
+from randomServer import joinRandomServer
+
+
+def Waitspeed(tm):
+    walkSpeed = int(readFile("guiFiles/moveSpeed.txt"))
+
+    time.sleep((tm * 4) / walkSpeed)
+
+
+def Reset():
+    keyboard.tap(Key.esc)
+
+    time.sleep(0.025)
+
+    keyboard.tap("r")
+
+    time.sleep(0.025)
+
+    keyboard.tap(Key.enter)
+
+    time.sleep(7)
+
+
+def MoveUntilHive():
+    global current_hive
+
+    image_path = os.path.join(main_dir, 'images', 'gui', 'claimhive.png')
+
+    confidence = 0.8
+
+    for attempt in range(1, 6):  # Loop 5 times, from 1 to 5
+        try:
+            location = pyautogui.locateOnScreen(image_path, confidence=confidence)
+
+            keyboard.tap("e")
+
+            current_hive = attempt  # Update the current hive number
+
+            time.sleep(1)
+
+            return True  # Image found
+
+        except pyautogui.ImageNotFoundException:
+            if attempt < 5:
+                press('a', 2)  # Press 'w' for 1 second
+
+            else:
+                print("Maximum attempts reached. Image not found.")
+
+                return False
+
+
+def ClaimHive():
+    press("w", "d", 4)
+    press("s", 0.5)
+    press("a", 0.25)
+
+    while True:
+        if MoveUntilHive():
+            # Hive found, perform necessary actions
+            break
+
+        else:
+            print("Retrying to find hive...")
+            # You can add additional movements or actions here before retrying
+
+    # Continue with the rest of the ClaimHive function
+
+
+def WalkToCornerRamp():
+    press('w', 6)
+    press(((current_hive - 1) * 10) + 7, 'd')
+
+
+def CornerToRedCannon():
+    press(Key.space, 0.1)
+    press('d', 0.20)
+    press('w', 0.06)
+    press('d', 7)
+
+
+def WalkToRedCannon():
+    for attempt in range(5):  # This will loop 5 times (0 to 4)
+        WalkToCornerRamp()
+        CornerToRedCannon()
+
+        image_path = os.path.join(main_dir, 'images', 'gui', 'red_cannon.png')
 
         try:
-            self.ip, self.port = self.AltConnection.connectToAlt()
+            location = pyautogui.locateOnScreen(image_path, confidence=0.8)
 
-            #pyautogui.alert(f"Recieved connection from {self.ip} port {self.port}")
+            return True  # Image found, exit the function
 
-            self.AltConnection.recieveNightServers(timeout=int(self.timeout.get()) * 60)
+        except pyautogui.ImageNotFoundException:
+            time.sleep(1)
 
-        except:
-            sendMessage("Alt connection failed...")
+            print(f"Attempt {attempt + 1} failed. Retrying...")
 
-            pyautogui.alert("Alt connection failed...")
+    print("Maximum attempts reached. Red cannon not found.")
 
-    def saveSettings(self):
-        self.maxLoadTimeChange()
-        self.webhookChange()
-        self.privateServersChange()
-        self.walkInFieldsChange()
-        self.userIdChange()
-        self.moveSpeedChange()
-        self.timeoutChange()
-        self.saveWindowSize()
+    return False
 
-        self.window.after(1000, self.saveSettings)
+
+def close_roblox():
+    if sys.platform == "win32":
+        subprocess.run(["taskkill", "/F", "/IM", "RobloxPlayerBeta.exe"], check=False)
+
+    elif sys.platform == "darwin":
+        subprocess.run(["pkill", "-9", "RobloxPlayer"], check=False)
+
+    else:
+        print("Unsupported operating system for closing Roblox")
+
+
+def NightDetect():
+    target_color = (86, 100, 107)
+
+    max_diff = 10  # Adjust this value for color tolerance
+
+    screen_width, screen_height = pyautogui.size()
+
+    # Check multiple points on the screen for better accuracy
+    check_points = [
+        (screen_width // 2, screen_height // 2),
+        (screen_width // 4, screen_height // 4),
+        (3 * screen_width // 4, 3 * screen_height // 4)
+    ]
+
+    for point in check_points:
+        pixel_color = pyautogui.pixel(point[0], point[1])
+
+        if isColorClose(pixel_color, target_color, max_diff):
+            print(f"Night detected at point {point}!")
+
+            return True
+
+    print("Night not detected.")
+
+    return False
+
+
+def FloorDetect():
+    target_color1 = (37, 150, 190)
+    target_color2 = (88, 100, 108)
+
+    max_diff = 30 # Adjust this value for color tolerance
+
+    screen_width, screen_height = pyautogui.size()
+
+    # Calculate the check points based on screen dimensions
+    check_points = [
+        (int(1580 * screen_width / 1920), int(921 * screen_height / 1080)),
+        (int(510 * screen_width / 1920), int(610 * screen_height / 1080)),
+        (int(200 * screen_width / 1920), int(200 * screen_height / 1080)),
+        (int(1720 * screen_width / 1920), int(200 * screen_height / 1080)),
+        (int(960 * screen_width / 1920), int(540 * screen_height / 1080)),
+        (int(300 * screen_width / 1920), int(800 * screen_height / 1080)),
+        (int(1620 * screen_width / 1920), int(800 * screen_height / 1080)),
+        (int(800 * screen_width / 1920), int(300 * screen_height / 1080)),
+        (int(1120 * screen_width / 1920), int(300 * screen_height / 1080)),
+        (int(800 * screen_width / 1920), int(780 * screen_height / 1080)),
+        (int(1120 * screen_width / 1920), int(780 * screen_height / 1080)),
+        (int(960 * screen_width / 1920), int(100 * screen_height / 1080)),
+        (int(400 * screen_width / 1920), int(400 * screen_height / 1080)),
+        (int(1520 * screen_width / 1920), int(400 * screen_height / 1080)),
+        (int(400 * screen_width / 1920), int(680 * screen_height / 1080)),
+        (int(1520 * screen_width / 1920), int(680 * screen_height / 1080)),
+        (int(640 * screen_width / 1920), int(540 * screen_height / 1080)),
+        (int(1280 * screen_width / 1920), int(540 * screen_height / 1080)),
+        (int(960 * screen_width / 1920), int(270 * screen_height / 1080)),
+        (int(960 * screen_width / 1920), int(810 * screen_height / 1080)),
+        (int(200 * screen_width / 1920), int(540 * screen_height / 1080)),
+        (int(1720 * screen_width / 1920), int(540 * screen_height / 1080)),
+        (int(640 * screen_width / 1920), int(100 * screen_height / 1080)),
+        (int(1280 * screen_width / 1920), int(980 * screen_height / 1080))
+    ]
+
+    for point in check_points:
+        pixel_color = pyautogui.pixel(point[0], point[1])
+
+        if isColorClose(pixel_color, target_color1, max_diff) or isColorClose(pixel_color, target_color2, max_diff):
+            print(f"Floor detected at point {point}!")
+
+            return True
+
+    print("Floor not detected.")
+
+    return False
+
+
+def Reset_char():
+    Reset()
+
+    if FloorDetect():
+        print("Floor detected.")
+
+    else:
+        print("Floor not detected. Rotating...")
+        for _ in range(4):
+            press('.', 0.1)
+
+
+def ClaimHiveWithRetries():
+    max_retries = 4
+
+    for attempt in range(max_retries):
+        try:
+            ClaimHive()
+
+            print(f"Successfully claimed hive on attempt {attempt + 1}")
+
+            return True  # Success, exit the function
+
+        except Exception as e:
+            print(f"Attempt {attempt + 1} failed: {str(e)}")
+
+            if attempt < max_retries - 1:  # Don't reset on the last attempt
+                print("Resetting and trying again...")
+
+                Reset()
+
+                time.sleep(8)  # Wait for reset to complete
+            else:
+                print("Max retries reached. Unable to claim hive.")
+
+    return False  # All attempts failed
+
+
+def DetectLoading(timeout):
+    target_color = (34, 87, 168)  # RGB equivalent of 0x2257A8
+
+    start_time = time.time()
+
+    # Wait for loading color to appear
+    while True:
+        pixel_color = pyautogui.pixel(458, 151)
+
+        if isColorClose(pixel_color, target_color, 10):
+            print("Loading color detected!")
+
+            break
+
+        if time.time() - start_time >= timeout:
+            return False
+
+        time.sleep(0.1)
+
+    # Wait for loading color to disappear with timeout
+    start_time = time.time()  # Reset timer for disappearance check
+
+    while True:
+        pixel_color = pyautogui.pixel(458, 151)
+
+        if not isColorClose(pixel_color, target_color, 10):
+            print("Loading complete!")
+
+            time.sleep(2)
+
+            break
+
+        if time.time() - start_time >= timeout:
+            print("restricted experience")
+
+            close_roblox()
+
+            return False
+
+        time.sleep(0.1)
+
+    return True
+
+
+def ServerSetup():
+    if not ClaimHiveWithRetries():
+        print("Failed to claim hive after multiple attempts. Exiting MainLoop.")
+
+        return False
+
+
+def KillVicBees():
+    print("placeholder")
+
+
+def JoinServersUntilNight():
+    while True:
+        joinRandomServer()
+
+        if not DetectLoading(int(readFile("guiFiles/maxLoadTime.txt"))):
+            print("Loading timed out, trying new server...")
+
+            continue  # Goes back to joinRandomServer()
+
+        while True:
+            if NightDetect():
+                print("Night found!!")
+
+                sendScreenshot("Night found!")
+
+                if not ServerSetup():
+                    print("ServerSetup failed. Exiting JoinServersUntilNight.")
+
+                    return False
+
+                KillVicBees()
+
+                time.sleep(1)
+
+                return True
+            else:
+                print("Night not detected. Retrying...")
+
+                #sendScreenshot("Night not detected. Retrying...") lowering screenshot send rate
+
+                leave()
+
+                time.sleep(2)
+
+                break  # Breaks inner while loop to go back to joinRandomServer()
+
+
+def MainLoopMacro():
+    JoinServersUntilNight()
