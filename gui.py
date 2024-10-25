@@ -73,7 +73,7 @@ class GUI:
         try:
             self.maxLoad.insert(0, readFile("guiFiles/maxLoadTime.txt"))
         except:
-            self.maxLoad.insert(0, "10")
+            self.maxLoad.insert(0, "25")
 
         self.start = tk.Button(self.window, text="Start (f1)", command=self.startMacro)
         self.stop = tk.Button(self.window, text="Stop (f2)", command=self.stopMacro)
