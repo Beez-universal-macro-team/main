@@ -623,5 +623,5 @@ def JoinServersUntilNight():
 
 
 def MainLoopMacro():
-    PepperVic()
-    #JoinServersUntilNight()
+    #PepperVic()
+    JoinServersUntilNight()
