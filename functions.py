@@ -55,16 +55,20 @@ def sendMessage(message, picture=None):
 
 
 def sendScreenshot(message):
-    screen = screenshot()
+    try:
+        screen = screenshot()
 
-    screen.save("screenshot.png")
+        screen.save("screenshot.png")
 
-    screen = open("screenshot.png", "rb")
+        screen = open("Images/screenshot.png", "rb")
 
-    t = threading.Thread(target=sendMessage, args=(message, discord.File(screen)))
-    t.daemon = True
+        t = threading.Thread(target=sendMessage, args=(message, discord.File(screen)))
+        t.daemon = True
 
-    t.start()
+        t.start()
+
+    except:
+        pass
 
 
 def leave():
@@ -118,7 +122,7 @@ def press(*args):
 
         time.sleep(0.1)
 
-    walkSpeed = int(readFile("guiFiles/moveSpeed"))
+    walkSpeed = float(readFile("guiFiles/moveSpeed.txt"))
 
     time.sleep(args[len(args) - 1] * 33.35 / walkSpeed)
 
@@ -194,7 +198,7 @@ from randomServer import joinRandomServer
 
 
 def Waitspeed(tm):
-    walkSpeed = int(readFile("guiFiles/moveSpeed"))
+    walkSpeed = int(readFile("guiFiles/moveSpeed.txt"))
 
     time.sleep((tm * 4) / walkSpeed)
 
@@ -243,11 +247,9 @@ def MoveUntilHive():
 
 
 def ClaimHive():
-    press('d', 2)
-    press('w', 24)
-    press('w', 6)
-    press('d', 6)
-    press('a', 's', 4)
+    press("w", "d", 4)
+    press("s", 0.5)
+    press("a", 0.25)
 
     while True:
         if MoveUntilHive():
@@ -500,7 +502,6 @@ def JoinServersUntilNight():
                 time.sleep(1)
 
                 return True
-                
             else:
                 print("Night not detected. Retrying...")
 
