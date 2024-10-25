@@ -13,7 +13,9 @@ required_libraries = [
     'requests',
     'fonttools',  # for fontTools.misc.textTools
     'platform',  # usually comes pre-installed with Python
-    'numpy',
+    'numpy==1.26.0',
+    'ultralytics',
+    'matplotlib'
 ]
 
 # Function to install libraries
