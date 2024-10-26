@@ -499,6 +499,13 @@ def DetectLoading(timeout):
 
     return True
 
+def getHoneyOffset():
+    image_path = os.path.join(main_dir, 'images', 'gui', 'honey_OFFSETY.png')
+    try:
+        location = pyautogui.locateOnScreen(image_path, confidence=0.8)
+        return location.top  # Returns Y coordinate of found image
+    except:
+        return offsetDims(1000, "y")  # Default Y offset if image not found
 
 def ServerSetup():
     if not ClaimHiveWithRetries():
