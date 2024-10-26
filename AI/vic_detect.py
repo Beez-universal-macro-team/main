@@ -26,6 +26,7 @@ def detect_vic_in_screenshot():
     # Iterate over detections and check if 'vic' or 'vic_gifted' is found
     found_vic = False
     found_vic_gifted = False
+    class_names = ['vic', 'vic_gifted']
 
     for result in results[0].boxes:
         class_id = int(result.cls)  # Get class ID
