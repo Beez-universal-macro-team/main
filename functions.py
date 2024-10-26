@@ -586,27 +586,41 @@ def PepperToCannon():
     keyboard.release("d")
     time.sleep(0.10)
     keyboard.press("s")
-    Waitspeed(14)
+    Waitspeed(15)
     keyboard.release("s")
     time.sleep(0.10)
     keyboard.press("w")
-    Waitspeed(3)
+    Waitspeed(5.8)
     keyboard.release("w")
     time.sleep(0.10)
     keyboard.tap(",")
     keyboard.tap(",")
     keyboard.tap(",")
+    press(Key.space, 0.1)
+    time.sleep(0.1)
+    press(Key.space, 0.1)
+    time.sleep(2.62)
+    keyboard.tap(".")
+    time.sleep(0.78)
+    press(Key.space, 0.1)
 
 def KillVicBees():
     PepperVic()
     if detect_vic_in_screenshot():
-        keyboard.press(Key.page_up)
-        keyboard.release(Key.page_up)
+        for _ in range(2):
+            time.sleep(0.1)
+            keyboard.press(Key.page_up)
+            time.sleep(0.1)
+            keyboard.release(Key.page_up)
         print("Vic detected, killing bees...")
         #kill pattern goes here
-        return True
-    keyboard.press(Key.page_up)
-    keyboard.release(Key.page_up)
+        return 
+    for _ in range(2):
+        time.sleep(0.1)
+        keyboard.press(Key.page_up)
+        time.sleep(0.1)
+        keyboard.release(Key.page_up)
+
     PepperToCannon()
 
 
