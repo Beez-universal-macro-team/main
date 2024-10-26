@@ -604,6 +604,38 @@ def PepperToCannon():
     time.sleep(0.78)
     press(Key.space, 0.1)
 
+def MountVic():
+    keyboard.tap("e")
+    time.sleep(2.05)
+    press(Key.space, 0.1)
+    press(Key.space, 0.1)
+    time.sleep(2)
+    keyboard.press("w")
+    Waitspeed(6)
+    keyboard.release("w")
+    time.sleep(0.10)
+    keyboard.press("s")
+    Waitspeed(5)
+    keyboard.release("s")
+    keyboard.tap(".")
+    keyboard.tap(".")
+    keyboard.tap(Key.page_down) 
+    keyboard.tap(Key.page_down)
+    keyboard.tap(Key.page_down) 
+    keyboard.tap(Key.page_down)
+    keyboard.tap(Key.page_down) 
+    keyboard.tap(Key.page_down)
+    keyboard.tap(Key.page_down) 
+    keyboard.tap(Key.page_down)
+    keyboard.tap(Key.page_up)
+    keyboard.tap(Key.page_up)
+    keyboard.tap(Key.page_up)
+    keyboard.tap(Key.page_up)
+    keyboard.tap(Key.page_up)
+    keyboard.tap("o")
+    keyboard.tap("o")
+    keyboard.tap("o")
+
 def KillVicBees():
     PepperVic()
     if detect_vic_in_screenshot():
@@ -620,8 +652,18 @@ def KillVicBees():
         keyboard.press(Key.page_up)
         time.sleep(0.1)
         keyboard.release(Key.page_up)
-
     PepperToCannon()
+    MountVic()
+    if detect_vic_in_screenshot():
+        for _ in range(2):
+            time.sleep(0.1)
+            keyboard.press(Key.page_up)
+            time.sleep(0.1)
+            keyboard.release(Key.page_up)
+        print("Vic detected, killing bees...")
+        #kill pattern goes here
+        return 
+
 
 
 
