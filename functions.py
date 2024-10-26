@@ -545,6 +545,7 @@ def PepperVic():
     press(Key.space, 0.1)
     time.sleep(0.50)
     press(Key.space, 0.1)
+    press(Key.space, 0.1)
     keyboard.release("w")
     time.sleep(0.50)
     keyboard.press("w")
@@ -570,11 +571,13 @@ def PepperVic():
     keyboard.press("d")
     Waitspeed(18)
     keyboard.release("d")
+    time.sleep(0.10)
+    keyboard.press("s")
+    Waitspeed(2)
+    keyboard.release("s")
     ShiftLock()
-    keyboard.press(Key.page_down) 
-    keyboard.release(Key.page_down)
-    keyboard.press(Key.page_down) 
-    keyboard.release(Key.page_down)
+    keyboard.tap(Key.page_down) 
+    keyboard.tap(Key.page_down) 
     keyboard.tap("o")
     keyboard.tap("o")
     keyboard.tap("o")
@@ -601,8 +604,9 @@ def PepperToCannon():
     press(Key.space, 0.1)
     time.sleep(2.62)
     keyboard.tap(".")
-    time.sleep(0.78)
+    time.sleep(0.70)
     press(Key.space, 0.1)
+    time.sleep(1.25)
 
 def MountVic():
     keyboard.tap("e")
@@ -611,11 +615,11 @@ def MountVic():
     press(Key.space, 0.1)
     time.sleep(2)
     keyboard.press("w")
-    Waitspeed(6)
+    Waitspeed(7.5)
     keyboard.release("w")
     time.sleep(0.10)
     keyboard.press("s")
-    Waitspeed(5)
+    Waitspeed(3.5)
     keyboard.release("s")
     keyboard.tap(".")
     keyboard.tap(".")
@@ -632,38 +636,85 @@ def MountVic():
     keyboard.tap(Key.page_up)
     keyboard.tap(Key.page_up)
     keyboard.tap(Key.page_up)
+    keyboard.tap(Key.page_up)
+    time.sleep(0.10)
     keyboard.tap("o")
     keyboard.tap("o")
     keyboard.tap("o")
+
+def CactusVic():
+    keyboard.tap(Key.page_up)
+    keyboard.tap(Key.page_up)
+    press(Key.space, 0.1)
+    time.sleep(0.1)
+    keyboard.press("d")
+    keyboard.press("w")
+    Waitspeed(27)
+    keyboard.release("w")
+    Waitspeed(13)
+    keyboard.release("d")
+    keyboard.press("w")
+    Waitspeed(6.5)
+    keyboard.release("w")
+    time.sleep(0.05)
+    keyboard.press("s")
+    Waitspeed(3.6)
+    keyboard.release("s")
+    keyboard.tap(".")
+    press(Key.space, 0.1)
+    time.sleep(0.1)
+    press(Key.space, 0.1)
+    time.sleep(0.5)
+    keyboard.tap(".")
+    time.sleep(1.70)
+    press(Key.space, 0.1)
+    time.sleep(1.25)
+    keyboard.press("d")
+    Waitspeed(6.6)
+    keyboard.release("d")
+    keyboard.tap(Key.page_down)
+    keyboard.tap(Key.page_down)
+    keyboard.tap(Key.page_down)
+    keyboard.tap(Key.page_down)
+    keyboard.tap(Key.page_down)
+    keyboard.tap(Key.page_down)
+    keyboard.tap(Key.page_down)
+    keyboard.tap(Key.page_down)
+    keyboard.tap(Key.page_down)
+
+
+
 
 def KillVicBees():
     PepperVic()
     if detect_vic_in_screenshot():
         for _ in range(2):
             time.sleep(0.1)
-            keyboard.press(Key.page_up)
-            time.sleep(0.1)
-            keyboard.release(Key.page_up)
+            keyboard.tap(Key.page_up)
         print("Vic detected, killing bees...")
         #kill pattern goes here
         return 
     for _ in range(2):
         time.sleep(0.1)
-        keyboard.press(Key.page_up)
-        time.sleep(0.1)
-        keyboard.release(Key.page_up)
+        keyboard.tap(Key.page_up)
     PepperToCannon()
     MountVic()
     if detect_vic_in_screenshot():
         for _ in range(2):
             time.sleep(0.1)
-            keyboard.press(Key.page_up)
-            time.sleep(0.1)
-            keyboard.release(Key.page_up)
+            keyboard.tap(Key.page_up)
         print("Vic detected, killing bees...")
         #kill pattern goes here
         return 
-
+    CactusVic()
+    if detect_vic_in_screenshot():
+        for _ in range(2):
+            time.sleep(0.1)
+            keyboard.tap(Key.page_up)
+        print("Vic detected, killing bees...")
+        #kill pattern goes here
+        return 
+    
 
 
 
@@ -705,5 +756,6 @@ def JoinServersUntilNight():
 
 
 def MainLoopMacro():
+    #CactusVic()
     #KillVicBees()
     JoinServersUntilNight()
