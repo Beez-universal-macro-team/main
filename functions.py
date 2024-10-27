@@ -523,6 +523,20 @@ def ShiftLock():
     return True
 
 
+def screenshot_health_area():
+    honey_y = getHoneyOffset()
+    screen_width = screenDims[0]
+    
+    # Calculate coordinates for right corner area
+    x = offsetDims(1580, "x")  # Right side of screen
+    y = honey_y  # Use honey position directly
+    width = offsetDims(300, "x")  # Width of capture area
+    height = offsetDims(200, "y")  # Height of capture area
+    
+    return screenshot_area(x, y, width, height)
+
+
+
 def JoinServersUntilNight():
     while True:
         joinRandomServer()
