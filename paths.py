@@ -239,6 +239,202 @@ def RoseVic():
     keyboard.tap("o")
 
 
+def PepperMoveFromDetection():
+    press(Key.space, 0.1)
+    keyboard.press("d")
+    time.sleep(0.50)
+    keyboard.release("d")
+
+    keyboard.press("d")
+    Waitspeed(3.5)
+    keyboard.release("d")
+
+    keyboard.press("w")
+    Waitspeed(15)
+    keyboard.release("w")
+
+    keyboard.press("d")
+    Waitspeed(3.5)
+    keyboard.release("d")
+
+    keyboard.press("s")
+    Waitspeed(20)
+    keyboard.release("s")
+
+    keyboard.press("d")
+    Waitspeed(3.5)
+    keyboard.release("d")
+
+    keyboard.press("w")
+    Waitspeed(27)
+    keyboard.release("w")
+
+    time.sleep(0.10)
+    keyboard.press("s")
+    Waitspeed(3.5)
+    keyboard.press("a")
+    Waitspeed(5)
+    keyboard.release("s")
+    keyboard.release("a")
+    
+
+def MountMoveFromDetection():
+    press(Key.space, 0.1)
+    time.sleep(0.1)
+    keyboard.press("d")
+    
+    keyboard.press("d")
+    Waitspeed(3.5)
+    keyboard.release("d")
+
+    keyboard.press("w")
+    Waitspeed(8)
+    keyboard.release("w")
+
+    keyboard.press("d")
+    Waitspeed(3.5)
+    keyboard.release("d")
+
+    keyboard.press("s")
+    Waitspeed(10.5)
+    keyboard.release("s")
+
+    keyboard.press("a")
+    Waitspeed(3.5)
+    keyboard.release("a")
+
+    keyboard.press("s")
+    Waitspeed(4.5)
+    keyboard.release("s")
+
+    keyboard.press("d")
+    Waitspeed(7)
+    keyboard.release("d")
+
+    keyboard.press("w")
+    Waitspeed(20)
+    keyboard.release("w")
+
+    keyboard.press("d")
+    Waitspeed(7)
+    keyboard.release("d")
+
+    keyboard.press("a")
+    Waitspeed(3.5)
+    keyboard.press("s")
+    Waitspeed(3.5)
+    keyboard.release("a")
+    keyboard.release("s")
+
+def CactusMoveFromDetection():
+    keyboard.press("w")
+    keyboard.press("a")
+    Waitspeed(15)
+    keyboard.release("w")
+    Waitspeed(18)
+    keyboard.release("a")
+    press(Key.space, 0.1)
+    time.sleep(0.1)
+    keyboard.press("w")
+    Waitspeed(10)
+    keyboard.release("w")
+
+    keyboard.press("d")
+    Waitspeed(20)
+    keyboard.release("d")
+
+    keyboard.press("s")
+    Waitspeed(15)
+    keyboard.release("s")
+
+    keyboard.press("d")
+    Waitspeed(3.5)
+    keyboard.release("d")
+
+    keyboard.press("w")
+    Waitspeed(15)
+    keyboard.release("w")
+
+    keyboard.press("d")
+    Waitspeed(3.5)
+    keyboard.release("d")
+
+    keyboard.press("s")
+    Waitspeed(20)
+    keyboard.release("s")
+
+    keyboard.press("a")
+    Waitspeed(3.5)
+    keyboard.release("a")
+
+    keyboard.press("w")
+    keyboard.press("d")
+    Waitspeed(3.5)
+    keyboard.release("d")
+    keyboard.release("w")
+
+
+def RoseMoveFromDetection():
+    keyboard.press("a")
+    Waitspeed(20)
+    keyboard.release("a")
+
+    press(Key.space, 0.1)
+    time.sleep(0.1)
+    keyboard.press("w")
+    time.sleep(0.2)
+    Waitspeed(10)
+    keyboard.release("w")
+    time.sleep(0.1)
+    
+    keyboard.press("d")
+    Waitspeed(15)
+    keyboard.release("d")
+
+    time.sleep(0.1)
+    keyboard.press("a")
+    Waitspeed(3.5)
+    keyboard.release("a")
+
+    time.sleep(0.1)
+    keyboard.press("w")
+    Waitspeed(15)
+    keyboard.release("w")
+
+    time.sleep(0.1)
+    keyboard.press("a")
+    Waitspeed(3.5)
+    keyboard.release("a")
+
+    keyboard.press("s")
+    Waitspeed(15)
+    keyboard.release("s")
+
+    time.sleep(0.1)
+    keyboard.press("a")
+    Waitspeed(3.5)
+    keyboard.release("a")
+
+    time.sleep(0.1)
+    keyboard.press("w")
+    Waitspeed(15)
+    keyboard.release("w")
+
+    time.sleep(0.1)
+    keyboard.press("a")
+    keyboard.press("w")
+    Waitspeed(3.5)
+    keyboard.release("a")
+    keyboard.release("w")
+
+    time.sleep(0.1)
+    keyboard.press("d")
+    keyboard.press("s")
+    Waitspeed(3.5)
+    keyboard.release("d")
+    keyboard.release("s")
+    
+
 def KillVicBees():
     PepperVic()
     if detect_vic_in_screenshot():
@@ -247,6 +443,7 @@ def KillVicBees():
             keyboard.tap(Key.page_up)
         print("Vic detected, killing bees...")
         #kill pattern goes here
+        PepperMoveFromDetection()
         return 
     for _ in range(2):
         time.sleep(0.1)
@@ -259,6 +456,7 @@ def KillVicBees():
             keyboard.tap(Key.page_up)
         print("Vic detected, killing bees...")
         #kill pattern goes here
+        MountMoveFromDetection()
         return 
     CactusVic()
     if detect_vic_in_screenshot():
@@ -272,6 +470,7 @@ def KillVicBees():
             keyboard.tap(Key.page_up)
         print("Vic detected, killing bees...")
         #kill pattern goes here
+        CactusMoveFromDetection()
         return 
     keyboard.tap(Key.page_up)
     keyboard.tap(Key.page_up)
@@ -280,3 +479,17 @@ def KillVicBees():
     keyboard.tap(Key.page_up)
     keyboard.tap(Key.page_up)
     RoseVic()
+    if detect_vic_in_screenshot():
+        for _ in range(2):
+            time.sleep(0.1)
+            keyboard.tap(Key.page_up)
+            keyboard.tap(Key.page_up)
+            keyboard.tap(Key.page_up)
+            keyboard.tap(Key.page_up)
+            keyboard.tap(Key.page_up)
+            keyboard.tap(Key.page_up)
+        print("Vic detected, killing bees...")
+        #kill pattern goes here
+        RoseMoveFromDetection()
+        return 
+
