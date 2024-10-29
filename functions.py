@@ -197,7 +197,7 @@ import sys
 import subprocess
 from randomServer import joinRandomServer
 from AI.vic_detect import detect_vic_in_screenshot
-
+from AI.health_detect import detect_health_in_screenshot
 
 def Waitspeed(tm):
     try:
