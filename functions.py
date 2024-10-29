@@ -10,7 +10,22 @@ import pyautogui
 from datetime import datetime
 import platform
 import os
-from paths import *
+import sys
+import subprocess
+
+# Define core functions needed by other modules
+def readFile(fileName):
+    if platform.system().lower() == "windows":
+        while "/" in fileName:
+            fileName = fileName.replace("/", "\\")
+
+    full_path = os.path.join(main_dir, fileName)
+
+    with open(full_path, "r") as file:
+        return file.read()
+
+# Then import modules that need readFile
+from randomServer import joinRandomServer
 
 main_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -192,10 +207,6 @@ def readFile(fileName):
 
 
 # Paths and FUNCTIONS
-
-import sys
-import subprocess
-from randomServer import joinRandomServer
 print("loading vic bee AI...")
 from AI.vic_detect import detect_vic_in_screenshot
 print("Vic bee AI loaded, loading health AI...")
@@ -577,8 +588,10 @@ def JoinServersUntilNight():
                 break  # Breaks inner while loop to go back to joinRandomServer()
 
 
+from paths import *
+
 def MainLoopMacro():
-    #CactusVic()
+    #PepperMoveFromDetection()
     #KillVicBees()
     JoinServersUntilNight()
 
