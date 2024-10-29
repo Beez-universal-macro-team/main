@@ -292,7 +292,7 @@ def MountMoveFromDetection():
     keyboard.press("d")
     
     keyboard.press("d")
-    Waitspeed(3.5)
+    Waitspeed(5.5)
     keyboard.release("d")
 
     keyboard.press("w")
@@ -300,15 +300,15 @@ def MountMoveFromDetection():
     keyboard.release("w")
 
     keyboard.press("d")
-    Waitspeed(3.5)
+    Waitspeed(6.5)
     keyboard.release("d")
 
     keyboard.press("s")
-    Waitspeed(10.5)
+    Waitspeed(11.5)
     keyboard.release("s")
 
     keyboard.press("a")
-    Waitspeed(3.5)
+    Waitspeed(6.5)
     keyboard.release("a")
 
     keyboard.press("s")
@@ -316,21 +316,21 @@ def MountMoveFromDetection():
     keyboard.release("s")
 
     keyboard.press("d")
-    Waitspeed(7)
+    Waitspeed(13)
     keyboard.release("d")
 
     keyboard.press("w")
-    Waitspeed(20)
+    Waitspeed(25)
     keyboard.release("w")
 
     keyboard.press("d")
-    Waitspeed(7)
+    Waitspeed(11.5)
     keyboard.release("d")
 
     keyboard.press("a")
-    Waitspeed(3.5)
+    Waitspeed(6.5)
     keyboard.press("s")
-    Waitspeed(3.5)
+    Waitspeed(6.5)
     keyboard.release("a")
     keyboard.release("s")
 
