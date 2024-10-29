@@ -196,8 +196,11 @@ def readFile(fileName):
 import sys
 import subprocess
 from randomServer import joinRandomServer
+print("loading vic bee AI...")
 from AI.vic_detect import detect_vic_in_screenshot
+print("Vic bee AI loaded, loading health AI...")
 from AI.health_detect import detect_health_in_screenshot
+print("Health AI loaded!")
 
 def Waitspeed(tm):
     try:
