@@ -16,7 +16,8 @@ required_libraries = [
     'platform',  # usually comes pre-installed with Python
     'numpy==1.26.2',
     'ultralytics',
-    'matplotlib'
+    'matplotlib',
+    'audioop-lts'
 ]
 
 # Function to install libraries
