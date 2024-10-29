@@ -5,7 +5,6 @@ from ultralytics import YOLO
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-from ..functions import screenshot_health_area
 
 # Load the YOLOv8 model
 model_path = os.path.join(os.path.dirname(__file__), 'health.pt')
