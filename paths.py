@@ -249,12 +249,16 @@ def PepperMoveFromDetection():
     Waitspeed(3.5)
     keyboard.release("d")
 
+    keyboard.press("s")
+    Waitspeed(7)
+    keyboard.release("s")
+
     keyboard.press("w")
-    Waitspeed(15)
+    Waitspeed(22)
     keyboard.release("w")
 
     keyboard.press("d")
-    Waitspeed(3.5)
+    Waitspeed(6.5)
     keyboard.release("d")
 
     keyboard.press("s")
@@ -262,16 +266,20 @@ def PepperMoveFromDetection():
     keyboard.release("s")
 
     keyboard.press("d")
-    Waitspeed(3.5)
+    Waitspeed(6.5)
     keyboard.release("d")
 
     keyboard.press("w")
-    Waitspeed(27)
+    Waitspeed(29.5)
     keyboard.release("w")
+
+    keyboard.press("d")
+    Waitspeed(7.5)
+    keyboard.release("d")
 
     time.sleep(0.10)
     keyboard.press("s")
-    Waitspeed(3.5)
+    Waitspeed(6.5)
     keyboard.press("a")
     Waitspeed(5)
     keyboard.release("s")
