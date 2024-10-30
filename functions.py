@@ -393,7 +393,7 @@ def close_roblox():
 
 
 def NightDetect():
-    target_color = (86, 100, 107)
+    target_color = (24, 76, 28)
 
     max_diff = 10  # Adjust this value for color tolerance
 
@@ -418,6 +418,15 @@ def NightDetect():
 
     return False
 
+def detect_vic_defeat():
+    image_path = os.path.join(main_dir, 'images', 'chat', 'defeated_vic.png')
+    try:
+        location = pyautogui.locateOnScreen(image_path, confidence=0.8)
+        print("Vic defeat message found!")
+        return True
+    except:
+        print("No vic defeat message detected")
+        return False
 
 def FloorDetect():
     target_color1 = (24, 76, 28)
