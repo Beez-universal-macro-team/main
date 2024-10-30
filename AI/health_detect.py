@@ -25,7 +25,7 @@ def detect_health_in_screenshot():
     # Run inference
     results = model(img, conf=0.65)
 
-    class_names = ['dead', 'alive']
+    class_names = ['alive', 'dead']
 
     poses = []
 
@@ -40,13 +40,13 @@ def detect_health_in_screenshot():
 
         poses.append(pos)
 
-        if class_name == 'dead':
+        if class_name == 'alive':
             print(f"Detected: alive, at pos {pos}")
 
-            return True
-
-        elif class_name == 'alive':
+        elif class_name == 'dead':
             print(f"Detected: dead, at pos {pos}")
+
+            return True
 
 
     return False
