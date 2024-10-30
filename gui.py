@@ -1,3 +1,4 @@
+import customtkinter as ctk
 import tkinter as tk
 from functions import offsetDims, screenDims, writeFile, readFile, sendMessage
 import pyautogui
@@ -26,7 +27,7 @@ class GUI:
     def initWindow(self):
         sendMessage("Started main!")
         
-        self.window = tk.Tk()
+        self.window = ctk.CTk()
 
         self.window.title("Beez Universal Macro - Main")
 
@@ -39,21 +40,14 @@ class GUI:
 
         ###### CREATING TABS ######
 
-        self.tabControl = tk.ttk.Notebook(self.window)
+        self.tabControl = ctk.CTkTabview(self.window)
 
-        self.joinSettingsTab = tk.ttk.Frame(self.tabControl)
-        self.connectTab = tk.ttk.Frame(self.tabControl)
-        self.settingsTab = tk.ttk.Frame(self.tabControl)
-        self.privateServersTab = tk.ttk.Frame(self.tabControl)
-        self.creditsTab = tk.ttk.Frame(self.tabControl)
-        self.vicTab = tk.ttk.Frame(self.tabControl)
-
-        self.tabControl.add(self.joinSettingsTab, text='Join Settings')
-        self.tabControl.add(self.vicTab, text='Vic Hop')
-        self.tabControl.add(self.connectTab, text='Connecting')
-        self.tabControl.add(self.settingsTab, text='Settings')
-        self.tabControl.add(self.privateServersTab, text='Private Servers')
-        self.tabControl.add(self.creditsTab, text='Credits')
+        self.tabControl.add(name='Join Settings')
+        self.tabControl.add(name='Vic Hop')
+        self.tabControl.add(name='Connecting')
+        self.tabControl.add(name='Settings')
+        self.tabControl.add(name='Private Servers')
+        self.tabControl.add(name='Credits')
 
         ###### CREATING TEXT ######
 
@@ -62,56 +56,56 @@ class GUI:
 
         self.maxLoadTime = tk.StringVar()
 
-        self.joinTitle = tk.Label(self.joinSettingsTab, text="Join Settings")
-        self.joinTitle.config(font=(self.font, 17))
+        self.joinTitle = ctk.CTkLabel(self.tabControl.tab('Join Settings'), text="Join Settings")
+        self.joinTitle.configure(font=(self.font, 24))
 
-        self.maxLoadText = tk.Label(self.joinSettingsTab, text="Maximum load time:")
-        self.maxLoadText.config(font=(self.font, 14))
+        self.maxLoadText = ctk.CTkLabel(self.tabControl.tab('Join Settings'), text="Maximum load time:")
+        self.maxLoadText.configure(font=(self.font, 14))
 
-        self.maxLoad = tk.Entry(self.joinSettingsTab, width=3)
+        self.maxLoad = ctk.CTkEntry(self.tabControl.tab('Join Settings'), width=3)
 
         try:
             self.maxLoad.insert(0, readFile("guiFiles/maxLoadTime.txt"))
         except:
             self.maxLoad.insert(0, "25")
 
-        self.start = tk.Button(self.window, text="Start (f1)", command=self.startMacro)
-        self.stop = tk.Button(self.window, text="Stop (f2)", command=self.stopMacro)
+        self.start = ctk.CTkButton(self.window, text="Start (f1)", command=self.startMacro)
+        self.stop = ctk.CTkButton(self.window, text="Stop (f2)", command=self.stopMacro)
 
-        self.connect = tk.Button(self.connectTab, text="Connect new alt", command=self.connectToAltThread)
+        self.connect = tk.Button(self.tabControl.tab('Connecting'), text="Connect new alt", command=self.connectToAltThread)
 
-        self.settingsTitle = tk.Label(self.settingsTab, text="Settings")
-        self.settingsTitle.config(font=(self.font, 17))
+        self.settingsTitle = ctk.CTkLabel(self.tabControl.tab('Settings'), text="Settings")
+        self.settingsTitle.configure(font=(self.font, 24))
 
-        self.webhookText = tk.Label(self.settingsTab, text="Discord webhook:")
-        self.webhookText.config(font=(self.font, 14))
+        self.webhookText = ctk.CTkLabel(self.tabControl.tab('Settings'), text="Discord webhook:")
+        self.webhookText.configure(font=(self.font, 14))
 
-        self.webhook = tk.Entry(self.settingsTab)
+        self.webhook = ctk.CTkEntry(self.tabControl.tab('Settings'))
 
-        self.userIdText = tk.Label(self.settingsTab, text="Discord user ID:")
-        self.userIdText.config(font=(self.font, 14))
+        self.userIdText = ctk.CTkLabel(self.tabControl.tab('Settings'), text="Discord user ID:")
+        self.userIdText.configure(font=(self.font, 14))
 
-        self.userId = tk.Entry(self.settingsTab)
+        self.userId = ctk.CTkEntry(self.tabControl.tab('Settings'))
 
         try:
             self.userId.insert(0, readFile("guiFiles/userId.txt"))
         except:
             self.userId.insert(0, "")
 
-        self.moveSpeedText = tk.Label(self.settingsTab, text="Base Movespeed:")
-        self.moveSpeedText.config(font=(self.font, 14))
+        self.moveSpeedText = ctk.CTkLabel(self.tabControl.tab('Settings'), text="Base Movespeed:")
+        self.moveSpeedText.configure(font=(self.font, 14))
 
-        self.moveSpeed = tk.Entry(self.settingsTab)
+        self.moveSpeed = ctk.CTkEntry(self.tabControl.tab('Settings'))
 
         try:
             self.moveSpeed.insert(0, readFile("guiFiles/moveSpeed.txt"))
         except:
             self.moveSpeed.insert(0, "")
 
-        self.timeoutText = tk.Label(self.settingsTab, text="Max wait time before reconnecting to alt (minutes):")
-        self.timeoutText.config(font=(self.font, 14))
+        self.timeoutText = ctk.CTkLabel(self.tabControl.tab('Settings'), text="Max wait time before reconnecting to alt (minutes):")
+        self.timeoutText.configure(font=(self.font, 14))
 
-        self.timeout = tk.Entry(self.settingsTab)
+        self.timeout = ctk.CTkEntry(self.tabControl.tab('Settings'))
 
         try:
             self.timeout.insert(0, readFile("guiFiles/timeout.txt"))
@@ -123,20 +117,20 @@ class GUI:
         except:
             self.webhook.insert(0, "")
 
-        self.connectingText = tk.Label(self.connectTab, text="Connecting")
-        self.connectingText.config(font=(self.font, 20))
+        self.connectingText = ctk.CTkLabel(self.tabControl.tab('Connecting'), text="Connecting")
+        self.connectingText.configure(font=(self.font, 24))
 
-        self.hostNameText = tk.Label(self.connectTab, text="Host name:")
-        self.hostNameText.config(font=(self.font, 17))
+        self.hostNameText = ctk.CTkLabel(self.tabControl.tab('Connecting'), text="Host name:")
+        self.hostNameText.configure(font=(self.font, 17))
 
-        self.hostName = tk.Label(self.connectTab, text=socket.gethostname())
-        self.hostName.config(font=(self.font, 14))
+        self.hostName = ctk.CTkLabel(self.tabControl.tab('Connecting'), text=socket.gethostname())
+        self.hostName.configure(font=(self.font, 14))
 
-        self.privateServersText = tk.Label(self.privateServersTab, text="Private servers")
-        self.privateServersText.config(font=(self.font, 14))
+        self.privateServersText = ctk.CTkLabel(self.tabControl.tab('Private Servers'), text="Private servers")
+        self.privateServersText.configure(font=(self.font, 24))
 
         for i in range(1, 6):
-            globals()[f"self.{i}"] = tk.Entry(self.privateServersTab)
+            globals()[f"self.{i}"] = ctk.CTkEntry(self.tabControl.tab('Private Servers'))
 
             try:
                 globals()[f"self.{i}"].insert(0, self.getPrivateServer(i - 1))
@@ -144,9 +138,9 @@ class GUI:
             except:
                 pass
 
-        self.usingPs = tk.IntVar(self.privateServersTab)
+        self.usingPs = tk.IntVar(self.tabControl.tab('Private Servers'))
 
-        self.usingPsBox = tk.Checkbutton(self.privateServersTab, text="Use private servers", variable=self.usingPs, onvalue=1, offvalue=0)
+        self.usingPsBox = ctk.CTkCheckBox(self.tabControl.tab('Private Servers'), text="Use private servers", variable=self.usingPs, onvalue=1, offvalue=0)
 
         try:
             self.usingPs.set(1 if eval(readFile("guiFiles/joinPrivateServers.txt")) else 0)
@@ -168,46 +162,46 @@ class GUI:
             "Lvl18BubbleBee"
         ]
 
-        self.ownerText = tk.Label(self.creditsTab, text="Owner/Head Developer:")
-        self.ownerText.config(font=(self.font, 15))
+        self.ownerText = ctk.CTkLabel(self.tabControl.tab('Credits'), text="Owner/Head Developer:")
+        self.ownerText.configure(font=(self.font, 15))
 
-        self.owner = tk.Label(self.creditsTab, text=owner)
+        self.owner = ctk.CTkLabel(self.tabControl.tab('Credits'), text=owner)
 
-        self.contributors = tk.Label(self.creditsTab, text="Developers:")
-        self.contributors.config(font=(self.font, 15))
+        self.contributors = ctk.CTkLabel(self.tabControl.tab('Credits'), text="Developers:")
+        self.contributors.configure(font=(self.font, 15))
 
         for contributor in contributors:
-            globals()[f"self.{contributor}"] = tk.Label(self.creditsTab, text=contributor)
+            globals()[f"self.{contributor}"] = ctk.CTkLabel(self.tabControl.tab('Credits'), text=contributor)
 
-        self.specialThanks = tk.Label(self.creditsTab, text="Special Thanks To:")
-        self.specialThanks.config(font=(self.font, 15))
+        self.specialThanks = ctk.CTkLabel(self.tabControl.tab('Credits'), text="Special Thanks To:")
+        self.specialThanks.configure(font=(self.font, 15))
 
         for specialThank in specialThanks:
-            globals()[f"self.{specialThank}"] = tk.Label(self.creditsTab, text=specialThank)
+            globals()[f"self.{specialThank}"] = ctk.CTkLabel(self.tabControl.tab('Credits'), text=specialThank)
 
-        self.vicHopText = tk.Label(self.vicTab, text="Vic Hop")
-        self.vicHopText.config(font=(self.font, 20))
+        self.vicHopText = ctk.CTkLabel(self.tabControl.tab('Vic Hop'), text="Vic Hop")
+        self.vicHopText.configure(font=(self.font, 24))
 
-        self.vicHopping = tk.IntVar(self.vicTab)
+        self.vicHopping = tk.IntVar()
 
-        self.vicHoppingButton = tk.Checkbutton(self.vicTab, text="Vic Hopping", variable=self.vicHopping, onvalue=1, offvalue=0)
+        self.vicHoppingButton = ctk.CTkCheckBox(self.tabControl.tab('Vic Hop'), text="Vic Hopping", variable=self.vicHopping, onvalue=1, offvalue=0)
 
         self.vicHopping.set(1)
 
-        self.checkByWalking = tk.Label(self.vicTab, text="Check vic bee by walking in field:")
-        self.checkByWalking.config(font=(self.font, 14))
+        self.checkByWalking = ctk.CTkLabel(self.tabControl.tab('Vic Hop'), text="Check vic bee by walking in field:")
+        self.checkByWalking.configure(font=(self.font, 14))
 
-        self.walkInPepper = tk.IntVar(self.vicTab)
-        self.walkInRose = tk.IntVar(self.vicTab)
-        self.walkInMountain = tk.IntVar(self.vicTab)
-        self.walkInCactus = tk.IntVar(self.vicTab)
-        self.walkInSpider = tk.IntVar(self.vicTab)
+        self.walkInPepper = tk.IntVar(self.tabControl.tab('Vic Hop'))
+        self.walkInRose = tk.IntVar(self.tabControl.tab('Vic Hop'))
+        self.walkInMountain = tk.IntVar(self.tabControl.tab('Vic Hop'))
+        self.walkInCactus = tk.IntVar(self.tabControl.tab('Vic Hop'))
+        self.walkInSpider = tk.IntVar(self.tabControl.tab('Vic Hop'))
 
-        self.pepperWalk = tk.Checkbutton(self.vicTab, text="Walk to pepper field", variable=self.walkInPepper, onvalue=1, offvalue=0)
-        self.roseWalk = tk.Checkbutton(self.vicTab, text="Walk to rose field", variable=self.walkInRose, onvalue=1, offvalue=0)
-        self.mountainWalk = tk.Checkbutton(self.vicTab, text="Walk to mountain field", variable=self.walkInMountain, onvalue=1, offvalue=0)
-        self.cactusWalk = tk.Checkbutton(self.vicTab, text="Walk to cactus field", variable=self.walkInCactus, onvalue=1, offvalue=0)
-        self.spiderWalk = tk.Checkbutton(self.vicTab, text="Walk to spider field", variable=self.walkInSpider, onvalue=1, offvalue=0)
+        self.pepperWalk = ctk.CTkCheckBox(self.tabControl.tab('Vic Hop'), text="Walk to pepper field", variable=self.walkInPepper, onvalue=1, offvalue=0)
+        self.roseWalk = ctk.CTkCheckBox(self.tabControl.tab('Vic Hop'), text="Walk to rose field", variable=self.walkInRose, onvalue=1, offvalue=0)
+        self.mountainWalk = ctk.CTkCheckBox(self.tabControl.tab('Vic Hop'), text="Walk to mountain field", variable=self.walkInMountain, onvalue=1, offvalue=0)
+        self.cactusWalk = ctk.CTkCheckBox(self.tabControl.tab('Vic Hop'), text="Walk to cactus field", variable=self.walkInCactus, onvalue=1, offvalue=0)
+        self.spiderWalk = ctk.CTkCheckBox(self.tabControl.tab('Vic Hop'), text="Walk to spider field", variable=self.walkInSpider, onvalue=1, offvalue=0)
 
         ###### DISPLAYING TEXT ######
 
@@ -218,8 +212,8 @@ class GUI:
         self.maxLoadText.pack()
         self.maxLoad.pack()
 
-        self.maxLoadText.place(relx=0.5, rely=0.35, anchor="n")
-        self.maxLoad.place(relx=0.5, rely=0.5, anchor="n")
+        self.maxLoadText.place(relx=0.5, rely=0.3, anchor="n")
+        self.maxLoad.place(relx=0.5, rely=0.38, anchor="n")
 
         self.start.pack()
         self.start.place(relx=0.35, rely=0.8, anchor="n")
@@ -243,14 +237,14 @@ class GUI:
 
         self.connectingText.pack()
 
-        tk.Label(self.connectTab, text=" ").pack()
-
         self.hostNameText.pack()
         self.hostName.pack()
 
-        tk.Label(self.connectTab, text=" ").pack()
+        self.hostNameText.place(relx=0.5, rely=0.25, anchor="n")
+        self.hostName.place(relx=0.5, rely=0.32, anchor="n")
 
         self.connect.pack()
+        self.connect.place(relx=0.5, rely=0.45, anchor="n")
 
         self.privateServersText.pack()
 
@@ -275,8 +269,6 @@ class GUI:
         self.vicHopText.pack()
 
         self.vicHoppingButton.pack()
-
-        tk.Label(self.connectTab, text=" ").pack()
 
         self.checkByWalking.pack()
 
