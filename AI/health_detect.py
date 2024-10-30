@@ -49,5 +49,5 @@ def detect_health_in_screenshot():
             print(f"Detected: dead, at pos {pos}")
 
 
-    return True
+    return False
 
