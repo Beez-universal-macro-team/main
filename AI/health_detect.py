@@ -43,9 +43,11 @@ def detect_health_in_screenshot():
         if class_name == 'dead':
             print(f"Detected: alive, at pos {pos}")
 
+            return True
+
         elif class_name == 'alive':
             print(f"Detected: dead, at pos {pos}")
 
-            return False
 
     return True
+
