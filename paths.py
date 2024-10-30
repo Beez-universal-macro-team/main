@@ -428,6 +428,54 @@ def RoseMoveFromDetection():
     keyboard.release("d")
     keyboard.release("s")
     
+def PepperKillCycle():
+    start_time = time.time()
+    timeout = 240  # 4 minutes in seconds
+
+    while True:
+        # Check if 4 minutes have passed
+        if time.time() - start_time > timeout:
+            print("4 minute timeout reached")
+            return
+
+        # S movement
+        for _ in range(10):
+            keyboard.press("s")
+            Waitspeed(2)
+            keyboard.release("s")
+            if detect_health_in_screenshot():
+                print("Health detected, exiting cycle")
+                return
+
+        # A movement
+        for _ in range(5):
+            keyboard.press("a")
+            Waitspeed(2)
+            keyboard.release("a")
+            if detect_health_in_screenshot():
+                print("Health detected, exiting cycle")
+                return
+
+        # W movement
+        for _ in range(10):
+            keyboard.press("w")
+            Waitspeed(2)
+            keyboard.release("w")
+            if detect_health_in_screenshot():
+                print("Health detected, exiting cycle")
+                return
+
+        # D movement
+        for _ in range(6):
+            keyboard.press("d")
+            Waitspeed(2)
+            keyboard.release("d")
+            if detect_health_in_screenshot():
+                print("Health detected, exiting cycle")
+                return
+
+
+    
 
 def KillVicBees():
     PepperVic()
@@ -438,6 +486,7 @@ def KillVicBees():
         print("Vic detected, killing bees...")
         #kill pattern goes here
         PepperMoveFromDetection()
+        PepperKillCycle()
         return 
     for _ in range(2):
         time.sleep(0.1)
