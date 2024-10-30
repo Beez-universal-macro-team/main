@@ -420,8 +420,8 @@ def NightDetect():
 
 
 def FloorDetect():
-    target_color1 = (37, 150, 190)
-    target_color2 = (88, 100, 108)
+    target_color1 = (24, 76, 28)
+    target_color2 = (24, 76, 28)
 
     max_diff = 30 # Adjust this value for color tolerance
 
