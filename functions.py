@@ -603,7 +603,7 @@ def JoinServersUntilNight():
 from paths import *
 
 def MainLoopMacro():
-    PepperKillCycle()
+    #PepperKillCycle()
     #KillVicBees()
-    #JoinServersUntilNight()
+    JoinServersUntilNight()
 
