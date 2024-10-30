@@ -277,12 +277,6 @@ def PepperMoveFromDetection():
     keyboard.release("d")
 
     time.sleep(0.10)
-    keyboard.press("s")
-    Waitspeed(6.5)
-    keyboard.press("a")
-    Waitspeed(5)
-    keyboard.release("s")
-    keyboard.release("a")
     
 
 def MountMoveFromDetection():
