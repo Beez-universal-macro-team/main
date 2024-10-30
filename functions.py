@@ -422,37 +422,33 @@ def NightDetect():
 def FloorDetect():
     target_color1 = (24, 76, 28)
     target_color2 = (24, 76, 28)
+    max_diff = 30
 
-    max_diff = 30 # Adjust this value for color tolerance
-
-    screen_width, screen_height = pyautogui.size()
-
-    # Calculate the check points based on screen dimensions
     check_points = [
-        (int(1580 * screen_width / 1920), int(921 * screen_height / 1080)),
-        (int(510 * screen_width / 1920), int(610 * screen_height / 1080)),
-        (int(200 * screen_width / 1920), int(200 * screen_height / 1080)),
-        (int(1720 * screen_width / 1920), int(200 * screen_height / 1080)),
-        (int(960 * screen_width / 1920), int(540 * screen_height / 1080)),
-        (int(300 * screen_width / 1920), int(800 * screen_height / 1080)),
-        (int(1620 * screen_width / 1920), int(800 * screen_height / 1080)),
-        (int(800 * screen_width / 1920), int(300 * screen_height / 1080)),
-        (int(1120 * screen_width / 1920), int(300 * screen_height / 1080)),
-        (int(800 * screen_width / 1920), int(780 * screen_height / 1080)),
-        (int(1120 * screen_width / 1920), int(780 * screen_height / 1080)),
-        (int(960 * screen_width / 1920), int(100 * screen_height / 1080)),
-        (int(400 * screen_width / 1920), int(400 * screen_height / 1080)),
-        (int(1520 * screen_width / 1920), int(400 * screen_height / 1080)),
-        (int(400 * screen_width / 1920), int(680 * screen_height / 1080)),
-        (int(1520 * screen_width / 1920), int(680 * screen_height / 1080)),
-        (int(640 * screen_width / 1920), int(540 * screen_height / 1080)),
-        (int(1280 * screen_width / 1920), int(540 * screen_height / 1080)),
-        (int(960 * screen_width / 1920), int(270 * screen_height / 1080)),
-        (int(960 * screen_width / 1920), int(810 * screen_height / 1080)),
-        (int(200 * screen_width / 1920), int(540 * screen_height / 1080)),
-        (int(1720 * screen_width / 1920), int(540 * screen_height / 1080)),
-        (int(640 * screen_width / 1920), int(100 * screen_height / 1080)),
-        (int(1280 * screen_width / 1920), int(980 * screen_height / 1080))
+        offsetDims([1580, 921], "list"),
+        offsetDims([510, 610], "list"),
+        offsetDims([200, 200], "list"),
+        offsetDims([1720, 200], "list"),
+        offsetDims([960, 540], "list"),
+        offsetDims([300, 800], "list"),
+        offsetDims([1620, 800], "list"),
+        offsetDims([800, 300], "list"),
+        offsetDims([1120, 300], "list"),
+        offsetDims([800, 780], "list"),
+        offsetDims([1120, 780], "list"),
+        offsetDims([960, 100], "list"),
+        offsetDims([400, 400], "list"),
+        offsetDims([1520, 400], "list"),
+        offsetDims([400, 680], "list"),
+        offsetDims([1520, 680], "list"),
+        offsetDims([640, 540], "list"),
+        offsetDims([1280, 540], "list"),
+        offsetDims([960, 270], "list"),
+        offsetDims([960, 810], "list"),
+        offsetDims([200, 540], "list"),
+        offsetDims([1720, 540], "list"),
+        offsetDims([640, 100], "list"),
+        offsetDims([1280, 980], "list")
     ]
 
     for point in check_points:
@@ -460,12 +456,11 @@ def FloorDetect():
 
         if isColorClose(pixel_color, target_color1, max_diff) or isColorClose(pixel_color, target_color2, max_diff):
             print(f"Floor detected at point {point}!")
-
             return True
 
     print("Floor not detected.")
-
     return False
+
 
 
 def Reset_char():
