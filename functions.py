@@ -150,14 +150,17 @@ def press(*args):
 
 def screenshot(monitor=False):
     with mss.mss() as sct:
-        # Get primary monitor
-        primary_monitor = sct.monitors[1]  # Monitor 1 is typically the primary display
-
+        # Find primary monitor
+        primary_monitor = None
+        for monitor in sct.monitors[1:]:  # Skip the combined virtual monitor
+            if monitor["left"] == 0 and monitor["top"] == 0:
+                primary_monitor = monitor
+                break
+                
         screen = sct.grab(primary_monitor)
-
-    screen = Image.frombytes("RGB", screen.size, screen.bgra, "raw", "BGRX")
-    return screen
-
+        screen = Image.frombytes("RGB", screen.size, screen.bgra, "raw", "BGRX")
+        return screen
+        
 
 def click(pos):
     mouse.position = pos
