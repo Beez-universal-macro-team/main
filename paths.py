@@ -320,13 +320,6 @@ def MountMoveFromDetection():
     Waitspeed(11.5)
     keyboard.release("d")
 
-    keyboard.press("a")
-    Waitspeed(6.5)
-    keyboard.press("s")
-    Waitspeed(6.5)
-    keyboard.release("a")
-    keyboard.release("s")
-
 def CactusMoveFromDetection():
     keyboard.press("w")
     keyboard.press("a")
