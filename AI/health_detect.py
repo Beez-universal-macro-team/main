@@ -5,7 +5,7 @@ from ultralytics import YOLO
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-
+from functions import screenshot_health_area, screenshot_area, screenshot  # Add both functions
 # Load the YOLOv8 model
 model_path = os.path.join(os.path.dirname(__file__), 'health.pt')
 model = YOLO(model_path)
@@ -13,7 +13,7 @@ model = YOLO(model_path)
 # Convert screenshot to YOLO input format and run inference
 def detect_health_in_screenshot():
     # Take screenshot
-    img = screenshot_health_area()
+    img = screenshot()
 
     # Convert to numpy array for YOLO input
     img = np.array(img)
@@ -33,6 +33,10 @@ def detect_health_in_screenshot():
         if class_name == 'dead':
             print(f"Detected 'dead' with confidence {confidence}")
             return True
+
+    print("No 'dead' detected")
+    return False
+
 
     print("No 'dead' detected")
     return False
