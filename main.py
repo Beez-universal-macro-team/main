@@ -3,14 +3,15 @@ import gui
 import threading
 import time
 import keyboard
+import sys
+import os
 
 running = False
 
 def check_f2():
     while True:
         if keyboard.is_pressed('f2'):
-            ui.window.quit()
-            break
+            os._exit(0)  # Force exit the entire Python process
         time.sleep(0.2)
 
 def on_release(key):
@@ -20,6 +21,8 @@ def on_release(key):
         if not running:
             running = True
             ui.startMacro(main=True)
+    elif key == Key.f2:
+        os._exit(0)  # Force exit the entire Python process
 
 # Start F2 checker thread
 f2_thread = threading.Thread(target=check_f2, daemon=True)
