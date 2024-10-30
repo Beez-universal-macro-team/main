@@ -20,6 +20,8 @@ def detect_vic_in_screenshot():
     # Convert to numpy array for YOLO input
     img = np.array(img)
 
+    img = img[..., ::-1]
+
     # Run inference
     results = model(img)
 
