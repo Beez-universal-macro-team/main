@@ -1,6 +1,5 @@
 import subprocess
 import sys
-import time
 
 # List of required libraries
 required_libraries = [
@@ -11,18 +10,27 @@ required_libraries = [
     'discord.py',  # for discord
     'discord',
     'psutil',
-    'tkinter',  # tkinter comes with Python, no need to install, but added here for clarity
+    'customtkinter',
     'requests',
     'fonttools',  # for fontTools.misc.textTools
-    'platform',  # usually comes pre-installed with Python
     'numpy==1.26.2',
     'ultralytics',
-    'matplotlib'
+    'matplotlib',
+    'audioop-lts'
 ]
 
 # Function to install libraries
-def install(package):
-    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+def install(*packages):
+    subprocess.check_call([sys.executable, "-m", "pip", "install", *packages])
+
+
+try:
+    install("pip", "--upgrade")
+    install("setuptools", "--upgrade")
+
+    print("Pip upgraded successfully.")
+except subprocess.CalledProcessError:
+    print("Failed to upgrade pip.")
 
 # Install all required libraries
 for lib in required_libraries:
@@ -33,5 +41,3 @@ for lib in required_libraries:
         print(f"Failed to install '{lib}'.")
 
 print("All libraries installed (if available).")
-print("You can now run the main.py script, everything tried to install")
-time.sleep(100)
