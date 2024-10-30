@@ -204,7 +204,33 @@ def readFile(fileName):
 
     with open(full_path, "r") as file:
         return file.read()
+    
+def screenshot_area(x, y, width, height):
+    with mss.mss() as sct:
+        monitor = {"top": y, "left": x, "width": width, "height": height}
+        screen = sct.grab(monitor)
+        screen = Image.frombytes("RGB", screen.size, screen.bgra, "raw", "BGRX")
+        return screen
+    
+def getHoneyOffset():
+    image_path = os.path.join(main_dir, 'images', 'gui', 'honey_OFFSETY.png')
+    try:
+        location = pyautogui.locateOnScreen(image_path, confidence=0.8)
+        return location.top - 7  # Returns Y coordinate 7 pixels above the found image
+    except:
+        return offsetDims(1000, "y")  # Default Y offset if image not found
 
+def screenshot_health_area():
+    honey_y = getHoneyOffset()
+    screen_width = screenDims[0]
+    
+    # Calculate coordinates for right corner area
+    x = offsetDims(1580, "x")  # Right side of screen
+    y = honey_y  # Use honey position directly
+    width = offsetDims(300, "x")  # Width of capture area
+    height = offsetDims(200, "y")  # Height of capture area
+    
+    return screenshot_area(x, y, width, height)
 
 # Paths and FUNCTIONS
 print("loading vic bee AI...")
@@ -513,14 +539,6 @@ def DetectLoading(timeout):
 
     return True
 
-def getHoneyOffset():
-    image_path = os.path.join(main_dir, 'images', 'gui', 'honey_OFFSETY.png')
-    try:
-        location = pyautogui.locateOnScreen(image_path, confidence=0.8)
-        return location.top - 7  # Returns Y coordinate 7 pixels above the found image
-    except:
-        return offsetDims(1000, "y")  # Default Y offset if image not found
-
 def ServerSetup():
     if not ClaimHiveWithRetries():
         print("Failed to claim hive after multiple attempts. Exiting MainLoop.")
@@ -535,19 +553,6 @@ def ShiftLock():
     print("Shift lock released")
     time.sleep(0.5)  # Wait to confirm state change
     return True
-
-
-def screenshot_health_area():
-    honey_y = getHoneyOffset()
-    screen_width = screenDims[0]
-    
-    # Calculate coordinates for right corner area
-    x = offsetDims(1580, "x")  # Right side of screen
-    y = honey_y  # Use honey position directly
-    width = offsetDims(300, "x")  # Width of capture area
-    height = offsetDims(200, "y")  # Height of capture area
-    
-    return screenshot_area(x, y, width, height)
 
 
 
@@ -591,7 +596,7 @@ def JoinServersUntilNight():
 from paths import *
 
 def MainLoopMacro():
-    #PepperMoveFromDetection()
+    PepperKillCycle()
     #KillVicBees()
-    JoinServersUntilNight()
+    #JoinServersUntilNight()
 
