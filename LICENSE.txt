@@ -1,0 +1,18 @@
+Copyright (c) [beez131_official] [2024]
+
+Permission is hereby granted to any individual or organization to use this program and its associated files, including trained AI models, for personal and non-commercial purposes, subject to the following conditions:
+
+Usage:
+
+You may use this program and its files as intended, in their original form, for personal, educational, and research purposes.
+Redistribution of the original program and its files is permitted as long as it remains unmodified.
+Restrictions on Copying and Integration:
+
+You may not copy, modify, or incorporate any part of this program or its files, including but not limited to the trained AI models, into other software, applications, or projects, whether for personal or commercial use.
+No part of this program or its files may be reproduced, duplicated, or repurposed in any other form that would make them available for use outside of this program.
+Commercial Use:
+
+Commercial use of this program and its files, including trained AI models, is strictly prohibited without explicit permission from the copyright holder.
+Disclaimer of Warranty:
+
+This program is provided "as-is" without any warranties, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, or non-infringement. In no event shall the authors be liable for any claim, damages, or other liability arising from the use or inability to use this program or its files.
