@@ -111,7 +111,7 @@ def PepperToCannon():
     press(Key.space, 0.1)
     time.sleep(2.62)
     keyboard.tap(".")
-    time.sleep(0.70)
+    time.sleep(1.1)
     press(Key.space, 0.1)
     time.sleep(1.25)
 
