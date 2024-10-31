@@ -1,21 +1,21 @@
 import subprocess
 import sys
 
-# List of required libraries (with keyboard added)
 required_libraries = [
     'pynput',
-    'Pillow',  # for PIL
+    'Pillow',
     'mss',
-    'discord.py',  # for discord
+    'discord.py',
     'discord',
-    'psutil',
+    'psutil', 
     'customtkinter',
     'requests',
-    'fonttools',  # for fontTools.misc.textTools
+    'fonttools',
     'ultralytics',
     'matplotlib',
     'audioop-lts',
-    'keyboard'  # Added keyboard module
+    'opencv-python',  # For image processing
+    'numpy'  # For array operations
 ]
 
 def install(*packages):
