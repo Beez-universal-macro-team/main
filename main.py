@@ -25,6 +25,7 @@ def on_release(key):
             running = True
             ui.startMacro(main=True)
     elif key == Key.f2:
+        ui.saveSettings()
         os._exit(0)  # Force exit the entire Python process
 
 # Initialize and start the keyboard listener
