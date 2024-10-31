@@ -592,7 +592,7 @@ def JoinServersUntilNight():
 
                 time.sleep(1)
 
-                return True
+                break  # Breaks inner while loop to go back to joinRandomServer()
             else:
                 print("Night not detected. Retrying...")
 
