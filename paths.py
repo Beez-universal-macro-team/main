@@ -98,7 +98,7 @@ def PepperToCannon():
     keyboard.release("s")
     time.sleep(0.10)
     keyboard.press("w")
-    Waitspeed(5.8)
+    Waitspeed(6.3)
     keyboard.release("w")
     time.sleep(0.10)
     keyboard.tap(",")
