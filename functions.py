@@ -328,7 +328,7 @@ def ClaimHive():
 
     keyboard.press("a")
     keyboard.press("s")
-    Waitspeed(5.9)
+    Waitspeed(5.5)
     keyboard.release("a")
     keyboard.release("s")
 
