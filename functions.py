@@ -306,7 +306,7 @@ def ClaimHive():
     keyboard.release("d")
 
     keyboard.press("w")
-    Waitspeed(8)
+    Waitspeed(10)
     keyboard.release("w")
 
     keyboard.press("d")
@@ -344,7 +344,7 @@ def WalkToCornerRamp():
 def CornerToRedCannon():
     press(Key.space, 0.1)
     keyboard.press("d")
-    time.sleep(0.10)
+    time.sleep(0.50)
     keyboard.release("d")
     time.sleep(0.50)
     keyboard.press("w")
