@@ -288,7 +288,7 @@ def MoveUntilHive():
         except pyautogui.ImageNotFoundException:
             if attempt < 5:
                 keyboard.press("a")
-                Waitspeed(7)
+                Waitspeed(8)
                 keyboard.release("a")
 
             else:
@@ -301,9 +301,13 @@ def ClaimHive():
     keyboard.press("d")
     Waitspeed(4)
     keyboard.press("w")
-    Waitspeed(25)
+    Waitspeed(22)
     keyboard.release("w")
     keyboard.release("d")
+    time.sleep(0.05)
+    keyboard.press("w")
+    Waitspeed(4)
+    keyboard.release("w")
 
     keyboard.press("w")
     Waitspeed(10)
@@ -315,7 +319,7 @@ def ClaimHive():
 
     keyboard.press("a")
     keyboard.press("s")
-    Waitspeed(7.6)
+    Waitspeed(5.9)
     keyboard.release("a")
     keyboard.release("s")
 
