@@ -363,7 +363,7 @@ def WalkToRedCannon():
         image_path = os.path.join(main_dir, 'images', 'gui', 'red_cannon.png')
 
         try:
-            location = pyautogui.locateOnScreen(image_path, confidence=0.8)
+            location = pyautogui.locateOnScreen(image_path, confidence=0.75)
 
             print("Red cannon found!")
 
