@@ -332,7 +332,7 @@ def ClaimHive():
 
 def WalkToCornerRamp():
     keyboard.press("w")
-    Waitspeed(4)
+    Waitspeed(7)
     keyboard.release("w")
     time.sleep(0.1)
     keyboard.press("d")
