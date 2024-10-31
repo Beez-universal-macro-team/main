@@ -115,19 +115,27 @@ def PepperToCannon():
 
 def MountVic():
     keyboard.tap("e")
-    time.sleep(2.05)
+    time.sleep(1.70)
     press(Key.space, 0.1)
     press(Key.space, 0.1)
-    time.sleep(2)
-    keyboard.press("w")
+    time.sleep(1)
+    keyboard.tap(",")
+    keyboard.tap(",")
+    time.sleep(0.38)
+
+    press(Key.space, 0.1)
+    time.sleep(1)
+
+    keyboard.tap(".")
+    keyboard.tap(".")
+    keyboard.tap(".")
+    keyboard.tap(".")
+
+    keyboard.press("d")
     Waitspeed(6.9)
-    keyboard.release("w")
+    keyboard.release("d")
     time.sleep(0.10)
-    keyboard.press("s")
-    Waitspeed(6.5)
-    keyboard.release("s")
-    keyboard.tap(".")
-    keyboard.tap(".")
+    
     keyboard.tap(Key.page_down) 
     keyboard.tap(Key.page_down)
     keyboard.tap(Key.page_down) 
