@@ -63,6 +63,8 @@ def sendMessage(message, picture=None):
 
         tm = datetime.now()
 
+        print(message)
+
         webhook.send(f"[{tm.hour}:{tm.minute}:{tm.second}] {message}") if picture == None else webhook.send(
             f"[{tm.hour}:{tm.minute}:{tm.second}] {message}", file=picture)
 
@@ -561,7 +563,9 @@ def ServerSetup():
     if not ClaimHiveWithRetries():
         print("Failed to claim hive after multiple attempts. Exiting MainLoop.")
         return False
+    sendMessage("Claimed hive")
     WalkToRedCannon()
+    sendMessage("Moved to cannon")
     return True
 
 
@@ -578,6 +582,7 @@ def ShiftLock():
 def JoinServersUntilNight():
     while True:
         joinRandomServer()
+        sendMessage("searching for night")
 
         if not DetectLoading(int(readFile("guiFiles/maxLoadTime.txt"))):
             print("Loading timed out, trying new server...")
@@ -586,8 +591,6 @@ def JoinServersUntilNight():
 
         while True:
             if NightDetect():
-                print("Night found!!")
-
                 sendScreenshot("Night found!")
 
                 if not ServerSetup():
