@@ -62,7 +62,7 @@ class GUI:
         self.maxLoadText = ctk.CTkLabel(self.tabControl.tab('Join Settings'), text="Maximum load time:")
         self.maxLoadText.configure(font=(self.font, 14))
 
-        self.maxLoad = ctk.CTkEntry(self.tabControl.tab('Join Settings'), width=3)
+        self.maxLoad = ctk.CTkEntry(self.tabControl.tab('Join Settings'), width=40)
 
         try:
             self.maxLoad.insert(0, readFile("guiFiles/maxLoadTime.txt"))
