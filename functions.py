@@ -242,12 +242,19 @@ print("Vic bee AI loaded, loading health AI...")
 from AI.health_detect import detect_health_in_screenshot
 print("Health AI loaded!")
 
-def Waitspeed(tm):
+def validateMoveSpeed():
     try:
         walkSpeed = int(readFile("guiFiles/moveSpeed.txt"))
+        if walkSpeed < 10 or walkSpeed > 50:
+            writeFile("guiFiles/moveSpeed.txt", "29")
+            return 29
+        return walkSpeed
     except:
-        walkSpeed = 33.35  # Default value if file is empty or invalid
-    
+        writeFile("guiFiles/moveSpeed.txt", "29")
+        return 29
+
+def Waitspeed(tm):
+    walkSpeed = validateMoveSpeed()
     time.sleep((tm * 4) / walkSpeed)
 
 
