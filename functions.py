@@ -550,6 +550,7 @@ def ServerSetup():
     if not ClaimHiveWithRetries():
         print("Failed to claim hive after multiple attempts. Exiting MainLoop.")
         return False
+    WalkToRedCannon()
     return True
 
 
