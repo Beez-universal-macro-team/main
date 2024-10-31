@@ -346,10 +346,16 @@ class GUI:
 
         return privateServers[n]
 
+
     def startMacro(self, main=False):
         self.saveSettings()
 
-        MainLoopMacro()
+        try:
+            # Your main code here
+            MainLoopMacro()
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            input("Press Enter to close...")  # This keeps terminal open
 
     def stopMacro(self):
         quit()
