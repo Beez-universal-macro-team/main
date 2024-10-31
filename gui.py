@@ -72,7 +72,7 @@ class GUI:
         self.start = ctk.CTkButton(self.window, text="Start (f1)", command=self.startMacro)
         self.stop = ctk.CTkButton(self.window, text="Stop (f2)", command=self.stopMacro)
 
-        self.connect = tk.Button(self.tabControl.tab('Connecting'), text="Connect new alt", command=self.connectToAltThread)
+        self.connect = ctk.CTkButton(self.tabControl.tab('Connecting'), text="Connect new alt", command=self.connectToAltThread)
 
         self.settingsTitle = ctk.CTkLabel(self.tabControl.tab('Settings'), text="Settings")
         self.settingsTitle.configure(font=(self.font, 24))
