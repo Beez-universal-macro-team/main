@@ -2,6 +2,7 @@ from functions import *
 import time
 
 def PepperVic():
+    sendMessage("Searching pepper")
     keyboard.press("d")
     Waitspeed(24)
     keyboard.release("d")
@@ -88,6 +89,7 @@ def PepperVic():
 
     
 def PepperToCannon():
+    sendMessage("Moving to cannon")
     press(Key.space, 0.1)
     keyboard.press("d")
     time.sleep(0.50)
@@ -114,6 +116,7 @@ def PepperToCannon():
     time.sleep(1.25)
 
 def MountVic():
+    sendMessage("Checking mountian")
     keyboard.tap("e")
     time.sleep(1.70)
     press(Key.space, 0.1)
@@ -167,6 +170,7 @@ def MountVic():
     time.sleep(1)
 
 def CactusVic():
+    sendMessage("Checking cactus")
     keyboard.tap(Key.page_up)
     keyboard.tap(Key.page_up)
     press(Key.space, 0.1)
@@ -216,6 +220,7 @@ def CactusVic():
 
 
 def RoseVic():
+    sendMessage("Checking rose")
     keyboard.press("w")
     keyboard.press("a")
     Waitspeed(15)
@@ -491,7 +496,7 @@ def PepperKillCycle():
                 print("Health detected, exiting cycle")
                 return
         if detect_vic_defeat():
-            print("Vic defeated, exiting cycle")
+            sendScreenshot("Vic defeated, exiting cycle")
             return
 
 def MountKillCycle():
@@ -540,7 +545,7 @@ def MountKillCycle():
                 print("Health detected, exiting cycle")
                 return
         if detect_vic_defeat():
-            print("Vic defeated, exiting cycle")
+            sendScreenshot("Vic defeated, exiting cycle")
             return
     
 
@@ -572,7 +577,7 @@ def CactusKillCycle():
                 print("Health detected, exiting cycle")
                 return
         if detect_vic_defeat():
-            print("Vic defeated, exiting cycle")
+            sendScreenshot("Vic defeated, exiting cycle")
             return
 
 
@@ -622,13 +627,14 @@ def RoseKillCycle():
                 print("Health detected, exiting cycle")
                 return
         if detect_vic_defeat():
-            print("Vic defeated, exiting cycle")
+            sendScreenshot("Vic defeated, exiting cycle")
             return
 
 
 def KillVicBees():
     PepperVic()
     if detect_vic_in_screenshot():
+        sendScreenshot("Detected vic bee")
         for _ in range(2):
             time.sleep(0.1)
             keyboard.tap(Key.page_up)
@@ -643,6 +649,7 @@ def KillVicBees():
     PepperToCannon()
     MountVic()
     if detect_vic_in_screenshot():
+        sendScreenshot("Detected vic bee")
         for _ in range(2):
             time.sleep(0.1)
             keyboard.tap(Key.page_up)
@@ -653,6 +660,7 @@ def KillVicBees():
         return 
     CactusVic()
     if detect_vic_in_screenshot():
+        sendScreenshot("Detected vic bee")
         time.sleep(0.1)
         for _ in range(2):
             time.sleep(0.1)
@@ -675,6 +683,7 @@ def KillVicBees():
     keyboard.tap(Key.page_up)
     RoseVic()
     if detect_vic_in_screenshot():
+        sendScreenshot("Detected vic bee")
         time.sleep(0.1)
         keyboard.tap(Key.page_up)
         keyboard.tap(Key.page_up)
