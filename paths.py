@@ -135,6 +135,10 @@ def MountVic():
     Waitspeed(6.9)
     keyboard.release("d")
     time.sleep(0.10)
+    keyboard.press("s")
+    Waitspeed(2)
+    keyboard.release("s")
+    time.sleep(0.10)
     
     keyboard.tap(Key.page_down) 
     keyboard.tap(Key.page_down)
@@ -160,6 +164,7 @@ def MountVic():
     keyboard.tap("o")
     time.sleep(0.15)
     keyboard.tap("o")
+    time.sleep(1)
 
 def CactusVic():
     keyboard.tap(Key.page_up)
@@ -173,7 +178,7 @@ def CactusVic():
     Waitspeed(13)
     keyboard.release("d")
     keyboard.press("w")
-    Waitspeed(6.5)
+    Waitspeed(8)
     keyboard.release("w")
     time.sleep(0.05)
     keyboard.press("s")
@@ -208,6 +213,7 @@ def CactusVic():
     keyboard.tap("o")
     time.sleep(0.15)
     keyboard.tap("o")
+
 
 def RoseVic():
     keyboard.press("w")
@@ -245,6 +251,9 @@ def RoseVic():
     keyboard.tap("o")
     time.sleep(0.15)
     keyboard.tap("o")
+    time.sleep(0.15)
+    keyboard.tap("i")
+    time.sleep(1)
 
 def PepperMoveFromDetection():
     press(Key.space, 0.1)
@@ -644,6 +653,7 @@ def KillVicBees():
         return 
     CactusVic()
     if detect_vic_in_screenshot():
+        time.sleep(0.1)
         for _ in range(2):
             time.sleep(0.1)
             keyboard.tap(Key.page_up)
@@ -679,4 +689,3 @@ def KillVicBees():
         RoseMoveFromDetection()
         RoseKillCycle()
         return 
-
