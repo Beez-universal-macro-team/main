@@ -432,14 +432,20 @@ def NightDetect():
     return False
 
 def detect_vic_defeat():
-    image_path = os.path.join(main_dir, 'images', 'chat', 'defeated_vic.png')
+    keyboard.tap("/")
+    time.sleep(0.25)
+    keyboard.tap(Key.enter)
+    time.sleep(0.25)
+
+    image_path = os.path.join(main_dir, 'images', 'gui', 'defeated.png')
     try:
-        location = pyautogui.locateOnScreen(image_path, confidence=0.8)
+        location = pyautogui.locateOnScreen(image_path, confidence=0.6)
         print("Vic defeat message found!")
         return True
     except:
         print("No vic defeat message detected")
         return False
+
 
 def FloorDetect():
     target_color1 = (24, 76, 28)
