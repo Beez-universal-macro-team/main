@@ -23,7 +23,7 @@ def detect_vic_in_screenshot():
     img = img[..., ::-1]
 
     # Run inference
-    results = model(img)
+    results = model(img, conf = 0.40)
 
     # Iterate over detections and check if 'vic' or 'vic_gifted' is found
     found_vic = False
