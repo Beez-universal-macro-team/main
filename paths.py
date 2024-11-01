@@ -444,13 +444,6 @@ def RoseMoveFromDetection():
     Waitspeed(6.5)
     keyboard.release("a")
     keyboard.release("w")
-
-    time.sleep(0.1)
-    keyboard.press("d")
-    keyboard.press("s")
-    Waitspeed(9.5)
-    keyboard.release("d")
-    keyboard.release("s")
     
 def PepperKillCycle():
     start_time = time.time()
