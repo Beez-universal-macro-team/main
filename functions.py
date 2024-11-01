@@ -516,12 +516,18 @@ def ClaimHiveWithRetries():
 
 def activateRoblox():
     try:
-        window = pyautogui.getWindowsWithTitle('Roblox')[0]
-        window.activate()
-        window.maximize()
-        return True
+        windows = pyautogui.getAllWindows()
+        for window in windows:
+            if 'Roblox' in window.title:
+                window.maximize()
+                window.activate()
+                time.sleep(0.5)  # Give time for window operations
+                print("Roblox window activated and maximized.")
+                return True
+        return False
     except:
         return False
+
 
 def DetectLoading(timeout):
     target_color = (34, 87, 168)  # RGB equivalent of 0x2257A8
