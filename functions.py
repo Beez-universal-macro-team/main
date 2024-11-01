@@ -518,44 +518,43 @@ def ClaimHiveWithRetries():
 
 def DetectLoading(timeout):
     target_color = (34, 87, 168)  # RGB equivalent of 0x2257A8
-
     start_time = time.time()
+    window_activated = False
 
     # Wait for loading color to appear
     while True:
+        if not window_activated:
+            window_activated = activateRoblox()
         pixel_color = pyautogui.pixel(458, 151)
 
         if isColorClose(pixel_color, target_color, 10):
             print("Loading color detected!")
-
             break
 
         if time.time() - start_time >= timeout:
             return False
 
-        time.sleep(0.1)
+        time.sleep(1)  # Increased to 1 second
 
     # Wait for loading color to disappear with timeout
     start_time = time.time()  # Reset timer for disappearance check
 
     while True:
+        if not window_activated:
+            window_activated = activateRoblox()
         pixel_color = pyautogui.pixel(458, 151)
 
         if not isColorClose(pixel_color, target_color, 10):
             print("Loading complete!")
-
             time.sleep(2)
-
             break
 
         if time.time() - start_time >= timeout:
             print("restricted experience")
-
             close_roblox()
-
             return False
 
-        time.sleep(0.1)
+        time.sleep(1)  # Increased to 1 second
 
     return True
 
