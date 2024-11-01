@@ -515,7 +515,6 @@ def ClaimHiveWithRetries():
 
 
 def activateRoblox():
-    time.sleep(1)  # Wait a second before trying
     try:
         window = pyautogui.getWindowsWithTitle('Roblox')[0]
         window.activate()
