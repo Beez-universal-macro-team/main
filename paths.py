@@ -86,6 +86,7 @@ def PepperVic():
     keyboard.tap("o")
     time.sleep(0.15)
     keyboard.tap("o")
+    time.sleep(1)
 
     
 def PepperToCannon():
@@ -217,7 +218,7 @@ def CactusVic():
     keyboard.tap("o")
     time.sleep(0.15)
     keyboard.tap("o")
-
+    time.sleep(1)
 
 def RoseVic():
     sendMessage("Checking rose")
