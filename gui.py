@@ -8,14 +8,6 @@ import socket
 import threading
 from functions import MainLoopMacro
 
-try:
-    windowSize = eval(readFile("guiFiles/windowSize.txt"))
-
-except:
-    windowSize = [offsetDims(700, 'x'), offsetDims(350, 'y')]
-
-print(f"{windowSize[0]}x{windowSize[1]}")
-
 main_dir = os.path.dirname(os.path.abspath(__file__))
 
 class GUI:
@@ -36,7 +28,8 @@ class GUI:
 
         self.window.iconbitmap(logo_path)
         
-        self.window.geometry(f"{windowSize[0]}x{windowSize[1]}")
+        self.window.geometry(f"{max(offsetDims(700, 'x'), 700)}x{max(offsetDims(350, 'y'), 350)}")
+        self.window.minsize(700, 350)
 
         ###### CREATING TABS ######
 
