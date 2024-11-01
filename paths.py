@@ -224,6 +224,7 @@ def CactusVic():
 def RoseVic():
     sendMessage("Checking rose")
     keyboard.press("w")
+    Waitspeed(6)
     keyboard.press("a")
     Waitspeed(15)
     keyboard.release("w")
@@ -346,6 +347,7 @@ def MountMoveFromDetection():
 
 def CactusMoveFromDetection():
     keyboard.press("w")
+    Waitspeed(6)
     keyboard.press("a")
     Waitspeed(15)
     keyboard.release("w")
