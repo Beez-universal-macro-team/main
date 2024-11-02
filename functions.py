@@ -299,7 +299,7 @@ def MoveUntilHive():
                 keyboard.press("a")
                 Waitspeed(7)
                 keyboard.release("a")
-                Waitspeed(0.9)
+                time.sleep(1)
 
             else:
                 print("Maximum attempts reached. Image not found.")
