@@ -629,9 +629,11 @@ def RoseKillCycle():
 
 
 def KillVicBees():
+    if detect_vic_defeat():
+            print("Vic defeated, exiting cycle")
+            return
     PepperVic()
     if detect_vic_in_screenshot():
-        sendScreenshot("Detected vic bee")
         for _ in range(2):
             time.sleep(0.1)
             keyboard.tap(Key.page_up)
@@ -644,9 +646,11 @@ def KillVicBees():
         time.sleep(0.1)
         keyboard.tap(Key.page_up)
     PepperToCannon()
+    if detect_vic_defeat():
+            print("Vic defeated, exiting cycle")
+            return
     MountVic()
     if detect_vic_in_screenshot():
-        sendScreenshot("Detected vic bee")
         for _ in range(2):
             time.sleep(0.1)
             keyboard.tap(Key.page_up)
@@ -655,10 +659,11 @@ def KillVicBees():
         MountMoveFromDetection()
         MountKillCycle()
         return 
+    if detect_vic_defeat():
+            print("Vic defeated, exiting cycle")
+            return
     CactusVic()
     if detect_vic_in_screenshot():
-        sendScreenshot("Detected vic bee")
-        time.sleep(0.1)
         for _ in range(2):
             time.sleep(0.1)
             keyboard.tap(Key.page_up)
@@ -678,9 +683,11 @@ def KillVicBees():
     keyboard.tap(Key.page_up)
     keyboard.tap(Key.page_up)
     keyboard.tap(Key.page_up)
+    if detect_vic_defeat():
+            print("Vic defeated, exiting cycle")
+            return
     RoseVic()
     if detect_vic_in_screenshot():
-        sendScreenshot("Detected vic bee")
         time.sleep(0.1)
         keyboard.tap(Key.page_up)
         keyboard.tap(Key.page_up)
