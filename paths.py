@@ -47,7 +47,7 @@ def PepperVic():
 
     ShiftLock()
     
-    press("d", 1)
+    press("d", 0.2)
 
     for _ in range(9):
         keyboard.tap(Key.page_down)
@@ -63,8 +63,6 @@ def PepperVic():
         keyboard.tap("o")
 
         time.sleep(0.15)
-
-    time.sleep(1)
 
     
 def PepperToCannon():
