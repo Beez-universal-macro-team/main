@@ -407,7 +407,17 @@ def close_roblox():
 
 
 def NightDetect():
-    target_color = (24, 76, 28)
+    try:
+        beesmas_enabled = int(readFile("guiFiles/beesmasToggle.txt"))
+    except:
+        beesmas_enabled = 0
+
+    # Load model based on toggle
+    if beesmas_enabled:
+        target_color = (86, 100, 107)
+    else:
+        target_color = (24, 76, 28)
+
 
     max_diff = 10  # Adjust this value for color tolerance
 
