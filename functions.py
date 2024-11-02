@@ -280,7 +280,7 @@ def MoveUntilHive():
 
     image_path = os.path.join(main_dir, 'images', 'gui', 'claimhive.png')
 
-    confidence = 0.75
+    confidence = float(readFile("guiFiles/confidence.txt"))
 
     for attempt in range(1, 6):  # Loop 5 times, from 1 to 5
         try:
