@@ -23,8 +23,6 @@ def joinRandomServer(place_id = 1537690962):
     if bool(readFile("guiFiles/joinPrivateServers.txt")):
         if time.time() - psTime >= 3:
             try:
-                print(f"Joining private server {psN + 1}")
-
                 join_url = eval(readFile("guiFiles/privateServers.txt"))[psN]
                 join_url = join_url.split("code=")[1]
 
@@ -52,8 +50,6 @@ def joinRandomServer(place_id = 1537690962):
                 url = joinRandomServer(place_id)
 
                 return url
-
-    print("Joining public server")
 
     if time.time() - lastRequest >= 30:
         # URL for Roblox game instances (servers)
