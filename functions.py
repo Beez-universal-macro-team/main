@@ -282,7 +282,7 @@ def MoveUntilHive():
 
     confidence = float(readFile("guiFiles/confidence.txt"))
 
-    for attempt in range(1, 6):  # Loop 5 times, from 1 to 5
+    for attempt in range(1, 24):  # Loop 5 times, from 1 to 5
         try:
             location = pyautogui.locateOnScreen(image_path, confidence=confidence)
 
@@ -290,16 +290,13 @@ def MoveUntilHive():
 
             current_hive = attempt  # Update the current hive number
 
-            time.sleep(1)
-
             return True  # Image found
 
         except pyautogui.ImageNotFoundException:
             if attempt < 5:
                 keyboard.press("a")
-                Waitspeed(7)
+                Waitspeed(2)
                 keyboard.release("a")
-                time.sleep(1)
 
             else:
                 print("Maximum attempts reached. Image not found.")
