@@ -15,7 +15,7 @@ model = YOLO(model_path)
 # Convert screenshot to YOLO input format and run inference
 def detect_vic_in_screenshot():
     # Take screenshot
-    sendScreenshot()
+    sendScreenshot("Detecting vic, On failed attempt send screenshot in #vic-bee-images")
     img = screenshot()
 
     # Convert to numpy array for YOLO input
