@@ -5,7 +5,7 @@ from ultralytics import YOLO
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-from functions import screenshot
+from functions import screenshot, sendScreenshot
 
 # Load the YOLOv8 model
 model_path = os.path.join(os.path.dirname(__file__), 'vic.pt')
@@ -15,6 +15,7 @@ model = YOLO(model_path)
 # Convert screenshot to YOLO input format and run inference
 def detect_vic_in_screenshot():
     # Take screenshot
+    sendScreenshot()
     img = screenshot()
 
     # Convert to numpy array for YOLO input
