@@ -1,5 +1,8 @@
 import customtkinter as ctk
 import tkinter as tk
+
+from matplotlib.mlab import window_none
+
 from functions import offsetDims, screenDims, writeFile, readFile, sendMessage
 import pyautogui
 import altConnection
@@ -27,8 +30,20 @@ class GUI:
         logo_path = os.path.join(main_dir, "basicbeeface.ico")
 
         self.window.iconbitmap(logo_path)
-        
-        self.window.geometry(f"{max(offsetDims(700, 'x'), 700)}x{max(offsetDims(350, 'y'), 350)}")
+
+        try:
+            self.windowSize = readFile(os.path.join(main_dir, "guiFiles", "windowSize.txt"))
+
+            if "x" not in self.windowSize:
+                raise ValueError
+
+        except:
+            self.windowSize = f"{max(offsetDims(700, 'x'), 700)}x{max(offsetDims(500, 'y'), 500)}"
+
+        print(self.windowSize)
+
+        self.window.geometry(self.windowSize)
+
         self.window.minsize(700, 350)
 
         ###### CREATING TABS ######
@@ -109,6 +124,17 @@ class GUI:
             self.webhook.insert(0, readFile("guiFiles/webhook.txt"))
         except:
             self.webhook.insert(0, "")
+
+        self.confidenceText = ctk.CTkLabel(self.tabControl.tab('Settings'),
+                                        text="Claim hive detection confidence:")
+        self.confidenceText.configure(font=(self.font, 14))
+
+        self.confidence = ctk.CTkEntry(self.tabControl.tab('Settings'))
+
+        try:
+            self.confidence.insert(0, readFile("guiFiles/confidence.txt"))
+        except:
+            self.confidence.insert(0, "0.7")
 
         self.connectingText = ctk.CTkLabel(self.tabControl.tab('Connecting'), text="Connecting")
         self.connectingText.configure(font=(self.font, 24))
@@ -222,6 +248,9 @@ class GUI:
         self.userIdText.pack()
         self.userId.pack()
 
+        self.confidenceText.pack()
+        self.confidence.pack()
+
         self.moveSpeedText.pack()
         self.moveSpeed.pack()
 
@@ -319,6 +348,11 @@ class GUI:
 
         writeFile("guiFiles/userId.txt", userId)
 
+    def confidenceChange(self):
+        confidence = self.confidence.get()
+
+        writeFile("guiFiles/confidence.txt", confidence)
+
     def moveSpeedChange(self):
         moveSpeed = self.moveSpeed.get()
 
@@ -332,7 +366,7 @@ class GUI:
     def saveWindowSize(self):
         x, y = self.window.winfo_width(), self.window.winfo_height()
 
-        writeFile("guiFiles/windowSize.txt", str([x, y]))
+        writeFile("guiFiles/windowSize.txt", f"{self.window.winfo_width()}x{self.window.winfo_height()}")
 
     def getPrivateServer(self, n):
         privateServers = eval(readFile("guiFiles/privateServers.txt"))
@@ -383,6 +417,7 @@ class GUI:
         self.privateServersChange()
         self.walkInFieldsChange()
         self.userIdChange()
+        self.confidenceChange()
         self.moveSpeedChange()
         self.timeoutChange()
         self.saveWindowSize()
