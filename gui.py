@@ -31,19 +31,7 @@ class GUI:
 
         self.window.iconbitmap(logo_path)
 
-        try:
-            self.windowSize = readFile(os.path.join(main_dir, "guiFiles", "windowSize.txt"))
-
-            if "x" not in self.windowSize:
-                raise ValueError
-
-        except:
-            self.windowSize = f"{max(offsetDims(700, 'x'), 700)}x{max(offsetDims(500, 'y'), 500)}"
-
-        print(self.windowSize)
-
-        self.window.geometry(self.windowSize)
-
+        self.window.geometry(f"{max(offsetDims(700, 'x'), 700)}x{max(offsetDims(350, 'y'), 350)}")
         self.window.minsize(700, 350)
 
         ###### CREATING TABS ######
@@ -306,6 +294,32 @@ class GUI:
         self.cactusWalk.place(relx=0.4, rely=0.6, anchor="w")
         self.spiderWalk.place(relx=0.4, rely=0.7, anchor="w")
 
+        self.confidenceText.place(relx=0.8, rely=0.45, anchor="n")
+        self.confidence.place(relx=0.8, rely=0.53, anchor="n")
+
+        self.beesmasText = ctk.CTkLabel(self.tabControl.tab('Settings'), text="Beesmas:")
+        self.beesmasText.configure(font=(self.font, 14))
+
+        self.beesmas = tk.IntVar(self.tabControl.tab('Settings'))
+        self.beesmasBox = ctk.CTkCheckBox(self.tabControl.tab('Settings'), 
+                                        text="Enable Beesmas", 
+                                        variable=self.beesmas)
+
+        try:
+            self.beesmas.set(1 if eval(readFile("guiFiles/beesmasToggle.txt")) else 0)
+        except:
+            pass
+
+        # Place them
+        self.beesmasText.place(relx=0.8, rely=0.3, anchor="n")
+        self.beesmasBox.place(relx=0.8, rely=0.38, anchor="n")  
+
+    # Add to saveSettings method
+    def beesmasChange(self):
+        writeFile("guiFiles/beesmasToggle.txt", True if self.beesmas.get() else False)
+
+
+
     def maxLoadTimeChange(self):
         tm = self.maxLoad.get()
 
@@ -420,6 +434,9 @@ class GUI:
         self.confidenceChange()
         self.moveSpeedChange()
         self.timeoutChange()
+        self.beesmasChange()
         self.saveWindowSize()
 
         self.window.after(1000, self.saveSettings)
+
+
