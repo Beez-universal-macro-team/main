@@ -297,7 +297,7 @@ def MoveUntilHive():
         except pyautogui.ImageNotFoundException:
             if attempt < 5:
                 keyboard.press("a")
-                Waitspeed(7)
+                Waitspeed(8)
                 keyboard.release("a")
                 time.sleep(1)
 
