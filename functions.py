@@ -288,7 +288,7 @@ def MoveUntilHive():
 
             keyboard.tap("e")
 
-            current_hive = attempt // 6  # Update the current hive number
+            current_hive = max([attempt // 6, 1])  # Update the current hive number
 
             return True  # Image found
 
