@@ -5,17 +5,26 @@ from ultralytics import YOLO
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-from functions import screenshot, sendScreenshot
+from functions import screenshot, sendScreenshot, readFile
 
-# Load the YOLOv8 model
-model_path = os.path.join(os.path.dirname(__file__), 'vic.pt')
+# Check beesmas toggle and load appropriate model
+try:
+    beesmas_enabled = int(readFile("guiFiles/beesmasToggle.txt"))
+except:
+    beesmas_enabled = 0
+
+# Load model based on toggle
+if beesmas_enabled:
+    model_path = os.path.join(os.path.dirname(__file__), 'vic_beesmas.pt')
+else:
+    model_path = os.path.join(os.path.dirname(__file__), 'vic_plain.pt')
+
 model = YOLO(model_path)
-
 
 # Convert screenshot to YOLO input format and run inference
 def detect_vic_in_screenshot():
     # Take screenshot
-    sendScreenshot("Detecting vic, On failed attempt send screenshot in #vic-bee-images")
+    sendScreenshot("")
     img = screenshot()
 
     # Convert to numpy array for YOLO input
@@ -24,7 +33,7 @@ def detect_vic_in_screenshot():
     img = img[..., ::-1]
 
     # Run inference
-    results = model(img, conf = 0.40)
+    results = model(img, conf = 0.25)
 
     # Iterate over detections and check if 'vic' or 'vic_gifted' is found
     found_vic = False
@@ -47,3 +56,4 @@ def detect_vic_in_screenshot():
         return False
     else:
         return True
+
