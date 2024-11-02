@@ -3,90 +3,67 @@ import time
 
 def PepperVic():
     sendMessage("Searching pepper")
+
+    press("d", 2)
+
     keyboard.press("d")
-    Waitspeed(24)
-    press(Key.space, 0.1)
-    time.sleep(0.50)
+
+    press(" ", 0.05)
+
+    time.sleep(1.4)
+
     keyboard.release("d")
-    time.sleep(0.50)
+
+    time.sleep(0.05)
+
     keyboard.press("w")
-    Waitspeed(7)
-    press(Key.space, 0.1)
-    time.sleep(0.50)
-    Waitspeed(10)
+
+    press(" ", 0.05)
+
+    time.sleep(2)
+
+    for _ in range(3):
+        press(" ", 0.05)
+
+        time.sleep(0.7)
+
+    time.sleep(1)
+
+    press(" ", 0.05)
+
+    time.sleep(0.5)
+
     keyboard.release("w")
-    time.sleep(0.10)
-    press(Key.space, 0.1)
-    keyboard.press("w")
-    time.sleep(0.65)
-    Waitspeed(10)
-    keyboard.release("w")
-    time.sleep(0.10)
-    keyboard.press("d")
-    Waitspeed(5)
-    keyboard.release("d")
-    time.sleep(0.10)
-    keyboard.press("w")
-    press(Key.space, 0.1)
-    time.sleep(0.50)
-    press(Key.space, 0.1)
-    press(Key.space, 0.1)
-    keyboard.release("w")
-    time.sleep(0.50)
-    keyboard.press("w")
-    Waitspeed(15)
-    keyboard.release("w")
-    time.sleep(0.1)
-    press(Key.space, 0.1)
-    keyboard.press("w")
-    time.sleep(0.50)
-    keyboard.release("w")
-    time.sleep(0.10)
-    keyboard.press("w")
-    keyboard.press("d")
-    Waitspeed(17)
-    keyboard.release("w")
-    keyboard.release("d")
-    time.sleep(0.10)
-    press(Key.space, 0.1)
-    keyboard.press("d")
-    time.sleep(0.50)
-    keyboard.release("d")
-    time.sleep(0.10)
-    keyboard.press("d")
-    Waitspeed(18)
-    keyboard.release("d")
-    time.sleep(0.10)
-    keyboard.press("s")
-    Waitspeed(3)
-    keyboard.release("s")
+
+    time.sleep(0.05)
+
+    press("w", "d", 2)
+
+    press(" ", 0.05)
+
+    press("d", 2.5)
+
+    press("s", 0.5)
+
     ShiftLock()
-    keyboard.press("d")
-    Waitspeed(1)
-    keyboard.release("d")
-    keyboard.tap(Key.page_down) 
-    keyboard.tap(Key.page_down)
-    keyboard.tap(Key.page_down) 
-    keyboard.tap(Key.page_down)
-    keyboard.tap(Key.page_down) 
-    keyboard.tap(Key.page_down)
-    keyboard.tap(Key.page_down) 
-    keyboard.tap(Key.page_down)
-    keyboard.tap(Key.page_down)
-    time.sleep(0.15)
-    keyboard.tap(Key.page_up)
-    keyboard.tap(Key.page_up)
-    keyboard.tap(Key.page_up)
-    keyboard.tap(Key.page_up)
-    keyboard.tap(Key.page_up)
-    time.sleep(0.15)
-    keyboard.tap("o")
-    time.sleep(0.15)
-    keyboard.tap("o")
-    time.sleep(0.15)
-    keyboard.tap("o")
-    time.sleep(0.15)
-    keyboard.tap("o")
+    
+    press("d", 1)
+
+    for _ in range(9):
+        keyboard.tap(Key.page_down)
+
+        time.sleep(0.025)
+
+    for _ in range(5):
+        keyboard.tap(Key.page_up)
+
+        time.sleep(0.025)
+
+    for _ in range(4):
+        keyboard.tap("o")
+
+        time.sleep(0.15)
+
     time.sleep(1)
 
     
@@ -118,32 +95,18 @@ def PepperToCannon():
     time.sleep(1.25)
 
 def MountVic():
-    keyboard.tap(",")
-    keyboard.tap(",")
+    sendMessage("Checking mountian")
     keyboard.tap("e")
-    time.sleep(2)
+    time.sleep(1.70)
     press(Key.space, 0.1)
     press(Key.space, 0.1)
-    time.sleep(2)
-    keyboard.press("w")
-    Waitspeed(3)
-    keyboard.press("d")
-    keyboard.release("w")
-    Waitspeed(14)
-    keyboard.release("d")
+    time.sleep(1)
+    keyboard.tap(",")
+    keyboard.tap(",")
+    time.sleep(0.38)
 
-    time.sleep(0.10)
-    keyboard.press("w")
-    Waitspeed(6)
-    keyboard.release("w")
-    time.sleep(0.10)
-
-    keyboard.press("d")
-    keyboard.press("s")
-    Waitspeed(13)
-    keyboard.release("s")
-    keyboard.release("d")
-    time.sleep(0.10)
+    press(Key.space, 0.1)
+    time.sleep(1)
 
     keyboard.tap(".")
     keyboard.tap(".")
@@ -154,10 +117,9 @@ def MountVic():
     Waitspeed(6.9)
     keyboard.release("d")
     time.sleep(0.10)
-
-    keyboard.press("w")
-    Waitspeed(5.5)
-    keyboard.release("w")
+    keyboard.press("s")
+    Waitspeed(2)
+    keyboard.release("s")
     time.sleep(0.10)
     
     keyboard.tap(Key.page_down) 
@@ -644,11 +606,9 @@ def RoseKillCycle():
 
 
 def KillVicBees():
-    if detect_vic_defeat():
-            print("Vic defeated, exiting cycle")
-            return
     PepperVic()
     if detect_vic_in_screenshot():
+        sendScreenshot("Detected vic bee")
         for _ in range(2):
             time.sleep(0.1)
             keyboard.tap(Key.page_up)
@@ -661,11 +621,9 @@ def KillVicBees():
         time.sleep(0.1)
         keyboard.tap(Key.page_up)
     PepperToCannon()
-    if detect_vic_defeat():
-            print("Vic defeated, exiting cycle")
-            return
     MountVic()
     if detect_vic_in_screenshot():
+        sendScreenshot("Detected vic bee")
         for _ in range(2):
             time.sleep(0.1)
             keyboard.tap(Key.page_up)
@@ -674,11 +632,10 @@ def KillVicBees():
         MountMoveFromDetection()
         MountKillCycle()
         return 
-    if detect_vic_defeat():
-            print("Vic defeated, exiting cycle")
-            return
     CactusVic()
     if detect_vic_in_screenshot():
+        sendScreenshot("Detected vic bee")
+        time.sleep(0.1)
         for _ in range(2):
             time.sleep(0.1)
             keyboard.tap(Key.page_up)
@@ -698,11 +655,9 @@ def KillVicBees():
     keyboard.tap(Key.page_up)
     keyboard.tap(Key.page_up)
     keyboard.tap(Key.page_up)
-    if detect_vic_defeat():
-            print("Vic defeated, exiting cycle")
-            return
     RoseVic()
     if detect_vic_in_screenshot():
+        sendScreenshot("Detected vic bee")
         time.sleep(0.1)
         keyboard.tap(Key.page_up)
         keyboard.tap(Key.page_up)
