@@ -288,12 +288,12 @@ def MoveUntilHive():
 
             keyboard.tap("e")
 
-            current_hive = attempt  # Update the current hive number
+            current_hive = attempt // 6  # Update the current hive number
 
             return True  # Image found
 
         except pyautogui.ImageNotFoundException:
-            if attempt < 5:
+            if attempt < 23:
                 keyboard.press("a")
                 Waitspeed(2)
                 keyboard.release("a")
