@@ -3,7 +3,6 @@ from ultralytics import YOLO
 import os
 import sys
 import time
-import keyboard
 from functions import screenshot
 
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
