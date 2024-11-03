@@ -379,7 +379,7 @@ def WalkToRedCannon():
         try:
             location = pyautogui.locateOnScreen(image_path, confidence=0.75)
 
-            print("Red cannon found!")
+            sendMessage("red cannon found")
 
             return True  # Image found, exit the function
 
@@ -390,7 +390,7 @@ def WalkToRedCannon():
 
             reset()
 
-    print("Maximum attempts reached. Red cannon not found.")
+    sendMessage("Maximum attempts reached. Red cannon not found.")
 
     return False
 
@@ -451,7 +451,7 @@ def detect_vic_defeat():
     image_path = os.path.join(main_dir, 'images', 'gui', 'defeated.png')
     try:
         location = pyautogui.locateOnScreen(image_path, confidence=0.6)
-        print("Vic defeat message found!")
+        sendMessage("vic defeated")
         return True
     except:
         print("No vic defeat message detected")
@@ -526,7 +526,7 @@ def ClaimHiveWithRetries():
         
         print(f"Attempt {attempt + 1} failed to claim hive")
         if attempt == max_retries - 1:  # Last attempt
-            print("Max retries reached. Unable to claim hive.")
+            sendMessage("Max retries reached. Unable to claim hive.")
             
     return False  # All attempts failed
 
