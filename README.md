@@ -1,4 +1,4 @@
-## v1.0 Experimental version 1 guide
+## v1.0 BETA version 1 guide
 
 ## Step 1
 
