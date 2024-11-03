@@ -83,8 +83,18 @@ def joinRandomServer(place_id = 1537690962):
         random_server = random.choice(servers)
         server_id = random_server['id']
 
-        # Generate the Roblox server join link
-        join_url = f'roblox://placeID={place_id}&gameInstanceId={server_id}'
+        try:
+            join_url = readFile("url.txt")
+
+            if "roblox" in join_url:
+                writeFile("url.txt", "")
+
+            else:
+                raise ValueError
+
+        except:
+            # Generate the Roblox server join link 
+            join_url = f'roblox://placeID={place_id}&gameInstanceId={server_id}'
 
         # Open the Roblox client to join the server
         webbrowser.open(join_url)
