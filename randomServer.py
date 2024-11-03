@@ -84,10 +84,10 @@ def joinRandomServer(place_id = 1537690962):
         server_id = random_server['id']
 
         try:
-            join_url = readFile("url.txt")
+            join_url = readFile("guiFiles/url.txt")
 
             if "roblox" in join_url:
-                writeFile("url.txt", "")
+                writeFile("guiFiles/url.txt", "")
 
             else:
                 raise ValueError
