@@ -2,7 +2,7 @@ import requests
 import random
 import webbrowser
 import time
-from functions import readFile, writeFile
+from functions import *
 
 lastRequest = 0
 
