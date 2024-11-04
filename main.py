@@ -7,9 +7,9 @@ import os
 running = False
 
 def check_f2():
-    while True:
-        with Listener(on_press=lambda key: key == Key.f2 and os._exit(0)) as listener:
-            listener.join()
+    listener = Listener(on_press=lambda key: key == Key.f2 and os._exit(0))
+    listener.start()
+    listener.join()
 
 def on_release(key):
     global running
@@ -34,6 +34,10 @@ ui.initWindow()
 ui.saveSettings()
 
 ui.window.mainloop()
+
+
+ui.window.mainloop()
+
 
 
 ui.window.mainloop()
