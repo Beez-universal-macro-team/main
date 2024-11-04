@@ -24,9 +24,6 @@ def readFile(fileName):
     with open(full_path, "r") as file:
         return file.read()
 
-# Then import modules that need readFile
-from randomServer import joinRandomServer
-
 main_dir = os.path.dirname(os.path.abspath(__file__))
 
 mouse = mouseController()
@@ -199,16 +196,6 @@ def writeFile(fileName, val):
     with open(full_path, "w+") as file:
         file.write(str(val))
 
-
-def readFile(fileName):
-    if platform.system().lower() == "windows":
-        while "/" in fileName:
-            fileName = fileName.replace("/", "\\")
-
-    full_path = os.path.join(main_dir, fileName)
-
-    with open(full_path, "r") as file:
-        return file.read()
     
 def screenshot_area(x, y, width, height):
     with mss.mss() as sct:
@@ -237,6 +224,8 @@ def screenshot_health_area():
     
     return screenshot_area(x, y, width, height)
 
+# Then import modules that need readFile
+from randomServer import joinRandomServer
 # Paths and FUNCTIONS
 print("loading vic bee AI...")
 from AI.vic_detect import detect_vic_in_screenshot
@@ -650,3 +639,4 @@ def MainLoopMacro():
     #PepperKillCycle()
     #KillVicBees()
     JoinServersUntilNight()
+
