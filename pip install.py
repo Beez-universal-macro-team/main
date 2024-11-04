@@ -7,16 +7,17 @@ required_libraries = [
     'mss',
     'discord.py',
     'discord',
-    'psutil', 
+    'psutil',
     'customtkinter',
     'requests',
-    'fonttools',
+    'fonttools',    
     'ultralytics',
     'matplotlib',
-    'audioop-lts',
     'opencv-python',  # For image processing
-    'numpy'  # For array operations
+    'numpy',  # For array operations
+    'colorama'  # Added colorama
 ]
+
 
 def install(*packages):
     subprocess.check_call([sys.executable, "-m", "pip", "install", *packages])
@@ -44,5 +45,12 @@ for lib in required_libraries:
     except subprocess.CalledProcessError:
         print(f"Failed to install '{lib}'.")
 
-print("All libraries installed (if available).")
+from colorama import init, Fore
+init()  # Initialize colorama
+
+print(Fore.GREEN + "All libraries installed (if available).")
+print(Fore.YELLOW + "If main.py has issues starting, run this again and check for errors and DM a dev")
+print(Fore.CYAN + "Press Enter to close..." + Fore.RESET)
+input()
+
 
