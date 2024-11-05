@@ -1,8 +1,6 @@
 import customtkinter as ctk
 import tkinter as tk
-
 from matplotlib.mlab import window_none
-
 from functions import offsetDims, screenDims, writeFile, readFile, sendMessage
 import pyautogui
 import altConnection
@@ -10,14 +8,45 @@ import os
 import socket
 import threading
 from functions import MainLoopMacro
+import ctypes
 
 main_dir = os.path.dirname(os.path.abspath(__file__))
 
 class GUI:
     def __init__(self, font="Courier"):
         self.font = font
-
         self.connected = False
+        self.macro_thread = None
+
+    def f3_pressed(self):
+        if self.macro_thread and self.macro_thread.is_alive():
+            ctypes.pythonapi.PyThreadState_SetAsyncExc(self.macro_thread.ident, ctypes.py_object(SystemExit))
+            
+        try:
+            keyboard.release("w")
+            keyboard.release("d")
+            keyboard.release("a")
+            keyboard.release("s")
+        except:
+            pass
+        os._exit(0)
+
+    def f2_pressed(self):
+        if self.macro_thread and self.macro_thread.is_alive():
+            ctypes.pythonapi.PyThreadState_SetAsyncExc(self.macro_thread.ident, ctypes.py_object(SystemExit))
+            
+        try:
+            keyboard.release("w")
+            keyboard.release("d")
+            keyboard.release("a")
+            keyboard.release("s")
+        except:
+            pass
+
+    def startMacro(self, main=False):
+        if main:
+            self.macro_thread = threading.current_thread()
+            MainLoopMacro()
 
     def initWindow(self):
         sendMessage("Started main!")
@@ -29,8 +58,7 @@ class GUI:
         # Set the GUI logo
         logo_path = os.path.join(main_dir, "basicbeeface.ico")
 
-        self.window.iconbitmap(logo_path)
-
+        self.window.iconbitmap(logo_path)        
         self.window.geometry(f"{max(offsetDims(700, 'x'), 700)}x{max(offsetDims(350, 'y'), 350)}")
         self.window.minsize(700, 350)
 
@@ -66,7 +94,8 @@ class GUI:
             self.maxLoad.insert(0, "25")
 
         self.start = ctk.CTkButton(self.window, text="Start (f1)", command=self.startMacro)
-        self.stop = ctk.CTkButton(self.window, text="Stop (f2)", command=self.stopMacro)
+        self.stop = ctk.CTkButton(self.window, text="Exit (f3)", command=self.f3_pressed)
+        self.exit = ctk.CTkButton(self.window, text="Stop (f2)", command=self.f2_pressed)
 
         self.connect = ctk.CTkButton(self.tabControl.tab('Connecting'), text="Connect new alt", command=self.connectToAltThread)
 
@@ -215,19 +244,19 @@ class GUI:
         self.tabControl.pack(expand=2, fill="both")
 
         self.joinTitle.pack()
-
         self.maxLoadText.pack()
         self.maxLoad.pack()
-
         self.maxLoadText.place(relx=0.5, rely=0.3, anchor="n")
         self.maxLoad.place(relx=0.5, rely=0.38, anchor="n")
 
         self.start.pack()
-        self.start.place(relx=0.35, rely=0.8, anchor="n")
+        self.start.place(relx=0.25, rely=0.8, anchor="n")
+
+        self.exit.pack()
+        self.exit.place(relx=0.5, rely=0.8, anchor="n")
 
         self.stop.pack()
-        self.stop.place(relx=0.65, rely=0.8, anchor="n")
-
+        self.stop.place(relx=0.75, rely=0.8, anchor="n")
         self.settingsTitle.pack()
 
         self.webhookText.pack()
@@ -438,5 +467,6 @@ class GUI:
         self.saveWindowSize()
 
         self.window.after(1000, self.saveSettings)
+
 
 
