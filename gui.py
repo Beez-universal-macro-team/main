@@ -44,7 +44,11 @@ class GUI:
             pass
 
     def startMacro(self, main=False):
-        if main:
+        self.saveSettings()
+        if not main:
+            self.macro_thread = threading.Thread(target=self.startMacro, args=(True,))
+            self.macro_thread.start()
+        else:
             self.macro_thread = threading.current_thread()
             MainLoopMacro()
 
