@@ -17,7 +17,7 @@ except:
 if beesmas_enabled:
     model_path = os.path.join(os.path.dirname(__file__), 'vic_beesmas.pt')
 else:
-    model_path = os.path.join(os.path.dirname(__file__), 'vic_plain3.pt')
+    model_path = os.path.join(os.path.dirname(__file__), 'vic_plain.pt')
 
 model = YOLO(model_path)
 
