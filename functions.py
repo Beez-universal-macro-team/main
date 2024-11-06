@@ -31,6 +31,7 @@ keyboard = keyboardController()
 
 screenDims = pyautogui.size()
 
+
 def readFile(fileName):
     if platform.system().lower() == "windows":
         while "/" in fileName:
@@ -40,6 +41,7 @@ def readFile(fileName):
 
     with open(full_path, "r") as file:
         return file.read()
+
 
 def isColorClose(color1, color2, maxDiff):
     for index, col in enumerate(color1):
@@ -165,11 +167,11 @@ def screenshot(monitor=False):
             if monitor["left"] == 0 and monitor["top"] == 0:
                 primary_monitor = monitor
                 break
-                
+
         screen = sct.grab(primary_monitor)
         screen = Image.frombytes("RGB", screen.size, screen.bgra, "raw", "BGRX")
         return screen
-        
+
 
 def click(pos):
     mouse.position = pos
@@ -206,7 +208,8 @@ def writeFile(fileName, val):
     with open(full_path, "w+") as file:
         file.write(str(val))
 
-def joinRandomServer(place_id = 1537690962):
+
+def joinRandomServer(place_id=1537690962):
     global lastRequest
     global servers_data
     global psN
@@ -271,8 +274,8 @@ def joinRandomServer(place_id = 1537690962):
 
             return url
 
-    except:
-        pass
+    except Exception as e:
+        print(e)
 
     if join:
         servers = servers_data['data']
@@ -301,14 +304,15 @@ def joinRandomServer(place_id = 1537690962):
 
         return join_url
 
-    
+
 def screenshot_area(x, y, width, height):
     with mss.mss() as sct:
         monitor = {"top": y, "left": x, "width": width, "height": height}
         screen = sct.grab(monitor)
         screen = Image.frombytes("RGB", screen.size, screen.bgra, "raw", "BGRX")
         return screen
-    
+
+
 def getHoneyOffset():
     image_path = os.path.join(main_dir, 'images', 'gui', 'honey_OFFSETY.png')
     try:
@@ -317,26 +321,28 @@ def getHoneyOffset():
     except:
         return offsetDims(1000, "y")  # Default Y offset if image not found
 
+
 def screenshot_health_area():
     honey_y = getHoneyOffset()
     screen_width = screenDims[0]
-    
+
     # Calculate coordinates for right corner area
     x = offsetDims(1580, "x")  # Right side of screen
     y = honey_y  # Use honey position directly
     width = offsetDims(300, "x")  # Width of capture area
     height = offsetDims(200, "y")  # Height of capture area
-    
+
     return screenshot_area(x, y, width, height)
 
-# Then import modules that need readFile
-from randomServer import joinRandomServer
 # Paths and FUNCTIONS
 print("loading vic bee AI...")
-from AI.vic_detect import detect_vic_in_screenshot
+from AI.vic_detect import detectVicBee
+
 print("Vic bee AI loaded, loading health AI...")
 from AI.health_detect import detect_health_in_screenshot
+
 print("Health AI loaded!")
+
 
 def validateMoveSpeed():
     try:
@@ -349,10 +355,10 @@ def validateMoveSpeed():
         writeFile("guiFiles/moveSpeed.txt", "29")
         return 29
 
+
 def Waitspeed(tm):
     walkSpeed = validateMoveSpeed()
     time.sleep((tm * 4) / walkSpeed)
-
 
 
 def Reset():
@@ -427,7 +433,6 @@ def ClaimHive():
     keyboard.release("a")
     keyboard.release("s")
 
-
     if MoveUntilHive():
         return True
 
@@ -446,7 +451,6 @@ def WalkToCornerRamp():
     keyboard.press("d")
     Waitspeed(((current_hive - 1) * 11) + 7)
     keyboard.release("d")
-
 
 
 def CornerToRedCannon():
@@ -512,7 +516,6 @@ def NightDetect():
     else:
         target_color = (24, 76, 28)
 
-
     max_diff = 10  # Adjust this value for color tolerance
 
     screen_width, screen_height = pyautogui.size()
@@ -535,6 +538,7 @@ def NightDetect():
     print("Night not detected.")
 
     return False
+
 
 def detect_vic_defeat():
     keyboard.tap("/")
@@ -595,7 +599,6 @@ def FloorDetect():
     return False
 
 
-
 def Reset_char():
     Reset()
 
@@ -613,15 +616,15 @@ def ClaimHiveWithRetries():
     for attempt in range(max_retries):
         if attempt > 0:  # Only reset after first attempt
             Reset()
-            
+
         if ClaimHive():
             print(f"Successfully claimed hive on attempt {attempt + 1}")
             return True  # Success, exit the function
-        
+
         print(f"Attempt {attempt + 1} failed to claim hive")
         if attempt == max_retries - 1:  # Last attempt
             sendMessage("Max retries reached. Unable to claim hive.")
-            
+
     return False  # All attempts failed
 
 
@@ -682,6 +685,7 @@ def DetectLoading(timeout):
 
     return True
 
+
 def ServerSetup():
     if not ClaimHiveWithRetries():
         print("Failed to claim hive after multiple attempts. Exiting MainLoop.")
@@ -728,7 +732,7 @@ def JoinServersUntilNight():
             else:
                 print("Night not detected. Retrying...")
 
-                #sendScreenshot("Night not detected. Retrying...") lowering screenshot send rate
+                # sendScreenshot("Night not detected. Retrying...") lowering screenshot send rate
 
                 leave()
 
@@ -739,8 +743,9 @@ def JoinServersUntilNight():
 
 from paths import *
 
+
 def MainLoopMacro():
-    #PepperKillCycle()
-    #KillVicBees()
+    # PepperKillCycle()
+    # KillVicBees()
     JoinServersUntilNight()
 
