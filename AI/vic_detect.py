@@ -27,6 +27,8 @@ def detectVicBee(img):
     img = np.array(img)
 
     img = img[..., ::-1]
+    
+    sendScreenshot("Checking vic bee")
 
     # Run inference
     results = model(img, conf=0.3)
@@ -47,6 +49,8 @@ def detectVicBee(img):
         poses.append(pos)
 
         print(f"Detected: {class_name}, at pos {pos}")
+        
+        sendScreenshot("Found vic bee!")
 
     return len(poses) > 0
 
