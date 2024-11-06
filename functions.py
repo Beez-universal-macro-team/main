@@ -40,7 +40,8 @@ def readFile(fileName):
     full_path = os.path.join(main_dir, fileName)
 
     with open(full_path, "r") as file:
-        return file.read()
+        content = file.read().strip()  # Remove leading/trailing spaces
+        return content
 
 
 def isColorClose(color1, color2, maxDiff):
@@ -200,14 +201,16 @@ def writeFile(fileName, val):
             fileName = fileName.replace("/", "\\")
 
     full_path = os.path.join(main_dir, fileName)
-
+    
     # Create the directory if it doesn't exist
     os.makedirs(os.path.dirname(full_path), exist_ok=True)
 
+    # Clean the data by removing all spaces
+    val_str = str(val).replace(" ", "")
+
     # Open the file in write mode, creating it if it doesn't exist
     with open(full_path, "w+") as file:
-        file.write(str(val))
-
+        file.write(val_str)
 
 def joinRandomServer(place_id=1537690962):
     global lastRequest
