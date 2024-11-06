@@ -227,22 +227,7 @@ class GUI:
         self.vicHoppingButton = ctk.CTkCheckBox(self.tabControl.tab('Vic Hop'), text="Vic Hopping", variable=self.vicHopping, onvalue=1, offvalue=0)
 
         self.vicHopping.set(1)
-
-        self.checkByWalking = ctk.CTkLabel(self.tabControl.tab('Vic Hop'), text="Check vic bee by walking in field:")
-        self.checkByWalking.configure(font=(self.font, 14))
-
-        self.walkInPepper = tk.IntVar(self.tabControl.tab('Vic Hop'))
-        self.walkInRose = tk.IntVar(self.tabControl.tab('Vic Hop'))
-        self.walkInMountain = tk.IntVar(self.tabControl.tab('Vic Hop'))
-        self.walkInCactus = tk.IntVar(self.tabControl.tab('Vic Hop'))
-        self.walkInSpider = tk.IntVar(self.tabControl.tab('Vic Hop'))
-
-        self.pepperWalk = ctk.CTkCheckBox(self.tabControl.tab('Vic Hop'), text="Walk to pepper field", variable=self.walkInPepper, onvalue=1, offvalue=0)
-        self.roseWalk = ctk.CTkCheckBox(self.tabControl.tab('Vic Hop'), text="Walk to rose field", variable=self.walkInRose, onvalue=1, offvalue=0)
-        self.mountainWalk = ctk.CTkCheckBox(self.tabControl.tab('Vic Hop'), text="Walk to mountain field", variable=self.walkInMountain, onvalue=1, offvalue=0)
-        self.cactusWalk = ctk.CTkCheckBox(self.tabControl.tab('Vic Hop'), text="Walk to cactus field", variable=self.walkInCactus, onvalue=1, offvalue=0)
-        self.spiderWalk = ctk.CTkCheckBox(self.tabControl.tab('Vic Hop'), text="Walk to spider field", variable=self.walkInSpider, onvalue=1, offvalue=0)
-
+        
         ###### DISPLAYING TEXT ######
 
         self.tabControl.pack(expand=2, fill="both")
@@ -313,20 +298,6 @@ class GUI:
 
         self.vicHoppingButton.pack()
 
-        self.checkByWalking.pack()
-
-        self.pepperWalk.pack()
-        self.roseWalk.pack()
-        self.mountainWalk.pack()
-        self.cactusWalk.pack()
-        self.spiderWalk.pack()
-
-        self.pepperWalk.place(relx=0.4, rely=0.3, anchor="w")
-        self.roseWalk.place(relx=0.4, rely=0.4, anchor="w")
-        self.mountainWalk.place(relx=0.4, rely=0.5, anchor="w")
-        self.cactusWalk.place(relx=0.4, rely=0.6, anchor="w")
-        self.spiderWalk.place(relx=0.4, rely=0.7, anchor="w")
-
         self.confidenceText.place(relx=0.8, rely=0.45, anchor="n")
         self.confidence.place(relx=0.8, rely=0.53, anchor="n")
 
@@ -377,18 +348,6 @@ class GUI:
 
         writeFile("guiFiles/privateServers.txt", str(privateServers))
         writeFile("guiFiles/joinPrivateServers.txt", True if self.usingPs.get() else False)
-
-    def walkInFieldsChange(self):
-        walkInFields = {
-            "pepper": self.walkInPepper.get(),
-            "rose": self.walkInRose.get(),
-            "mountain": self.walkInMountain.get(),
-            "cactus": self.walkInCactus.get(),
-            "spider": self.walkInSpider.get(),
-        }
-
-        writeFile("guiFiles/walk.txt", str(walkInFields))
-        writeFile("guiFiles/vicHopping.txt", True if self.vicHopping.get() else False)
 
     def userIdChange(self):
         userId = self.userId.get()
@@ -462,7 +421,6 @@ class GUI:
         self.maxLoadTimeChange()
         self.webhookChange()
         self.privateServersChange()
-        self.walkInFieldsChange()
         self.userIdChange()
         self.confidenceChange()
         self.moveSpeedChange()
