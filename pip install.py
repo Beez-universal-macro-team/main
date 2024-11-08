@@ -15,7 +15,8 @@ required_libraries = [
     'matplotlib',
     'opencv-python',  # For image processing
     'numpy',  # For array operations
-    'colorama'  # Added colorama
+    'colorama',  # Added colorama
+    'ImageHash'  # Added ImageHash for image comparison
 ]
 
 # Add pydirectinput only on Windows
