@@ -430,7 +430,7 @@ def PepperKillCycle():
         # Check if 4 minutes have passed
         if time.time() - start_time > timeout:
             print("4 minute timeout reached")
-            return
+            return True
 
         # S movement
         for _ in range(10):
@@ -439,7 +439,7 @@ def PepperKillCycle():
             keyboard.release("s")
             if detect_health_in_screenshot():
                 print("Health detected, exiting cycle")
-                return
+                return False
 
         # A movement
         for _ in range(5):
@@ -448,7 +448,7 @@ def PepperKillCycle():
             keyboard.release("a")
             if detect_health_in_screenshot():
                 print("Health detected, exiting cycle")
-                return
+                return False
 
         # W movement
         for _ in range(10):
@@ -457,7 +457,7 @@ def PepperKillCycle():
             keyboard.release("w")
             if detect_health_in_screenshot():
                 print("Health detected, exiting cycle")
-                return
+                return False
 
         # D movement
         for _ in range(6):
@@ -466,10 +466,10 @@ def PepperKillCycle():
             keyboard.release("d")
             if detect_health_in_screenshot():
                 print("Health detected, exiting cycle")
-                return
+                return False
         if detect_vic_defeat():
             sendScreenshot("Vic defeated, exiting cycle")
-            return
+            return True
 
 def MountKillCycle():
     start_time = time.time()
@@ -479,7 +479,7 @@ def MountKillCycle():
         # Check if 4 minutes have passed
         if time.time() - start_time > timeout:
             print("4 minute timeout reached")
-            return
+            return True
 
         # S movement
         for _ in range(10):
@@ -488,7 +488,7 @@ def MountKillCycle():
             keyboard.release("s")
             if detect_health_in_screenshot():
                 print("Health detected, exiting cycle")
-                return
+                return False
 
         # A movement
         for _ in range(3):
@@ -497,7 +497,7 @@ def MountKillCycle():
             keyboard.release("a")
             if detect_health_in_screenshot():
                 print("Health detected, exiting cycle")
-                return
+                return False
 
         # W movement
         for _ in range(10):
@@ -506,7 +506,7 @@ def MountKillCycle():
             keyboard.release("w")
             if detect_health_in_screenshot():
                 print("Health detected, exiting cycle")
-                return
+                return False
 
         # D movement
         for _ in range(4):
@@ -515,10 +515,10 @@ def MountKillCycle():
             keyboard.release("d")
             if detect_health_in_screenshot():
                 print("Health detected, exiting cycle")
-                return
+                return False
         if detect_vic_defeat():
             sendScreenshot("Vic defeated, exiting cycle")
-            return
+            return True
     
 
 def CactusKillCycle():
@@ -529,7 +529,7 @@ def CactusKillCycle():
         # Check if 4 minutes have passed
         if time.time() - start_time > timeout:
             print("4 minute timeout reached")
-            return
+            return True
         
         # D movement
         for _ in range(6):
@@ -538,7 +538,7 @@ def CactusKillCycle():
             keyboard.release("d")
             if detect_health_in_screenshot():
                 print("Health detected, exiting cycle")
-                return
+                return False
 
         # A movement
         for _ in range(7):
@@ -547,10 +547,10 @@ def CactusKillCycle():
             keyboard.release("a")
             if detect_health_in_screenshot():
                 print("Health detected, exiting cycle")
-                return
+                return False
         if detect_vic_defeat():
             sendScreenshot("Vic defeated, exiting cycle")
-            return
+            return True
 
 
 def RoseKillCycle():
@@ -561,7 +561,7 @@ def RoseKillCycle():
         # Check if 4 minutes have passed
         if time.time() - start_time > timeout:
             print("4 minute timeout reached")
-            return
+            return True
 
         # S movement
         for _ in range(3):
@@ -570,7 +570,7 @@ def RoseKillCycle():
             keyboard.release("s")
             if detect_health_in_screenshot():
                 print("Health detected, exiting cycle")
-                return
+                return False
 
         # A movement
         for _ in range(7):
@@ -579,7 +579,7 @@ def RoseKillCycle():
             keyboard.release("a")
             if detect_health_in_screenshot():
                 print("Health detected, exiting cycle")
-                return
+                return False
 
         # W movement
         for _ in range(4):
@@ -588,7 +588,7 @@ def RoseKillCycle():
             keyboard.release("w")
             if detect_health_in_screenshot():
                 print("Health detected, exiting cycle")
-                return
+                return False
 
         # D movement
         for _ in range(8):
@@ -597,10 +597,11 @@ def RoseKillCycle():
             keyboard.release("d")
             if detect_health_in_screenshot():
                 print("Health detected, exiting cycle")
-                return
+                return False
         if detect_vic_defeat():
             sendScreenshot("Vic defeated, exiting cycle")
-            return
+            return True
+
 
 
 def KillVicBees():
