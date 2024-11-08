@@ -602,7 +602,130 @@ def RoseKillCycle():
             sendScreenshot("Vic defeated, exiting cycle")
             return True
 
+def PepperRespawn():
+    press("d", 2)
 
+    keyboard.press("d")
+
+    press(" ", 0.05)
+
+    time.sleep(1.4)
+
+    keyboard.release("d")
+
+    time.sleep(0.05)
+
+    keyboard.press("w")
+
+    press(" ", 0.05)
+
+    time.sleep(2)
+
+    for _ in range(3):
+        press(" ", 0.05)
+
+        time.sleep(0.7)
+
+    time.sleep(1)
+
+    press(" ", 0.05)
+
+    time.sleep(0.5)
+
+    keyboard.release("w")
+
+    time.sleep(0.05)
+
+    press("w", "d", 2)
+
+    press(" ", 0.05)
+
+    press("d", 2.5)
+
+    press("s", 0.5)
+
+    press("d", 2)
+
+    keyboard.press("d")
+
+    press(" ", 0.05)
+
+    time.sleep(1.4)
+
+    keyboard.release("d")
+
+    time.sleep(0.05)
+
+    keyboard.press("w")
+
+    press(" ", 0.05)
+
+    time.sleep(2)
+
+    for _ in range(3):
+        press(" ", 0.05)
+
+        time.sleep(0.7)
+
+    time.sleep(1)
+
+    press(" ", 0.05)
+
+    time.sleep(0.5)
+
+    keyboard.release("w")
+
+    time.sleep(0.05)
+
+    press("w", "d", 2)
+
+    press(" ", 0.05)
+
+    press("d", 2.5)
+
+    press("s", 0.5)
+
+    keyboard.press("d")
+    press(" ", 0.05)
+    time.sleep(0.5)
+    keyboard.release("d")
+
+    time.sleep(0.5)
+
+    keyboard.press("w")
+    keyboard.press("d")
+    Waitspeed(25)
+    keyboard.release("w")
+    keyboard.release("d")
+
+
+def PepperKillCycleLoop():
+    while True:
+        if PepperKillCycle():
+            break
+        Reset_char()
+        WalkToRedCannon()
+
+def MountKillCycleLoop():
+    while True:
+        if MountKillCycle():
+            break
+        Reset_char()
+        WalkToRedCannon()
+
+def CactusKillCycleLoop():
+    while True:
+        if CactusKillCycle():
+            break
+        Reset_char()
+        WalkToRedCannon()
+
+def RoseKillCycleLoop():
+    while True:
+        if RoseKillCycle():
+            break
+        Reset_char()
+        WalkToRedCannon()
 
 def KillVicBees():
     img = screenshot()
