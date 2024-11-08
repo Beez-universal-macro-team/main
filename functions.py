@@ -26,11 +26,55 @@ psTime = 0
 
 main_dir = os.path.dirname(os.path.abspath(__file__))
 
-mouse = mouseController()
 keyboard = keyboardController()
 
 screenDims = pyautogui.size()
 
+# Windows-specific imports and setup
+if sys.platform == "win32":
+    try:
+        import pydirectinput as pag
+        pag.PAUSE = 0.1
+    except ImportError:
+        pag = pyautogui
+
+from pynput.mouse import Button, Controller
+pynputMouse = Controller()
+
+def teleport(x,y):
+    pag.moveTo(int(x),int(y))
+
+def moveTo(x,y, delay = 0.1):
+    pag.moveTo(int(x),int(y), delay)
+    pynputMouse.position = (int(x), int(y))
+
+def mouseDown():
+    pynputMouse.press(Button.left)
+    if sys.platform == "win32":
+        try:
+            pag.mouseDown()
+        except:
+            pass
+
+def mouseUp():
+    pynputMouse.release(Button.left)
+    if sys.platform == "win32":
+        try:
+            pag.mouseUp()
+        except:
+            pass
+
+def moveBy(x = 0,y = 0):
+    pag.move(x, y)  
+
+def click():
+    mouseDown()
+    time.sleep(0.04)
+    mouseUp()
+
+def fastClick():
+    pynputMouse.press(Button.left)
+    pynputMouse.release(Button.left)
 
 def readFile(fileName):
     if platform.system().lower() == "windows":
