@@ -18,6 +18,9 @@ required_libraries = [
     'colorama'  # Added colorama
 ]
 
+# Add pydirectinput only on Windows
+if platform.system() == 'Windows':
+    required_libraries.append('pydirectinput')
 
 def install(*packages):
     subprocess.check_call([sys.executable, "-m", "pip", "install", *packages])
