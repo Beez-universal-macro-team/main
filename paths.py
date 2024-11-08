@@ -705,6 +705,7 @@ def PepperKillCycleLoop():
             break
         Reset_char()
         WalkToRedCannon()
+        PepperRespawn()
 
 def MountKillCycleLoop():
     while True:
