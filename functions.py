@@ -16,7 +16,59 @@ import requests
 import random
 import webbrowser
 import time
+import cv2
+import numpy as np
+from mss import mss
 import imagehash
+
+def mssScreenshot(x, y, w, h):
+    with mss() as sct:
+        monitor = {"top": y, "left": x, "width": w, "height": h}
+        screen = sct.grab(monitor)
+        return Image.frombytes("RGB", screen.size, screen.bgra, "raw", "BGRX")
+
+def mssScreenshotNP(x, y, w, h):
+    with mss() as sct:
+        monitor = {"top": y, "left": x, "width": w, "height": h}
+        return np.array(sct.grab(monitor))
+
+def templateMatch(smallImg, bigImg):
+    res = cv2.matchTemplate(bigImg, smallImg, cv2.TM_CCOEFF_NORMED)
+    return cv2.minMaxLoc(res)
+
+def locateImageOnScreen(target, x, y, w, h, threshold=0):
+    screen = mssScreenshot(x, y, w, h)
+    screen = cv2.cvtColor(np.array(screen), cv2.COLOR_RGB2BGR)
+    _, max_val, _, max_loc = templateMatch(target, screen)
+    if max_val < threshold:
+        return None
+    return (max_val, max_loc)
+
+def locateTransparentImageOnScreen(target, x, y, w, h, threshold=0):
+    screen = mssScreenshotNP(x, y, w, h)
+    screen = cv2.cvtColor(screen, cv2.COLOR_BGRA2GRAY)
+    target = cv2.cvtColor(target, cv2.COLOR_RGB2GRAY)
+    _, max_val, _, max_loc = templateMatch(target, screen)
+    if max_val < threshold:
+        return None
+    return (max_val, max_loc)
+
+def similarHashes(hash1, hash2, threshold):
+    return hash1-hash2 < threshold
+
+def locateImageWithMaskOnScreen(image, mask, x, y, w, h, threshold=0):
+    screen = mssScreenshotNP(x, y, w, h)
+    screen = cv2.cvtColor(screen, cv2.COLOR_BGRA2BGR)
+    res = cv2.matchTemplate(screen, image, cv2.TM_CCORR_NORMED, mask=mask)
+    _, max_val, _, max_loc = cv2.minMaxLoc(res)
+    if max_val < threshold:
+        return None
+    return (max_val, max_loc)
+
+def detect_image_beside(image_path, x_offset, y_offset, width, height, threshold=0.75):
+    template = cv2.imread(os.path.join(main_dir, image_path))
+    return locateTransparentImageOnScreen(template, x_offset, y_offset, width, height, threshold)
+
 
 lastRequest = 0
 
