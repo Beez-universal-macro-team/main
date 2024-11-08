@@ -83,9 +83,18 @@ def readFile(fileName):
 
     full_path = os.path.join(main_dir, fileName)
 
-    with open(full_path, "r") as file:
-        content = file.read().strip()  # Remove leading/trailing spaces
-        return content
+    for _ in range(3):  # Try 3 times
+        try:
+            with open(full_path, "r") as file:
+                content = file.read().strip()
+                if content:
+                    return content
+                time.sleep(0.1)  # Brief pause between attempts
+        except:
+            time.sleep(0.1)
+            
+    return "0"  # Return "0" after 3 failed attempts
+
 
 
 def isColorClose(color1, color2, maxDiff):
