@@ -758,8 +758,25 @@ def RoseRespawn():
     keyboard.release("d")
     time.sleep(0.025)
 
-def PepperKillCycleLoop():
+import threading
+
+def timeout_checker(start_time, timeout=240):
     while True:
+        if time.time() - start_time > timeout:
+            print("4 minute timeout reached")
+            return True
+        time.sleep(1)
+
+
+def PepperKillCycleLoop():
+    start_time = time.time()
+    timeout_thread = threading.Thread(target=timeout_checker, args=(start_time,))
+    timeout_thread.daemon = True
+    timeout_thread.start()
+    
+    while True:
+        if not timeout_thread.is_alive():
+            return True
         if PepperKillCycle():
             break
         Reset_char()
@@ -767,29 +784,46 @@ def PepperKillCycleLoop():
         PepperRespawn()
 
 def MountKillCycleLoop():
+    start_time = time.time()
+    timeout_thread = threading.Thread(target=timeout_checker, args=(start_time,))
+    timeout_thread.daemon = True
+    timeout_thread.start()
+    
     while True:
+        if not timeout_thread.is_alive():
+            return True
         if MountKillCycle():
             break
         Reset_char()
         WalkToRedCannon()
-        MountRespawn()
 
 def CactusKillCycleLoop():
+    start_time = time.time()
+    timeout_thread = threading.Thread(target=timeout_checker, args=(start_time,))
+    timeout_thread.daemon = True
+    timeout_thread.start()
+    
     while True:
+        if not timeout_thread.is_alive():
+            return True
         if CactusKillCycle():
             break
         Reset_char()
         WalkToRedCannon()
-        CactusRespawn()
 
 def RoseKillCycleLoop():
+    start_time = time.time()
+    timeout_thread = threading.Thread(target=timeout_checker, args=(start_time,))
+    timeout_thread.daemon = True
+    timeout_thread.start()
+    
     while True:
+        if not timeout_thread.is_alive():
+            return True
         if RoseKillCycle():
             break
         Reset_char()
         WalkToRedCannon()
-        RoseRespawn()
-
 def KillVicBees():
     img = screenshot()
     
