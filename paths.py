@@ -698,6 +698,16 @@ def PepperRespawn():
     keyboard.release("w")
     keyboard.release("d")
 
+def MountRespawn():
+    keyboard.tap("e")
+    time.sleep(2)
+    keyboard.press("w")
+    Waitspeed(15)
+    keyboard.release("w")
+    time.sleep(0.025)
+    keyboard.press("d")
+    Waitspeed(15)
+    keyboard.release("d")
 
 def PepperKillCycleLoop():
     while True:
@@ -713,6 +723,7 @@ def MountKillCycleLoop():
             break
         Reset_char()
         WalkToRedCannon()
+        MountRespawn()
 
 def CactusKillCycleLoop():
     while True:
