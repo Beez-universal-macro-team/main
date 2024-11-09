@@ -1,8 +1,7 @@
 import subprocess
 import sys
 
-# List of libraries to uninstall
-libraries_to_uninstall = [
+required_libraries = [
     'pynput',
     'Pillow',
     'mss',
@@ -11,28 +10,31 @@ libraries_to_uninstall = [
     'psutil',
     'customtkinter',
     'requests',
-    'fonttools',
+    'fonttools',    
     'ultralytics',
     'matplotlib',
-    'opencv-python',
-    'numpy',
-    'colorama',
-    'ImageHash',
-    'pyautogui',  # Added pyautogui
+    'opencv-python',  # For image processing
+    'numpy',  # For array operations
+    'colorama',  # Added colorama
+    'ImageHash'  # Added ImageHash for image comparison
 ]
 
 def uninstall(*packages):
     subprocess.check_call([sys.executable, "-m", "pip", "uninstall", "-y", *packages])
 
-# First uninstall all libraries in the list
-for lib in libraries_to_uninstall:
+# Uninstall each library in the list
+for lib in required_libraries:
     try:
         uninstall(lib)
         print(f"'{lib}' uninstalled successfully.")
     except subprocess.CalledProcessError:
-        print(f"Failed to uninstall '{lib}' or it was not found.")
+        print(f"Failed to uninstall '{lib}'.")
 
-print("All specified libraries uninstalled (if installed).")
-print("You can now run the install script again to re-install them.")
-print("Press Enter to close...")
+from colorama import init, Fore
+init()  # Initialize colorama
+
+print(Fore.GREEN + "All specified libraries uninstalled (if available).")
+print(Fore.YELLOW + "You may now run the installation script if needed.")
+print(Fore.CYAN + "Press Enter to close..." + Fore.RESET)
 input()
+
