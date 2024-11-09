@@ -736,6 +736,28 @@ def CactusRespawn():
     keyboard.release("w")
     time.sleep(0.025)
 
+def RoseRespawn():
+    keyboard.tap("e")
+    keyboard.press("s")
+    keyboard.press("d")
+    time.sleep(0.1)
+    press(" ", 0.05)
+    time.sleep(0.025)
+    press(" ", 0.05)
+    time.sleep(2)
+    keyboard.release("s")
+    keyboard.release("d")
+    time.sleep(0.025)
+    press(" ", 0.05)
+    time.sleep(1.025)
+    keyboard.press("w")
+    keyboard.press("d")
+    Waitspeed(30)
+    keyboard.release("w")
+    Waitspeed(12)
+    keyboard.release("d")
+    time.sleep(0.025)
+
 def PepperKillCycleLoop():
     while True:
         if PepperKillCycle():
@@ -766,6 +788,7 @@ def RoseKillCycleLoop():
             break
         Reset_char()
         WalkToRedCannon()
+        RoseRespawn()
 
 def KillVicBees():
     img = screenshot()
@@ -779,7 +802,7 @@ def KillVicBees():
         print("Vic detected, killing bees...")
         #kill pattern goes here
         PepperMoveFromDetection()
-        PepperKillCycle()
+        PepperKillCycleLoop()
         return 
     for _ in range(2):
         time.sleep(0.1)
@@ -794,7 +817,7 @@ def KillVicBees():
         print("Vic detected, killing bees...")
         #kill pattern goes here
         MountMoveFromDetection()
-        MountKillCycle()
+        MountKillCycleLoop()
         return 
     CactusVic()
     if detectVicBee(img):
@@ -811,7 +834,7 @@ def KillVicBees():
         print("Vic detected, killing bees...")
         #kill pattern goes here
         CactusMoveFromDetection()
-        CactusKillCycle()
+        CactusKillCycleLoop()
         return 
     keyboard.tap(Key.page_up)
     keyboard.tap(Key.page_up)
@@ -834,5 +857,5 @@ def KillVicBees():
         print("Vic detected, killing bees...")
         #kill pattern goes here
         RoseMoveFromDetection()
-        RoseKillCycle()
+        RoseKillCycleLoop()
         return 
