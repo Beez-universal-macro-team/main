@@ -23,6 +23,7 @@ model = YOLO(model_path)
 
 # Convert screenshot to YOLO input format and run inference
 def detectVicBee(img):
+    img = screenshot()
     # Convert to numpy array for YOLO input
     img = np.array(img)
 
