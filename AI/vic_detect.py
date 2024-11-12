@@ -33,7 +33,7 @@ def detectVicBee(img):
     # Run inference
     results = model(img, conf=0.3)
 
-    class_names = ['vic', 'vic_gifted', 'vic_under']
+    class_names = ['vic', 'vic_under']
 
     poses = []
 
