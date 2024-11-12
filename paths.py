@@ -824,25 +824,35 @@ def RoseKillCycleLoop():
             break
         Reset_char()
         WalkToRedCannon()
+
+
 def KillVicBees():
+    PepperVic()
+
     img = screenshot()
     
-    PepperVic()
     if detectVicBee(img):
         sendScreenshot("Detected vic bee")
         for _ in range(2):
             time.sleep(0.1)
             keyboard.tap(Key.page_up)
+            
         print("Vic detected, killing bees...")
+        
         #kill pattern goes here
         PepperMoveFromDetection()
         PepperKillCycleLoop()
-        return 
+        return
+    
     for _ in range(2):
         time.sleep(0.1)
         keyboard.tap(Key.page_up)
     PepperToCannon()
+    
     MountVic()
+    
+    img = screenshot()
+    
     if detectVicBee(img):
         sendScreenshot("Detected vic bee")
         for _ in range(2):
@@ -852,44 +862,51 @@ def KillVicBees():
         #kill pattern goes here
         MountMoveFromDetection()
         MountKillCycleLoop()
-        return 
+        return
+    
     CactusVic()
+
+    img = screenshot()
+    
     if detectVicBee(img):
         sendScreenshot("Detected vic bee")
         time.sleep(0.1)
         for _ in range(2):
             time.sleep(0.1)
-            keyboard.tap(Key.page_up)
-            keyboard.tap(Key.page_up)
-            keyboard.tap(Key.page_up)
-            keyboard.tap(Key.page_up)
-            keyboard.tap(Key.page_up)
-            keyboard.tap(Key.page_up)
+            
+            for __ in range(6):
+                keyboard.tap(Key.page_up)
+                
+                time.sleep(0.025)
+
         print("Vic detected, killing bees...")
         #kill pattern goes here
         CactusMoveFromDetection()
         CactusKillCycleLoop()
-        return 
-    keyboard.tap(Key.page_up)
-    keyboard.tap(Key.page_up)
-    keyboard.tap(Key.page_up)
-    keyboard.tap(Key.page_up)
-    keyboard.tap(Key.page_up)
-    keyboard.tap(Key.page_up)
+        return
+
+    for __ in range(6):
+        keyboard.tap(Key.page_up)
+
+        time.sleep(0.025)
+
     RoseVic()
+
+    img = screenshot()
+    
     if detectVicBee(img):
         sendScreenshot("Detected vic bee")
         time.sleep(0.1)
-        keyboard.tap(Key.page_up)
-        keyboard.tap(Key.page_up)
-        keyboard.tap(Key.page_up)
-        keyboard.tap(Key.page_up)
-        keyboard.tap(Key.page_up)
-        keyboard.tap(Key.page_up)
+
+        for __ in range(6):
+            keyboard.tap(Key.page_up)
+
+            time.sleep(0.025)
+        
         keyboard.tap(".")
         keyboard.tap(".")
         print("Vic detected, killing bees...")
         #kill pattern goes here
         RoseMoveFromDetection()
         RoseKillCycleLoop()
-        return 
+        return
