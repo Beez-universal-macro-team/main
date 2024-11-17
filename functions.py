@@ -18,17 +18,16 @@ import webbrowser
 import time
 import cv2
 import numpy as np
-from mss import mss
 import imagehash
 
 def mssScreenshot(x, y, w, h):
-    with mss() as sct:
+    with mss.mss() as sct:
         monitor = {"top": y, "left": x, "width": w, "height": h}
         screen = sct.grab(monitor)
         return Image.frombytes("RGB", screen.size, screen.bgra, "raw", "BGRX")
 
 def mssScreenshotNP(x, y, w, h):
-    with mss() as sct:
+    with mss.mss() as sct:
         monitor = {"top": y, "left": x, "width": w, "height": h}
         return np.array(sct.grab(monitor))
 
