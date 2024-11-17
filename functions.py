@@ -465,9 +465,9 @@ def validateMoveSpeed():
         return 29
 
 
-def Waitspeed(tm):
+def Waitspeed(Walk_time):
     walkSpeed = validateMoveSpeed()
-    time.sleep((tm * 4) / walkSpeed)
+    time.sleep((Walk_time * 4) / walkSpeed)
 
 
 def Reset():
