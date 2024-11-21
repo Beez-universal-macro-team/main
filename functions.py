@@ -203,6 +203,27 @@ def sendScreenshot(message):
     except:
         pass
 
+def sendImportantMessage(message, picture=None):
+    try:
+        webhook = discord.SyncWebhook.from_url(readFile("guiFiles/important_webhook.txt"))
+        tm = datetime.now()
+        print(message)
+        webhook.send(f"[{tm.hour}:{tm.minute}:{tm.second}] {message}") if picture == None else webhook.send(
+            f"[{tm.hour}:{tm.minute}:{tm.second}] {message}", file=picture)
+    except:
+        pass
+
+def sendImportantScreenshot(message):
+    try:
+        screen = screenshot()
+        screen.save(os.path.join(main_dir, "images", "screenshot.png"))
+        screen = open(os.path.join(main_dir, "images", "screenshot.png"), "rb")
+        t = threading.Thread(target=sendImportantMessage, args=(message, discord.File(screen)))
+        t.daemon = True
+        t.start()
+    except:
+        pass
+
 
 def leave():
     keyboard.tap(Key.esc)
