@@ -910,3 +910,27 @@ def KillVicBees():
         RoseMoveFromDetection()
         RoseKillCycleLoop()
         return
+
+
+
+def KillVicFromSearcher(field):
+    if field == "Pepper":
+        PepperVic()
+        PepperMoveFromDetection()
+        PepperKillCycle()
+        return
+    if field == "Mount":
+        MountVic()
+        MountMoveFromDetection()
+        MountKillCycle()
+        return
+    if field == "Cactus":
+        CactusVic()
+        CactusMoveFromDetection()
+        CactusKillCycle()
+        return
+    if field == "Rose":
+        RoseVic()
+        RoseMoveFromDetection()
+        RoseKillCycle()
+        return
