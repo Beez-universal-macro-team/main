@@ -1,7 +1,7 @@
 import customtkinter as ctk
 import tkinter as tk
 from matplotlib.mlab import window_none
-from functions import offsetDims, screenDims, writeFile, readFile, sendMessage
+from functions import offsetDims, screenDims, writeFile, readFile, sendMessage, sendImportantMessage
 import pyautogui
 import altConnection
 import os
@@ -54,6 +54,7 @@ class GUI:
 
     def initWindow(self):
         sendMessage("Started main!")
+        sendImportantMessage("Started main!")
         
         self.window = ctk.CTk()
 
