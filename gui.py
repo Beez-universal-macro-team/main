@@ -111,6 +111,11 @@ class GUI:
 
         self.webhook = ctk.CTkEntry(self.tabControl.tab('Settings'))
 
+        self.importantWebhookText = ctk.CTkLabel(self.tabControl.tab('Settings'), text="Important webhook:")
+        self.importantWebhookText.configure(font=(self.font, 14))
+
+        self.importantWebhook = ctk.CTkEntry(self.tabControl.tab('Settings'))
+
         self.userIdText = ctk.CTkLabel(self.tabControl.tab('Settings'), text="Discord user ID:")
         self.userIdText.configure(font=(self.font, 14))
 
@@ -130,6 +135,12 @@ class GUI:
             self.moveSpeed.insert(0, readFile("guiFiles/moveSpeed.txt"))
         except:
             self.moveSpeed.insert(0, "")
+
+        try:
+            self.importantWebhook.insert(0, readFile("guiFiles/important_webhook.txt"))
+        except:
+            self.importantWebhook.insert(0, "")
+
 
         self.timeoutText = ctk.CTkLabel(self.tabControl.tab('Settings'), text="Max wait time before reconnecting to alt (minutes):")
         self.timeoutText.configure(font=(self.font, 14))
@@ -251,6 +262,12 @@ class GUI:
         self.webhookText.pack()
         self.webhook.pack()
 
+        self.importantWebhookText.pack()
+        self.importantWebhook.pack() 
+        self.importantWebhookText.place(relx=0.8, rely=0.11, anchor="n")
+        self.importantWebhook.place(relx=0.8, rely=0.19, anchor="n")
+
+
         self.userIdText.pack()
         self.userId.pack()
 
@@ -337,6 +354,11 @@ class GUI:
         webhook = self.webhook.get()
 
         writeFile("guiFiles/webhook.txt", webhook)
+
+
+    def importantWebhookChange(self):
+        important_webhook = self.importantWebhook.get()
+        writeFile("guiFiles/important_webhook.txt", important_webhook)
 
     def privateServersChange(self):
         privateServers = []
@@ -427,8 +449,11 @@ class GUI:
         self.timeoutChange()
         self.beesmasChange()
         self.saveWindowSize()
+        self.importantWebhookChange()
 
         self.window.after(1000, self.saveSettings)
+
+
 
 
 
