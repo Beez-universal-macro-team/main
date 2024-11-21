@@ -1,55 +1,86 @@
 import subprocess
 import sys
+import importlib.util
+from importlib.metadata import version, PackageNotFoundError
 
-required_libraries = [
-    'pynput',
-    'Pillow',
-    'mss',
-    'discord.py',
-    'discord',
-    'psutil',
-    'customtkinter',
-    'requests',
-    'fonttools',    
-    'ultralytics',
-    'matplotlib',
-    'opencv-python',  # For image processing
-    'numpy',  # For array operations
-    'colorama',  # Added colorama
-    'ImageHash'  # Added ImageHash for image comparison
-]
+# Define required libraries and their optional minimum versions
+required_libraries = {
+    'pynput': None,
+    'Pillow': '9.0.0',
+    'mss': None,
+    'discord.py': None,
+    'discord': None,
+    'psutil': None,
+    'customtkinter': None,
+    'requests': '2.25.0',
+    'fonttools': None,
+    'ultralytics': None,
+    'matplotlib': '3.4.0',
+    'opencv-python': None,
+    'numpy': '1.21.0',
+    'colorama': None,
+    'ImageHash': None,
+    'pyautogui': None
+}
 
-def install(*packages):
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "--user", *packages])
-
-# First try to install pyautogui separately with special flags
-try:
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "--no-cache-dir", "--user", "pyautogui"])
-    print("'pyautogui' installed successfully.")
-except subprocess.CalledProcessError:
-    print("Failed to install 'pyautogui'.")
-
-# Then continue with the rest of the installations
-try:
-    install("pip", "--upgrade", "--user")
-    install("setuptools", "--upgrade", "--user")
-    print("Pip upgraded successfully.")
-except subprocess.CalledProcessError:
-    print("Failed to upgrade pip.")
-
-# Install remaining libraries
-for lib in required_libraries:
+def install_package(package):
+    """Install a package using pip."""
     try:
-        install(lib)
-        print(f"'{lib}' installed successfully.")
+        print(f"Installing {package}...")
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "--user", package])
+        print(f"{package} installed successfully.")
     except subprocess.CalledProcessError:
-        print(f"Failed to install '{lib}'.")
+        print(f"Failed to install {package}.")
 
-from colorama import init, Fore
-init()  # Initialize colorama
+def reinstall_package(package):
+    """Force reinstall a package."""
+    try:
+        print(f"Reinstalling {package}...")
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "--user", "--force-reinstall", package])
+        print(f"{package} reinstalled successfully.")
+    except subprocess.CalledProcessError:
+        print(f"Failed to reinstall {package}.")
 
-print(Fore.GREEN + "All libraries installed (if available).")
-print(Fore.YELLOW + "If main.py has issues starting, run this again and check for errors and DM a dev")
-print(Fore.CYAN + "Press Enter to close..." + Fore.RESET)
-input()
+def check_libraries(libraries):
+    """Check each library and attempt to fix issues."""
+    for library, min_version in libraries.items():
+        print(f"Checking {library}...")
+        try:
+            # Check if the library is installed
+            if importlib.util.find_spec(library) is None:
+                print(f"{library} is not installed.")
+                install_package(library)
+            else:
+                print(f"{library} is installed.")
+                if min_version:
+                    try:
+                        # Check library version
+                        installed_version = version(library)
+                        if installed_version < min_version:
+                            print(f"Updating {library} (Installed: {installed_version}, Required: {min_version})...")
+                            reinstall_package(f"{library}>={min_version}")
+                        else:
+                            print(f"{library} is up to date (Version: {installed_version}).")
+                    except PackageNotFoundError:
+                        print(f"Failed to retrieve version for {library}.")
+        except Exception as e:
+            print(f"An error occurred while checking {library}: {e}")
+            reinstall_package(library)
 
+def main():
+    # Ensure pip and setuptools are upgraded
+    try:
+        print("Upgrading pip and setuptools...")
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "pip", "setuptools"])
+        print("Pip and setuptools upgraded successfully.")
+    except subprocess.CalledProcessError:
+        print("Failed to upgrade pip and setuptools.")
+
+    # Check and fix libraries
+    check_libraries(required_libraries)
+
+    print("All libraries checked and installed (if necessary).")
+    input("Press Enter to close...")
+
+if __name__ == "__main__":
+    main()
