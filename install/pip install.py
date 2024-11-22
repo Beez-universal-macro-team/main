@@ -23,6 +23,15 @@ required_libraries = {
     'pyautogui': None
 }
 
+def uninstall_package(package):
+    """Uninstall a package using pip."""
+    try:
+        print(f"Uninstalling {package}...")
+        subprocess.check_call([sys.executable, "-m", "pip", "uninstall", "--yes", package])
+        print(f"{package} uninstalled successfully.")
+    except subprocess.CalledProcessError:
+        print(f"Failed to uninstall {package}. It might not be installed.")
+
 def install_package(package):
     """Install a package using pip."""
     try:
@@ -33,13 +42,12 @@ def install_package(package):
         print(f"Failed to install {package}.")
 
 def reinstall_package(package):
-    """Force reinstall a package."""
+    """Uninstall and reinstall a package."""
     try:
-        print(f"Reinstalling {package}...")
-        subprocess.check_call([sys.executable, "-m", "pip", "install", "--user", "--force-reinstall", package])
-        print(f"{package} reinstalled successfully.")
-    except subprocess.CalledProcessError:
-        print(f"Failed to reinstall {package}.")
+        uninstall_package(package)
+        install_package(package)
+    except Exception as e:
+        print(f"Failed to reinstall {package}: {e}")
 
 def check_libraries(libraries):
     """Check each library and attempt to fix issues."""
@@ -79,7 +87,7 @@ def main():
     # Check and fix libraries
     check_libraries(required_libraries)
 
-    print("All libraries checked and installed (if necessary).")
+    print("All libraries checked, uninstalled, and reinstalled if necessary.")
     input("Press Enter to close...")
 
 if __name__ == "__main__":
