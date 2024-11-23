@@ -36,7 +36,7 @@ def install_package(package):
     """Install a package using pip."""
     try:
         print(f"Installing {package}...")
-        subprocess.check_call([sys.executable, "-m", "pip", "install", "--user", package])
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "--user", "--no-cache-dir", package])
         print(f"{package} installed successfully.")
     except subprocess.CalledProcessError:
         print(f"Failed to install {package}.")
