@@ -76,6 +76,7 @@ class GUI:
         self.tabControl.add(name='Connecting')
         self.tabControl.add(name='Settings')
         self.tabControl.add(name='Private Servers')
+        self.tabControl.add(name='Planters')
         self.tabControl.add(name='Credits')
 
         ###### CREATING TEXT ######
@@ -239,6 +240,90 @@ class GUI:
         self.vicHoppingButton = ctk.CTkCheckBox(self.tabControl.tab('Vic Hop'), text="Vic Hopping", variable=self.vicHopping, onvalue=1, offvalue=0)
 
         self.vicHopping.set(1)
+
+
+        planters = [
+            "Heat Treated",
+            "Hydroponic",
+            "Petal",
+            "Red Clay",
+            "Blue Clay",
+            "Pesticide",
+            "Tacky",
+            "Candy",
+            "Plastic",
+        ]
+
+        fields = [
+            "Pepper",
+            "Rose",
+            "Strawberry",
+            "Mushroom",
+            "Coconut",
+            "Spider",
+            "Pumpkin",
+            "Pineapple",
+            "Dandelion",
+            "Sunflower"
+            "Mountain",
+            "Cactus",
+            "Clover",
+        ]
+
+        self.planter1 = ctk.StringVar()
+        self.planter2 = ctk.StringVar()
+        self.planter3 = ctk.StringVar()
+
+        try:
+            self.plantersVals = eval(readFile("guiFiles/planters.txt"))
+
+            if self.plantersVals == 0:
+                raise ValueError
+
+        except:
+            self.plantersVals = ["Heat Treated", "Hydroponic", "Petal"]
+
+        try:
+            self.plantersFields = eval(readFile("guiFiles/planterFields.txt"))
+
+            if self.plantersFields == 0:
+                raise ValueError
+
+        except:
+            self.plantersFields = ["Pepper", "BlueFlower", "Sunflower"]
+
+        print(self.plantersVals)
+
+        self.planter1.set(self.plantersVals[0])
+        self.planter2.set(self.plantersVals[1])
+        self.planter3.set(self.plantersVals[2])
+
+        self.planter1Field = tk.StringVar()
+        self.planter2Field = tk.StringVar()
+        self.planter3Field = tk.StringVar()
+
+        self.planter1Field.set(self.plantersFields[0])
+        self.planter2Field.set(self.plantersFields[1])
+        self.planter3Field.set(self.plantersFields[2])
+
+        self.plantersText = ctk.CTkLabel(self.tabControl.tab('Planters'), text="Planters")
+        self.plantersText.configure(font=(self.font, 24))
+
+        self.planter1Text = ctk.CTkLabel(self.tabControl.tab('Planters'), text="Planter1")
+        self.planter2Text = ctk.CTkLabel(self.tabControl.tab('Planters'), text="Planter2")
+        self.planter3Text = ctk.CTkLabel(self.tabControl.tab('Planters'), text="Planter3")
+
+        self.planter1Options = ctk.CTkOptionMenu(self.tabControl.tab('Planters'), values=planters, variable=self.planter1)
+        self.planter2Options = ctk.CTkOptionMenu(self.tabControl.tab('Planters'), values=planters, variable=self.planter2)
+        self.planter3Options = ctk.CTkOptionMenu(self.tabControl.tab('Planters'), values=planters, variable=self.planter3)
+
+        self.planter1FieldText = ctk.CTkLabel(self.tabControl.tab('Planters'), text="Field1")
+        self.planter2FieldText = ctk.CTkLabel(self.tabControl.tab('Planters'), text="Field2")
+        self.planter3FieldText = ctk.CTkLabel(self.tabControl.tab('Planters'), text="Field3")
+
+        self.planter1Field = ctk.CTkOptionMenu(self.tabControl.tab('Planters'), values=fields, variable=self.planter1Field)
+        self.planter2Field = ctk.CTkOptionMenu(self.tabControl.tab('Planters'), values=fields, variable=self.planter2Field)
+        self.planter3Field = ctk.CTkOptionMenu(self.tabControl.tab('Planters'), values=fields, variable=self.planter3Field)
         
         ###### DISPLAYING TEXT ######
 
@@ -334,7 +419,43 @@ class GUI:
 
         # Place them
         self.beesmasText.place(relx=0.8, rely=0.3, anchor="n")
-        self.beesmasBox.place(relx=0.8, rely=0.38, anchor="n")  
+        self.beesmasBox.place(relx=0.8, rely=0.38, anchor="n")
+
+
+        self.plantersText.pack()
+
+        self.planter1Text.pack()
+        self.planter2Text.pack()
+        self.planter3Text.pack()
+
+        self.planter1Text.place(relx=0.2, rely=0.215, anchor="n")
+        self.planter2Text.place(relx=0.5, rely=0.215, anchor="n")
+        self.planter3Text.place(relx=0.8, rely=0.215, anchor="n")
+
+        self.planter1Options.pack()
+        self.planter2Options.pack()
+        self.planter3Options.pack()
+
+        self.planter1Options.place(relx=0.2, rely=0.3, anchor="n")
+        self.planter2Options.place(relx=0.5, rely=0.3, anchor="n")
+        self.planter3Options.place(relx=0.8, rely=0.3, anchor="n")
+
+        self.planter1FieldText.pack()
+        self.planter2FieldText.pack()
+        self.planter3FieldText.pack()
+
+        self.planter1FieldText.place(relx=0.2, rely=0.415, anchor="n")
+        self.planter2FieldText.place(relx=0.5, rely=0.415, anchor="n")
+        self.planter3FieldText.place(relx=0.8, rely=0.415, anchor="n")
+
+        self.planter1Field.pack()
+        self.planter2Field.pack()
+        self.planter3Field.pack()
+
+        self.planter1Field.place(relx=0.2, rely=0.5, anchor="n")
+        self.planter2Field.place(relx=0.5, rely=0.5, anchor="n")
+        self.planter3Field.place(relx=0.8, rely=0.5, anchor="n")
+
 
     # Add to saveSettings method
     def beesmasChange(self):
@@ -391,6 +512,13 @@ class GUI:
         timeout = self.timeout.get()
 
         writeFile("guiFiles/timeout.txt", timeout)
+
+    def plantersChange(self):
+        plantersVals = [self.planter1.get(), self.planter2.get(), self.planter3.get()]
+        plantersFields = [self.planter1Field.get(), self.planter2Field.get(), self.planter3Field.get()]
+
+        writeFile("guiFiles/planters.txt", str(plantersVals))
+        writeFile("guiFiles/planterFields.txt", str(plantersFields))
 
     def saveWindowSize(self):
         x, y = self.window.winfo_width(), self.window.winfo_height()
@@ -451,10 +579,6 @@ class GUI:
         self.beesmasChange()
         self.saveWindowSize()
         self.importantWebhookChange()
+        self.plantersChange()
 
         self.window.after(1000, self.saveSettings)
-
-
-
-
-
