@@ -265,6 +265,10 @@ class GUI:
             "Pineapple",
             "Dandelion",
             "Sunflower"
+            "Pine Tree",
+            "Bamboo",
+            "Blue Flower",
+            "Stump"
             "Mountain",
             "Cactus",
             "Clover",
