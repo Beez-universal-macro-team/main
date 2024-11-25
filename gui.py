@@ -209,10 +209,8 @@ class GUI:
         ]
 
         specialThanks = [
-            "Slymi",
             "_epic",
-            "Fire_king66",
-            "Lvl18BubbleBee"
+            "Fire_king66"
         ]
 
         self.ownerText = ctk.CTkLabel(self.tabControl.tab('Credits'), text="Owner/Head Developer:")
