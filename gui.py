@@ -12,6 +12,7 @@ import ctypes
 
 main_dir = os.path.dirname(os.path.abspath(__file__))
 
+
 class GUI:
     def __init__(self, font="Courier"):
         self.font = font
@@ -21,7 +22,7 @@ class GUI:
     def f3_pressed(self):
         if self.macro_thread and self.macro_thread.is_alive():
             ctypes.pythonapi.PyThreadState_SetAsyncExc(self.macro_thread.ident, ctypes.py_object(SystemExit))
-            
+
         try:
             keyboard.release("w")
             keyboard.release("d")
@@ -34,7 +35,7 @@ class GUI:
     def f2_pressed(self):
         if self.macro_thread and self.macro_thread.is_alive():
             ctypes.pythonapi.PyThreadState_SetAsyncExc(self.macro_thread.ident, ctypes.py_object(SystemExit))
-            
+
         try:
             keyboard.release("w")
             keyboard.release("d")
@@ -55,7 +56,7 @@ class GUI:
     def initWindow(self):
         sendMessage("Started main!")
         sendImportantMessage("Started main!")
-        
+
         self.window = ctk.CTk()
 
         self.window.title("Beez Universal Macro - Main")
@@ -63,7 +64,7 @@ class GUI:
         # Set the GUI logo
         logo_path = os.path.join(main_dir, "basicbeeface.ico")
 
-        self.window.iconbitmap(logo_path)        
+        self.window.iconbitmap(logo_path)
         self.window.geometry(f"{max(offsetDims(700, 'x'), 700)}x{max(offsetDims(350, 'y'), 350)}")
         self.window.minsize(700, 350)
 
@@ -103,7 +104,8 @@ class GUI:
         self.stop = ctk.CTkButton(self.window, text="Exit (f3)", command=self.f3_pressed)
         self.exit = ctk.CTkButton(self.window, text="Stop (f2)", command=self.f2_pressed)
 
-        self.connect = ctk.CTkButton(self.tabControl.tab('Connecting'), text="Connect new alt", command=self.connectToAltThread)
+        self.connect = ctk.CTkButton(self.tabControl.tab('Connecting'), text="Connect new alt",
+                                     command=self.connectToAltThread)
 
         self.settingsTitle = ctk.CTkLabel(self.tabControl.tab('Settings'), text="Settings")
         self.settingsTitle.configure(font=(self.font, 24))
@@ -143,8 +145,8 @@ class GUI:
         except:
             self.importantWebhook.insert(0, "")
 
-
-        self.timeoutText = ctk.CTkLabel(self.tabControl.tab('Settings'), text="Max wait time before reconnecting to alt (minutes):")
+        self.timeoutText = ctk.CTkLabel(self.tabControl.tab('Settings'),
+                                        text="Max wait time before reconnecting to alt (minutes):")
         self.timeoutText.configure(font=(self.font, 14))
 
         self.timeout = ctk.CTkEntry(self.tabControl.tab('Settings'))
@@ -160,7 +162,7 @@ class GUI:
             self.webhook.insert(0, "")
 
         self.confidenceText = ctk.CTkLabel(self.tabControl.tab('Settings'),
-                                        text="Claim hive detection confidence:")
+                                           text="Claim hive detection confidence:")
         self.confidenceText.configure(font=(self.font, 14))
 
         self.confidence = ctk.CTkEntry(self.tabControl.tab('Settings'))
@@ -193,7 +195,8 @@ class GUI:
 
         self.usingPs = tk.IntVar(self.tabControl.tab('Private Servers'))
 
-        self.usingPsBox = ctk.CTkCheckBox(self.tabControl.tab('Private Servers'), text="Use private servers", variable=self.usingPs, onvalue=1, offvalue=0)
+        self.usingPsBox = ctk.CTkCheckBox(self.tabControl.tab('Private Servers'), text="Use private servers",
+                                          variable=self.usingPs, onvalue=1, offvalue=0)
 
         try:
             self.usingPs.set(1 if eval(readFile("guiFiles/joinPrivateServers.txt")) else 0)
@@ -209,8 +212,10 @@ class GUI:
         ]
 
         specialThanks = [
+            "Slymi",
             "_epic",
-            "Fire_king66"
+            "Fire_king66",
+            "Lvl18BubbleBee"
         ]
 
         self.ownerText = ctk.CTkLabel(self.tabControl.tab('Credits'), text="Owner/Head Developer:")
@@ -235,10 +240,10 @@ class GUI:
 
         self.vicHopping = tk.IntVar()
 
-        self.vicHoppingButton = ctk.CTkCheckBox(self.tabControl.tab('Vic Hop'), text="Vic Hopping", variable=self.vicHopping, onvalue=1, offvalue=0)
+        self.vicHoppingButton = ctk.CTkCheckBox(self.tabControl.tab('Vic Hop'), text="Vic Hopping",
+                                                variable=self.vicHopping, onvalue=1, offvalue=0)
 
         self.vicHopping.set(1)
-
 
         planters = [
             "Heat Treated",
@@ -277,36 +282,39 @@ class GUI:
         self.planter3 = ctk.StringVar()
 
         try:
-            self.plantersVals = eval(readFile("guiFiles/planters.txt"))
+            self.plantersVals = eval(readFile(os.path.join("guiFiles", "plantersStatus.txt")))
 
             if self.plantersVals == 0:
                 raise ValueError
 
         except:
-            self.plantersVals = ["Heat Treated", "Hydroponic", "Petal"]
+            self.plantersVals = {
+                "planter1": dict(typ="Heat Treated", field="pepper", status="free", tm="60"),
+                "planter2": dict(typ="Hydroponic", field="pine", status="free", tm="60"),
+                "planter3": dict(typ="Petal", field="sunflower", status="free", tm="60"),
+            }
 
-        try:
-            self.plantersFields = eval(readFile("guiFiles/planterFields.txt"))
+            writeFile(os.path.join("guiFiles", "plantersStatus.txt"), str(self.plantersVals))
 
-            if self.plantersFields == 0:
-                raise ValueError
-
-        except:
-            self.plantersFields = ["Pepper", "BlueFlower", "Sunflower"]
-
-        print(self.plantersVals)
-
-        self.planter1.set(self.plantersVals[0])
-        self.planter2.set(self.plantersVals[1])
-        self.planter3.set(self.plantersVals[2])
+        self.planter1.set(self.plantersVals["planter1"]["typ"])
+        self.planter2.set(self.plantersVals["planter2"]["typ"])
+        self.planter3.set(self.plantersVals["planter3"]["typ"])
 
         self.planter1Field = tk.StringVar()
         self.planter2Field = tk.StringVar()
         self.planter3Field = tk.StringVar()
 
-        self.planter1Field.set(self.plantersFields[0])
-        self.planter2Field.set(self.plantersFields[1])
-        self.planter3Field.set(self.plantersFields[2])
+        self.planter1Status = "free"
+        self.planter2Status = "free"
+        self.planter3Status = "free"
+
+        self.planter1Time = ctk.StringVar(value=self.plantersVals["planter1"]["tm"])
+        self.planter2Time = ctk.StringVar(value=self.plantersVals["planter2"]["tm"])
+        self.planter3Time = ctk.StringVar(value=self.plantersVals["planter3"]["tm"])
+
+        self.planter1Field.set(self.plantersVals["planter1"]["field"])
+        self.planter2Field.set(self.plantersVals["planter2"]["field"])
+        self.planter3Field.set(self.plantersVals["planter3"]["field"])
 
         self.plantersText = ctk.CTkLabel(self.tabControl.tab('Planters'), text="Planters")
         self.plantersText.configure(font=(self.font, 24))
@@ -315,18 +323,32 @@ class GUI:
         self.planter2Text = ctk.CTkLabel(self.tabControl.tab('Planters'), text="Planter2")
         self.planter3Text = ctk.CTkLabel(self.tabControl.tab('Planters'), text="Planter3")
 
-        self.planter1Options = ctk.CTkOptionMenu(self.tabControl.tab('Planters'), values=planters, variable=self.planter1)
-        self.planter2Options = ctk.CTkOptionMenu(self.tabControl.tab('Planters'), values=planters, variable=self.planter2)
-        self.planter3Options = ctk.CTkOptionMenu(self.tabControl.tab('Planters'), values=planters, variable=self.planter3)
+        self.planter1Options = ctk.CTkOptionMenu(self.tabControl.tab('Planters'), values=planters,
+                                                 variable=self.planter1)
+        self.planter2Options = ctk.CTkOptionMenu(self.tabControl.tab('Planters'), values=planters,
+                                                 variable=self.planter2)
+        self.planter3Options = ctk.CTkOptionMenu(self.tabControl.tab('Planters'), values=planters,
+                                                 variable=self.planter3)
 
         self.planter1FieldText = ctk.CTkLabel(self.tabControl.tab('Planters'), text="Field1")
         self.planter2FieldText = ctk.CTkLabel(self.tabControl.tab('Planters'), text="Field2")
         self.planter3FieldText = ctk.CTkLabel(self.tabControl.tab('Planters'), text="Field3")
 
-        self.planter1Field = ctk.CTkOptionMenu(self.tabControl.tab('Planters'), values=fields, variable=self.planter1Field)
-        self.planter2Field = ctk.CTkOptionMenu(self.tabControl.tab('Planters'), values=fields, variable=self.planter2Field)
-        self.planter3Field = ctk.CTkOptionMenu(self.tabControl.tab('Planters'), values=fields, variable=self.planter3Field)
-        
+        self.planter1Field = ctk.CTkOptionMenu(self.tabControl.tab('Planters'), values=fields,
+                                               variable=self.planter1Field)
+        self.planter2Field = ctk.CTkOptionMenu(self.tabControl.tab('Planters'), values=fields,
+                                               variable=self.planter2Field)
+        self.planter3Field = ctk.CTkOptionMenu(self.tabControl.tab('Planters'), values=fields,
+                                               variable=self.planter3Field)
+
+        self.planter1TimeText = ctk.CTkLabel(self.tabControl.tab('Planters'), text="Time1")
+        self.planter2TimeText = ctk.CTkLabel(self.tabControl.tab('Planters'), text="Time2")
+        self.planter3TimeText = ctk.CTkLabel(self.tabControl.tab('Planters'), text="Time3")
+
+        self.planter1TimeEntry = ctk.CTkEntry(self.tabControl.tab('Planters'), textvariable=self.planter1Time)
+        self.planter2TimeEntry = ctk.CTkEntry(self.tabControl.tab('Planters'), textvariable=self.planter2Time)
+        self.planter3TimeEntry = ctk.CTkEntry(self.tabControl.tab('Planters'), textvariable=self.planter3Time)
+
         ###### DISPLAYING TEXT ######
 
         self.tabControl.pack(expand=2, fill="both")
@@ -351,10 +373,9 @@ class GUI:
         self.webhook.pack()
 
         self.importantWebhookText.pack()
-        self.importantWebhook.pack() 
+        self.importantWebhook.pack()
         self.importantWebhookText.place(relx=0.8, rely=0.11, anchor="n")
         self.importantWebhook.place(relx=0.8, rely=0.19, anchor="n")
-
 
         self.userIdText.pack()
         self.userId.pack()
@@ -410,9 +431,9 @@ class GUI:
         self.beesmasText.configure(font=(self.font, 14))
 
         self.beesmas = tk.IntVar(self.tabControl.tab('Settings'))
-        self.beesmasBox = ctk.CTkCheckBox(self.tabControl.tab('Settings'), 
-                                        text="Enable Beesmas", 
-                                        variable=self.beesmas)
+        self.beesmasBox = ctk.CTkCheckBox(self.tabControl.tab('Settings'),
+                                          text="Enable Beesmas",
+                                          variable=self.beesmas)
 
         try:
             self.beesmas.set(1 if eval(readFile("guiFiles/beesmasToggle.txt")) else 0)
@@ -422,7 +443,6 @@ class GUI:
         # Place them
         self.beesmasText.place(relx=0.8, rely=0.3, anchor="n")
         self.beesmasBox.place(relx=0.8, rely=0.38, anchor="n")
-
 
         self.plantersText.pack()
 
@@ -458,12 +478,25 @@ class GUI:
         self.planter2Field.place(relx=0.5, rely=0.5, anchor="n")
         self.planter3Field.place(relx=0.8, rely=0.5, anchor="n")
 
+        self.planter1TimeText.pack()
+        self.planter2TimeText.pack()
+        self.planter3TimeText.pack()
+
+        self.planter1TimeText.place(relx=0.2, rely=0.595, anchor="n")
+        self.planter2TimeText.place(relx=0.5, rely=0.595, anchor="n")
+        self.planter3TimeText.place(relx=0.8, rely=0.595, anchor="n")
+
+        self.planter1TimeEntry.pack()
+        self.planter2TimeEntry.pack()
+        self.planter3TimeEntry.pack()
+
+        self.planter1TimeEntry.place(relx=0.2, rely=0.68, anchor="n")
+        self.planter2TimeEntry.place(relx=0.5, rely=0.68, anchor="n")
+        self.planter3TimeEntry.place(relx=0.8, rely=0.68, anchor="n")
 
     # Add to saveSettings method
     def beesmasChange(self):
         writeFile("guiFiles/beesmasToggle.txt", True if self.beesmas.get() else False)
-
-
 
     def maxLoadTimeChange(self):
         tm = self.maxLoad.get()
@@ -478,7 +511,6 @@ class GUI:
         webhook = self.webhook.get()
 
         writeFile("guiFiles/webhook.txt", webhook)
-
 
     def importantWebhookChange(self):
         important_webhook = self.importantWebhook.get()
@@ -516,11 +548,13 @@ class GUI:
         writeFile("guiFiles/timeout.txt", timeout)
 
     def plantersChange(self):
-        plantersVals = [self.planter1.get(), self.planter2.get(), self.planter3.get()]
-        plantersFields = [self.planter1Field.get(), self.planter2Field.get(), self.planter3Field.get()]
+        self.plantersVals = {
+            "planter1": dict(typ=self.planter1.get(), field=self.planter1Field.get(), status=self.planter1Status, tm=self.planter1Time.get()),
+            "planter2": dict(typ=self.planter2.get(), field=self.planter2Field.get(), status=self.planter2Status, tm=self.planter2Time.get()),
+            "planter3": dict(typ=self.planter3.get(), field=self.planter3Field.get(), status=self.planter3Status, tm=self.planter3Time.get()),
+        }
 
-        writeFile("guiFiles/planters.txt", str(plantersVals))
-        writeFile("guiFiles/planterFields.txt", str(plantersFields))
+        writeFile(os.path.join("guiFiles", "plantersStatus.txt"), str(self.plantersVals))
 
     def saveWindowSize(self):
         x, y = self.window.winfo_width(), self.window.winfo_height()
@@ -531,7 +565,6 @@ class GUI:
         privateServers = eval(readFile("guiFiles/privateServers.txt"))
 
         return privateServers[n]
-
 
     def startMacro(self, main=False):
         self.saveSettings()
@@ -547,7 +580,7 @@ class GUI:
         quit()
 
     def connectToAltThread(self):
-        port = int(pyautogui.prompt(text='Port connecting to new alt?', title='Pls answer...' , default=''))
+        port = int(pyautogui.prompt(text='Port connecting to new alt?', title='Pls answer...', default=''))
 
         self.t = threading.Thread(target=self.connectToAlt, args=(port,))
 
@@ -561,7 +594,7 @@ class GUI:
         try:
             self.ip, self.port = self.AltConnection.connectToAlt()
 
-            #pyautogui.alert(f"Recieved connection from {self.ip} port {self.port}")
+            # pyautogui.alert(f"Recieved connection from {self.ip} port {self.port}")
 
             self.AltConnection.recieveNightServers(timeout=int(self.timeout.get()) * 60)
 
