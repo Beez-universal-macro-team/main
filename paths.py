@@ -533,18 +533,18 @@ def CactusKillCycle():
         
         # D movement
         for _ in range(6):
-            keyboard.press("d")
+            keyboard.press("w")
             Waitspeed(2)
-            keyboard.release("d")
+            keyboard.release("w")
             if detect_health_in_screenshot():
                 print("Health detected, exiting cycle")
                 return False
 
         # A movement
         for _ in range(7):
-            keyboard.press("a")
+            keyboard.press("s")
             Waitspeed(2)
-            keyboard.release("a")
+            keyboard.release("s")
             if detect_health_in_screenshot():
                 print("Health detected, exiting cycle")
                 return False
