@@ -128,14 +128,21 @@ def fastClick():
     pynputMouse.press(Button.left)
     pynputMouse.release(Button.left)
 
-def autoclick(cps):
+def autoclick(cps, hold=False):
     try:
-        delay = 1.0 / float(cps) if float(cps) > 0 else 2.0
-        while True:
-            fastClick()
-            time.sleep(delay)
-    except ValueError:
-        print("Invalid CPS value")
+        if hold:
+            mouseDown()  # Press and hold
+            while True:
+                time.sleep(0.1)  # Keep thread alive while holding
+        else:
+            delay = 1.0 / float(cps) if float(cps) > 0 else 2.0
+            while True:
+                fastClick()
+                time.sleep(delay)
+    except (ValueError, SystemExit):
+        mouseUp()  # Ensure mouse is released when stopping
+        raise
+
 
 def readFile(fileName):
     if platform.system().lower() == "windows":
