@@ -128,6 +128,15 @@ def fastClick():
     pynputMouse.press(Button.left)
     pynputMouse.release(Button.left)
 
+def autoclick(cps):
+    try:
+        delay = 1.0 / float(cps) if float(cps) > 0 else 2.0
+        while True:
+            fastClick()
+            time.sleep(delay)
+    except ValueError:
+        print("Invalid CPS value")
+
 def readFile(fileName):
     if platform.system().lower() == "windows":
         while "/" in fileName:
