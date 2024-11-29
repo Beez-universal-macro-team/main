@@ -1,7 +1,7 @@
 import customtkinter as ctk
 import tkinter as tk
 from matplotlib.mlab import window_none
-from functions import offsetDims, screenDims, writeFile, readFile, sendMessage, sendImportantMessage, fastClick
+from functions import offsetDims, screenDims, writeFile, readFile, sendMessage, sendImportantMessage, autoclick
 import pyautogui
 import altConnection
 import os
@@ -366,6 +366,12 @@ class GUI:
                                             variable=self.clicker_enabled)
         self.clicker_checkbox.pack(pady=10)
 
+        self.hold_enabled = tk.BooleanVar()
+        self.hold_checkbox = ctk.CTkCheckBox(self.tabControl.tab('Autoclicker'),
+                                        text="Hold Instead of Click", 
+                                        variable=self.hold_enabled)
+        self.hold_checkbox.pack(pady=10)
+
 
         ###### DISPLAYING TEXT ######
 
@@ -593,15 +599,14 @@ class GUI:
             try:
                 if self.clicker_enabled.get():
                     cps = float(self.cps_entry.get())
-                    delay = 1.0 / cps if cps > 0 else 2.0
-                    while True:
-                        fastClick()
-                        time.sleep(delay)
+                    hold = self.hold_enabled.get()
+                    autoclick(cps, hold)  # Pass both parameters explicitly
                 else:
                     MainLoopMacro()
             except Exception as e:
                 print(f"An error occurred: {e}")
-                input("Press Enter to close...")  # This keeps terminal open
+                input("Press Enter to close...")
+
 
 
     def stopMacro(self):
