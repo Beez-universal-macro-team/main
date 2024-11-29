@@ -1,7 +1,7 @@
 import customtkinter as ctk
 import tkinter as tk
 from matplotlib.mlab import window_none
-from functions import offsetDims, screenDims, writeFile, readFile, sendMessage, sendImportantMessage
+from functions import offsetDims, screenDims, writeFile, readFile, sendMessage, sendImportantMessage, fastClick
 import pyautogui
 import altConnection
 import os
@@ -9,6 +9,7 @@ import socket
 import threading
 from functions import MainLoopMacro
 import ctypes
+import time
 
 main_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -349,6 +350,23 @@ class GUI:
         self.planter2TimeEntry = ctk.CTkEntry(self.tabControl.tab('Planters'), textvariable=self.planter2Time)
         self.planter3TimeEntry = ctk.CTkEntry(self.tabControl.tab('Planters'), textvariable=self.planter3Time)
 
+        # In initWindow(), add new tab:
+        self.tabControl.add(name='Autoclicker')
+
+        self.cps_label = ctk.CTkLabel(self.tabControl.tab('Autoclicker'), text="CPS (Clicks per second):")
+        self.cps_label.pack(pady=10)
+
+        self.cps_entry = ctk.CTkEntry(self.tabControl.tab('Autoclicker'))
+        self.cps_entry.pack(pady=5)
+        self.cps_entry.insert(0, "10")
+
+        self.clicker_enabled = tk.BooleanVar()
+        self.clicker_checkbox = ctk.CTkCheckBox(self.tabControl.tab('Autoclicker'),
+                                            text="Enable Autoclicker", 
+                                            variable=self.clicker_enabled)
+        self.clicker_checkbox.pack(pady=10)
+
+
         ###### DISPLAYING TEXT ######
 
         self.tabControl.pack(expand=2, fill="both")
@@ -568,13 +586,23 @@ class GUI:
 
     def startMacro(self, main=False):
         self.saveSettings()
+        if not main:
+            self.macro_thread = threading.Thread(target=self.startMacro, args=(True,))
+            self.macro_thread.start()
+        else:
+            try:
+                if self.clicker_enabled.get():
+                    cps = float(self.cps_entry.get())
+                    delay = 1.0 / cps if cps > 0 else 2.0
+                    while True:
+                        fastClick()
+                        time.sleep(delay)
+                else:
+                    MainLoopMacro()
+            except Exception as e:
+                print(f"An error occurred: {e}")
+                input("Press Enter to close...")  # This keeps terminal open
 
-        try:
-            # Your main code here
-            MainLoopMacro()
-        except Exception as e:
-            print(f"An error occurred: {e}")
-            input("Press Enter to close...")  # This keeps terminal open
 
     def stopMacro(self):
         quit()
@@ -617,3 +645,4 @@ class GUI:
         self.plantersChange()
 
         self.window.after(1000, self.saveSettings)
+
