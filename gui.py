@@ -628,7 +628,19 @@ class GUI:
         privateServers = eval(readFile("guiFiles/privateServers.txt"))
 
         return privateServers[n]
+        
+    def botTokenChange(self):
+        botToken = self.botToken.get()
+        writeFile("guiFiles/bot_Token.txt", botToken)
 
+    def channelIDChange(self):
+        channelID = self.channelID.get()
+        writeFile("guiFiles/channel_ID.txt", channelID)
+
+    def botModeChange(self):
+        writeFile("guiFiles/bot_mode.txt", str(self.botCheckBox.get()))
+
+    
     def startMacro(self, main=False):
         self.saveSettings()
         if not main:
