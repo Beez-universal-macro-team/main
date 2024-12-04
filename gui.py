@@ -111,10 +111,26 @@ class GUI:
         self.settingsTitle = ctk.CTkLabel(self.tabControl.tab('Settings'), text="Settings")
         self.settingsTitle.configure(font=(self.font, 24))
 
+        self.botCheck = tk.BooleanVar(value=False)
+
+        self.botCheckBox = ctk.CTkCheckBox(self.tabControl.tab('Settings'), text="Bot", variable=self.botCheck, onvalue=True, offvalue=False, command=self.checkBotCheckBoxValue)
+        self.botCheckBox.pack()
+        self.tokenText = ctk.CTkLabel(self.tabControl.tab('Settings'), text="Discord Bot Token:")
+        self.tokenText.configure(font=(self.font, 14))
+        self.botToken = ctk.CTkEntry(self.tabControl.tab('Settings'))
+
+        self.channelIDText = ctk.CTkLabel(self.tabControl.tab('Settings'), text="Discord Channel ID:")
+        self.channelIDText.configure(font=(self.font, 14))
+        self.channelID = ctk.CTkEntry(self.tabControl.tab('Settings'))
+
         self.webhookText = ctk.CTkLabel(self.tabControl.tab('Settings'), text="Discord webhook:")
         self.webhookText.configure(font=(self.font, 14))
-
         self.webhook = ctk.CTkEntry(self.tabControl.tab('Settings'))
+        try:
+            self.webhook.insert(0, readFile("guiFiles/webhook.txt"))
+        except:
+            self.webhook.insert(0, "")
+
 
         self.importantWebhookText = ctk.CTkLabel(self.tabControl.tab('Settings'), text="Important webhook:")
         self.importantWebhookText.configure(font=(self.font, 14))
@@ -126,10 +142,28 @@ class GUI:
 
         self.userId = ctk.CTkEntry(self.tabControl.tab('Settings'))
 
+        self.checkBotCheckBoxValue()
+        self.botCheckBox.place(relx=0.2, rely=0.11, anchor="n")
+
         try:
             self.userId.insert(0, readFile("guiFiles/userId.txt"))
         except:
             self.userId.insert(0, "")
+
+        try:
+            self.botToken.insert(0, readFile("guiFiles/bot_Token.txt"))
+        except:
+            self.botToken.insert(0, "")
+
+        try:
+            self.channelID.insert(0, readFile("guiFiles/channel_ID.txt"))
+        except:
+            self.channelID.insert(0, "")
+
+        try:
+            self.botCheckBox.select() if eval(readFile("guiFiles/bot_mode.txt")) else self.botCheckBox.deselect()
+        except:
+            self.botCheckBox.deselect()
 
         self.moveSpeedText = ctk.CTkLabel(self.tabControl.tab('Settings'), text="Base Movespeed:")
         self.moveSpeedText.configure(font=(self.font, 14))
