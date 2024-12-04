@@ -282,6 +282,44 @@ def findImg(img, confidence):
     except:
         return False
 
+def locateImageOnScreen3(imgPath, templatePath, confidence=0.8):
+    try:
+        # Read the main image and template
+        img = cv2.imread(imgPath)
+        template = cv2.imread(templatePath)
+
+        # Ensure images are in the same color space
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        template = cv2.cvtColor(template, cv2.COLOR_BGR2RGB)
+
+        # Match the template
+        result = cv2.matchTemplate(img, template, cv2.TM_CCOEFF_NORMED)
+        min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(result)
+
+        # Check if structural match exceeds the threshold
+        if max_val >= confidence:
+            # Get the matched region in the main image
+            match_top_left = max_loc
+            match_height, match_width, _ = template.shape
+            matched_region = img[match_top_left[1]:match_top_left[1] + match_height,
+                                  match_top_left[0]:match_top_left[0] + match_width]
+
+            # Calculate pixel-wise color difference (Mean Squared Error - MSE)
+            color_diff = np.mean((matched_region - template) ** 2)
+
+            # Define a color sensitivity threshold (tune based on use case)
+            color_threshold = 1000  # Adjust based on the range of expected differences
+
+            if color_diff < color_threshold:
+                # Return center of matched region if color matches
+                match_center = (match_top_left[0] + match_width // 2, match_top_left[1] + match_height // 2)
+                return match_center
+
+        return None
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
+
 
 def press(*args):
     keys = list(args)
@@ -849,6 +887,207 @@ def ShiftLock():
     time.sleep(0.5)  # Wait to confirm state change
     return True
 
+def scrollTo(*imgPaths):
+    openInv()
+
+    moveMouseAhk(offsetDims(100, "x"), offsetDims(310, "y"))
+    moveMouseAhk(offsetDims(100, "x"), offsetDims(300, "y"))
+
+    for _ in range(40):
+        mouse2.scroll(0, -5)
+
+        for img2 in imgPaths:
+            img = img2 + ".png"
+
+            screen = screenshot()
+            screen.save("screenshot.png")
+
+            cropImg("screenshot.png", (0, 0, screenDims[0] // 5, screenDims[1]))
+
+            tm = time.time()
+
+            imgPath = img2 + ".png"
+
+            if locateImageOnScreen3("screenshot.png", imgPath, confidence=0.8):
+                time.sleep(0.5)
+
+                screen = screenshot()
+                screen.save("screenshot.png")
+
+                cropImg("screenshot.png", (0, 0, screenDims[0] // 5, screenDims[1]))
+
+                return locateImageOnScreen3("screenshot.png", imgPath, confidence=0.8)
+
+    return False
+
+
+def scrollUpInv():
+    moveMouseAhk(offsetDims(100, "x"), offsetDims(310, "y"))
+    moveMouseAhk(offsetDims(100, "x"), offsetDims(300, "y"))
+
+    for _ in range(50):
+        mouse2.scroll(0, 5)
+
+        time.sleep(0.02)
+
+    time.sleep(0.1)
+
+    openInv()
+
+
+def openInv():
+    moveMouseAhk(offsetDims(37, "x"), offsetDims(130, "y"))
+    moveMouseAhk(offsetDims(37, "x"), offsetDims(125, "y"))
+
+    time.sleep(0.1)
+
+    mouse.click()
+
+def getPlanterImgPath(planter):
+    if planter == "BlueClay":
+        return "blueClay"
+
+    elif planter == "RedClay":
+        return "redClay"
+
+    elif planter == "Candy":
+        return "candy"
+
+    elif planter == "HeatTreated":
+        return "heatTreated"
+
+    elif planter == "Hydroponic":
+        return "hydroponic"
+
+    elif planter == "Pesticide":
+        return "pesticide"
+
+    elif planter == "Plastic":
+        return "plastic"
+
+    elif planter == "Tacky":
+        return "tacky"
+
+    elif planter == "Pop":
+        return "pop"
+
+def harvestPlanterInField(field):
+    sendMessage("Harvesting planter...")
+
+    canon(rst=True)
+
+    field = list(field.lower())
+
+    field[0] = field[0].upper()
+
+    field = "".join(field)
+
+    globals()["canonTo" + field](calibrate=True)
+
+    time.sleep(0.1)
+
+    press("e", 0.05)
+
+    time.sleep(0.5)
+
+    screen = screenshot()
+    screen.save("screenshot.png")
+
+    time.sleep(0.1)
+
+    pos = locateImageOnScreen3("screenshot.png", os.path.join(main_dir, "images", "planters", "yesButton.png"), confidence=0.8)
+
+    moveMouseAhk(pos[0] - 5, pos[1] - 5)
+    moveMouseAhk(pos[0], pos[1])
+
+    time.sleep(0.1)
+
+    mouse.click()
+
+    sendScreenshot("Harvested planter!")
+
+def placePlanterInField(field, planter):
+    sendMessage(f"Searching for {planter} planter")
+
+    pos = scrollTo(os.path.join("images", "planters", planter))
+
+    if not pos:
+        sendMessage(f"Did not find {planter} planter... ;(")
+
+        time.sleep(0.5)
+
+        scrollUpInv()
+
+        time.sleep(0.1)
+
+        return
+
+    sendMessage(f"Found {planter} planter! Placing it...")
+
+    canon(rst=True)
+
+    field2 = list(field)
+    field2[0] = field2[0].upper()
+    field2 = "".join(field2)
+
+    globals()["canonTo" + field2](calibrate=True)
+
+    if pos != False:
+        moveMouseAhk(pos[0] - 5, pos[1] - 5)
+        moveMouseAhk(pos[0], pos[1])
+
+        pyautogui.dragTo(screenDims[0] // 2, screenDims[1] // 2)
+
+    time.sleep(0.5)
+
+    screen = screenshot()
+    screen.save("screenshot.png")
+
+    time.sleep(0.1)
+
+    pos = locateImageOnScreen3("screenshot.png", os.path.join(main_dir, "images", "planters", "yesButton.png"), confidence=0.8)
+
+    moveMouseAhk(pos[0] - 5, pos[1] - 5)
+    moveMouseAhk(pos[0], pos[1])
+
+    time.sleep(0.1)
+
+    mouse.click()
+
+    time.sleep(0.5)
+
+    scrollUpInv()
+
+    sendScreenshot(f"Placed {planter} planter!")
+
+def plantersLogic():
+    plantersStatus = eval(readFile(os.path.join("guiFiles", "plantersStatus.txt")))
+
+    for planter in plantersStatus.keys():
+        if plantersStatus[planter]["enabled"] == "1":
+            planterDisp = plantersStatus[planter]["status"]
+
+            if planterDisp == "growing":
+                if time.time() - float(plantersStatus[planter]["tmStarted"]) >= int(plantersStatus[planter]["tm"]) * 60:
+                    planterDisp = "harvest"
+
+                    plantersStatus[planter]["status"] = "harvest"
+
+            if planterDisp == "free":
+                placePlanterInField(plantersStatus[planter]["field"], getPlanterImgPath(plantersStatus[planter]["typ"]))
+
+            else:
+                harvestPlanterInField(plantersStatus[planter]["field"])
+
+                time.sleep(1)
+
+                placePlanterInField(plantersStatus[planter]["field"], getPlanterImgPath(plantersStatus[planter]["typ"]))
+
+        plantersStatus[planter]["status"] = "growing"
+
+        plantersStatus[planter]["tmStarted"] = str(time.time())
+
+    writeFile(os.path.join("guiFiles", "plantersStatus.txt"), str(plantersStatus))
 
 def JoinServersUntilNight():
     while True:
