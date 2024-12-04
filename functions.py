@@ -19,6 +19,7 @@ import time
 import cv2
 import numpy as np
 import imagehash
+from discord.ext import commands
 
 def mssScreenshot(x, y, w, h):
     with mss.mss() as sct:
@@ -1091,6 +1092,159 @@ def plantersLogic():
         plantersStatus[planter]["tmStarted"] = str(time.time())
 
     writeFile(os.path.join("guiFiles", "plantersStatus.txt"), str(plantersStatus))
+
+
+def webhook_send(message, picture=0):
+    try:
+        webhook = discord.SyncWebhook.from_url(readFile("guiFiles/webhook.txt"))
+        tm = datetime.now()
+        timestamp = f"[{tm.hour}:{tm.minute}:{tm.second}]"
+        
+        embed = discord.Embed(
+            description=message,
+            color=0x000000
+        )
+        
+        icon_file = discord.File(os.path.join(main_dir, "basicbeeface.png"), filename="icon.png")
+        
+        embed.set_author(
+            name="Beez Universal Macro",
+            icon_url="attachment://icon.png"
+        )
+        
+        embed.set_footer(text=f"{timestamp}")
+
+        if picture:
+            screen = screenshot()
+            screen.save(os.path.join(main_dir, "images", "screenshot.png"))
+            file = discord.File(os.path.join(main_dir, "images", "screenshot.png"), filename="screenshot.png")
+            embed.set_image(url="attachment://screenshot.png")
+            webhook.send(files=[icon_file, file], embed=embed)
+        else:
+            webhook.send(files=[icon_file], embed=embed)
+        
+        print(message)
+        
+    except Exception as e:
+        print(f"Error in webhook_send: {e}")
+
+remote_Control = readFile("guiFiles/bot_mode.txt")
+if remote_Control == "True":
+    intents = discord.Intents.all()
+    bot = commands.Bot(command_prefix='?', intents=intents)
+
+    async def bot_send(message, picture=0):
+        try:
+            channel_ID = int(readFile("guiFiles/channel_ID.txt"))
+            channel = bot.get_channel(channel_ID)
+        
+            if not channel:
+                print(f"Channel not found: {channel_ID}")
+                return
+
+            tm = datetime.now()
+            timestamp = f"[{tm.hour}:{tm.minute}:{tm.second}]"
+        
+            embed = discord.Embed(
+                description=message,
+                color=0x000000
+            )
+        
+            icon_file = discord.File(os.path.join(main_dir, "basicbeeface.png"), filename="icon.png")
+        
+            embed.set_author(
+                name="Beez Universal Macro",
+                icon_url="attachment://icon.png"
+            )
+        
+            embed.set_footer(text=timestamp)
+
+            if picture:
+                screen = screenshot()
+                screenshot_path = os.path.join(main_dir, "images", "screenshot.png")
+                screen.save(screenshot_path)
+                screenshot_file = discord.File(screenshot_path, filename="screenshot.png")
+                embed.set_image(url="attachment://screenshot.png")
+                await channel.send(files=[icon_file, screenshot_file], embed=embed)
+            else:
+                await channel.send(files=[icon_file], embed=embed)
+        
+            print(message)
+        
+        except Exception as e:
+            print(f"Error in bot_send: {e}")
+
+    @bot.event
+    async def on_ready():
+        print("Bot is ready!")
+        channel_ID = int(readFile("guiFiles/channel_ID.txt"))
+        channel = bot.get_channel(channel_ID)
+        if channel:
+            await bot_send("Bot is online! 🚀")
+
+    @bot.command()
+    async def start(ctx):
+        global macroActive
+        if macroActive:
+            await ctx.send('Macro is already running!')
+        else:
+            await ctx.send('Macro started!')
+            macro_thread = threading.Thread(target=MainLoopMacro)
+            macro_thread.start()
+
+    @bot.command()
+    async def stop(ctx):
+        global running, macroActive
+        if not macroActive:
+            await ctx.send('Macro is already stopped!')
+        else:
+            running = False
+            macroActive = False
+            await ctx.send('Macro stopped!')
+
+    @bot.command()
+    async def exit(ctx):
+        await ctx.send('Quitting macro completely! 👋')
+        os._exit(0)
+
+    @bot.command(aliases=['ss', 'picture'])
+    async def screenshot(ctx):
+        sendMessage("Here's your screenshot", 1)
+
+    @bot.command()
+    async def shutdown(ctx):
+        await ctx.send('Shutting down PC in 10 seconds! 👋')
+        if platform.system() == "Windows":
+            os.system('shutdown /s /t 10')
+        elif platform.system() == "Darwin":
+            os.system('shutdown -h +1')
+
+    @bot.command()
+    async def restart(ctx):
+        await ctx.send('Restarting PC in 10 seconds! 🔄')
+        if platform.system() == "Windows":
+            os.system('shutdown /r /t 10')
+        elif platform.system() == "Darwin": 
+            os.system('sudo shutdown -r +1')
+
+    def run_bot():
+        token = readFile("guiFiles/bot_Token.txt")
+        if token:
+            bot.run(token)
+
+    bot_thread = threading.Thread(target=run_bot, daemon=True)
+    bot_thread.start()
+    time.sleep(2)
+
+    async def send_message_async(message, picture=0):
+        await bot_send(message, picture)
+
+    def sendMessage(message, picture=0):
+        bot.loop.create_task(send_message_async(message, picture))
+else:
+    def sendMessage(message, picture=0):
+        webhook_send(message, picture)
+
 
 def JoinServersUntilNight():
     while True:
