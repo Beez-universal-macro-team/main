@@ -874,6 +874,9 @@ def ServerSetup():
         print("Failed to claim hive after multiple attempts. Exiting MainLoop.")
         return False
     sendMessage("Claimed hive")
+
+    plantersLogic()
+    
     WalkToRedCannon()
     sendMessage("Moved to cannon")
     return True
