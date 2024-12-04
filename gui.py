@@ -247,6 +247,7 @@ class GUI:
         self.vicHopping.set(1)
 
         planters = [
+            "PoP",
             "Heat Treated",
             "Hydroponic",
             "Petal",
@@ -268,11 +269,11 @@ class GUI:
             "Pumpkin",
             "Pineapple",
             "Dandelion",
-            "Sunflower"
+            "Sunflower",
             "Pine Tree",
             "Bamboo",
             "Blue Flower",
-            "Stump"
+            "Stump",
             "Mountain",
             "Cactus",
             "Clover",
@@ -290,12 +291,16 @@ class GUI:
 
         except:
             self.plantersVals = {
-                "planter1": dict(typ="Heat Treated", field="pepper", status="free", tm="60"),
-                "planter2": dict(typ="Hydroponic", field="pine", status="free", tm="60"),
-                "planter3": dict(typ="Petal", field="sunflower", status="free", tm="60"),
+                "planter1": dict(typ="Heat Treated", field="pepper", status="free", tm="60", tmStarted="0", enabled="0"),
+                "planter2": dict(typ="Hydroponic", field="pine", status="free", tm="60", tmStarted="0", enabled="0"),
+                "planter3": dict(typ="Petal", field="sunflower", status="free", tm="60", tmStarted="0", enabled="0"),
             }
 
             writeFile(os.path.join("guiFiles", "plantersStatus.txt"), str(self.plantersVals))
+
+        self.planter1TimeLeft = self.plantersVals["planter1"]["tmStarted"]
+        self.planter2TimeLeft = self.plantersVals["planter2"]["tmStarted"]
+        self.planter3TimeLeft = self.plantersVals["planter3"]["tmStarted"]
 
         self.planter1.set(self.plantersVals["planter1"]["typ"])
         self.planter2.set(self.plantersVals["planter2"]["typ"])
@@ -350,27 +355,19 @@ class GUI:
         self.planter2TimeEntry = ctk.CTkEntry(self.tabControl.tab('Planters'), textvariable=self.planter2Time)
         self.planter3TimeEntry = ctk.CTkEntry(self.tabControl.tab('Planters'), textvariable=self.planter3Time)
 
-        # In initWindow(), add new tab:
-        self.tabControl.add(name='Autoclicker')
+        self.planter1Enabled = ctk.StringVar(value="0")
+        self.planter2Enabled = ctk.StringVar(value="0")
+        self.planter3Enabled = ctk.StringVar(value="0")
 
-        self.cps_label = ctk.CTkLabel(self.tabControl.tab('Autoclicker'), text="CPS (Clicks per second):")
-        self.cps_label.pack(pady=10)
+        self.planter1Enabled.set(self.plantersVals["planter1"]["enabled"])
+        self.planter2Enabled.set(self.plantersVals["planter2"]["enabled"])
+        self.planter3Enabled.set(self.plantersVals["planter3"]["enabled"])
 
-        self.cps_entry = ctk.CTkEntry(self.tabControl.tab('Autoclicker'))
-        self.cps_entry.pack(pady=5)
-        self.cps_entry.insert(0, "10")
-
-        self.clicker_enabled = tk.BooleanVar()
-        self.clicker_checkbox = ctk.CTkCheckBox(self.tabControl.tab('Autoclicker'),
-                                            text="Enable Autoclicker", 
-                                            variable=self.clicker_enabled)
-        self.clicker_checkbox.pack(pady=10)
-
-        self.hold_enabled = tk.BooleanVar()
-        self.hold_checkbox = ctk.CTkCheckBox(self.tabControl.tab('Autoclicker'),
-                                        text="Hold Instead of Click", 
-                                        variable=self.hold_enabled)
-        self.hold_checkbox.pack(pady=10)
+        self.planter1EnabledCheckbox = ctk.CTkCheckBox(self.tabControl.tab('Planters'), text="Planter1", variable=self.planter1Enabled, onvalue="1", offvalue="0")
+        self.planter2EnabledCheckbox = ctk.CTkCheckBox(self.tabControl.tab('Planters'), text="Planter2",
+                                                       variable=self.planter2Enabled, onvalue="1", offvalue="0")
+        self.planter3EnabledCheckbox = ctk.CTkCheckBox(self.tabControl.tab('Planters'), text="Planter3",
+                                                       variable=self.planter3Enabled, onvalue="1", offvalue="0")
 
 
         ###### DISPLAYING TEXT ######
@@ -518,6 +515,14 @@ class GUI:
         self.planter2TimeEntry.place(relx=0.5, rely=0.68, anchor="n")
         self.planter3TimeEntry.place(relx=0.8, rely=0.68, anchor="n")
 
+        self.planter1EnabledCheckbox.pack()
+        self.planter2EnabledCheckbox.pack()
+        self.planter3EnabledCheckbox.pack()
+
+        self.planter1EnabledCheckbox.place(relx=0.2, rely=0.1, anchor="n")
+        self.planter2EnabledCheckbox.place(relx=0.5, rely=0.1, anchor="n")
+        self.planter3EnabledCheckbox.place(relx=0.8, rely=0.1, anchor="n")
+
     # Add to saveSettings method
     def beesmasChange(self):
         writeFile("guiFiles/beesmasToggle.txt", True if self.beesmas.get() else False)
@@ -573,9 +578,9 @@ class GUI:
 
     def plantersChange(self):
         self.plantersVals = {
-            "planter1": dict(typ=self.planter1.get(), field=self.planter1Field.get(), status=self.planter1Status, tm=self.planter1Time.get()),
-            "planter2": dict(typ=self.planter2.get(), field=self.planter2Field.get(), status=self.planter2Status, tm=self.planter2Time.get()),
-            "planter3": dict(typ=self.planter3.get(), field=self.planter3Field.get(), status=self.planter3Status, tm=self.planter3Time.get()),
+            "planter1": dict(typ=self.planter1.get(), field=self.planter1Field.get(), status=self.planter1Status, tm=self.planter1Time.get(), tmStarted=self.planter1TimeLeft, enabled=self.planter1Enabled.get()),
+            "planter2": dict(typ=self.planter2.get(), field=self.planter2Field.get(), status=self.planter2Status, tm=self.planter2Time.get(), tmStarted=self.planter2TimeLeft, enabled=self.planter2Enabled.get()),
+            "planter3": dict(typ=self.planter3.get(), field=self.planter3Field.get(), status=self.planter3Status, tm=self.planter3Time.get(), tmStarted=self.planter3TimeLeft, enabled=self.planter3Enabled.get())
         }
 
         writeFile(os.path.join("guiFiles", "plantersStatus.txt"), str(self.plantersVals))
