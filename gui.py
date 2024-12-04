@@ -675,6 +675,24 @@ class GUI:
 
             pyautogui.alert("Alt connection failed...")
 
+ def checkBotCheckBoxValue(self):
+        if self.botCheckBox.get():
+            self.webhookText.place_forget()
+            self.webhook.place_forget()
+            self.tokenText.place(relx=0.15, rely=0.19, anchor="n")
+            self.botToken.place(relx=0.15, rely=0.27, anchor="n")
+            self.channelIDText.place(relx=0.15, rely=0.40, anchor="n")
+            self.channelID.place(relx=0.15, rely=0.48, anchor="n")
+        else:
+            self.tokenText.place_forget()
+            self.botToken.place_forget()
+            self.channelIDText.place_forget()
+            self.channelID.place_forget()
+            self.webhookText.place(relx=0.15, rely=0.19, anchor="n")
+            self.webhook.place(relx=0.15, rely=0.27, anchor="n")
+
+
+
     def saveSettings(self):
         self.maxLoadTimeChange()
         self.webhookChange()
@@ -685,8 +703,10 @@ class GUI:
         self.timeoutChange()
         self.beesmasChange()
         self.saveWindowSize()
-        self.importantWebhookChange()
-        self.plantersChange()
+        self.botTokenChange()
+        self.channelIDChange()
+        self.botModeChange()
+
 
         self.window.after(1000, self.saveSettings)
 
