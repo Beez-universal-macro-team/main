@@ -25,6 +25,7 @@ required_libraries = {
     'colorama': None,
     'ImageHash': None,
     'pyautogui': None
+    'discord.ext': None
 }
 
 def install_visual_c_redistributable():
