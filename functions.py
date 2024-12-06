@@ -20,6 +20,11 @@ import cv2
 import numpy as np
 import imagehash
 from discord.ext import commands
+from ahkMoveMouse import moveMouseAhk
+import mouse
+from paths import *
+
+mouse2 = mouseController()
 
 def mssScreenshot(x, y, w, h):
     with mss.mss() as sct:
@@ -55,6 +60,13 @@ def locateTransparentImageOnScreen(target, x, y, w, h, threshold=0):
 
 def similarHashes(hash1, hash2, threshold):
     return hash1-hash2 < threshold
+
+def cropImg(imgPath, box):
+    img = Image.open(imgPath)
+
+    img = img.crop(box)
+
+    img.save(imgPath)
 
 def locateImageWithMaskOnScreen(image, mask, x, y, w, h, threshold=0):
     screen = mssScreenshotNP(x, y, w, h)
@@ -190,6 +202,7 @@ def isWindowOpen(windowName):
 
 
 def sendMessage(message, picture=None):
+
     try:
         webhook = discord.SyncWebhook.from_url(readFile("guiFiles/webhook.txt"))
 
@@ -200,8 +213,8 @@ def sendMessage(message, picture=None):
         webhook.send(f"[{tm.hour}:{tm.minute}:{tm.second}] {message}") if picture == None else webhook.send(
             f"[{tm.hour}:{tm.minute}:{tm.second}] {message}", file=picture)
 
-    except:
-        pass
+    except Exception as e:
+        print(f"Exception in sendMessage: {e}")
 
 
 def sendScreenshot(message):
@@ -217,8 +230,8 @@ def sendScreenshot(message):
 
         t.start()
 
-    except:
-        pass
+    except Exception as e:
+        print(f"Exception in sendScreenshot: {e}")
 
 def sendImportantMessage(message, picture=None):
     try:
@@ -999,7 +1012,7 @@ def harvestPlanterInField(field):
 
     time.sleep(0.1)
 
-    pos = locateImageOnScreen3("screenshot.png", os.path.join(main_dir, "images", "planters", "yesButton.png"), confidence=0.8)
+    pos = locateImageOnScreen3("screenshot.png", os.path.join(main_dir, "planters", "yesButton.png"), confidence=0.8)
 
     moveMouseAhk(pos[0] - 5, pos[1] - 5)
     moveMouseAhk(pos[0], pos[1])
@@ -1013,7 +1026,7 @@ def harvestPlanterInField(field):
 def placePlanterInField(field, planter):
     sendMessage(f"Searching for {planter} planter")
 
-    pos = scrollTo(os.path.join("images", "planters", planter))
+    pos = scrollTo(os.path.join("planters", planter))
 
     if not pos:
         sendMessage(f"Did not find {planter} planter... ;(")
@@ -1049,7 +1062,7 @@ def placePlanterInField(field, planter):
 
     time.sleep(0.1)
 
-    pos = locateImageOnScreen3("screenshot.png", os.path.join(main_dir, "images", "planters", "yesButton.png"), confidence=0.8)
+    pos = locateImageOnScreen3("screenshot.png", os.path.join(main_dir, "planters", "yesButton.png"), confidence=0.8)
 
     moveMouseAhk(pos[0] - 5, pos[1] - 5)
     moveMouseAhk(pos[0], pos[1])
@@ -1241,9 +1254,6 @@ if remote_Control == "True":
 
     def sendMessage(message, picture=0):
         bot.loop.create_task(send_message_async(message, picture))
-else:
-    def sendMessage(message, picture=0):
-        webhook_send(message, picture)
 
 
 def JoinServersUntilNight():
@@ -1280,10 +1290,6 @@ def JoinServersUntilNight():
                 time.sleep(2)
 
                 break  # Breaks inner while loop to go back to joinRandomServer()
-
-
-from paths import *
-
 
 def MainLoopMacro():
     # PepperKillCycle()
