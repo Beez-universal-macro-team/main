@@ -732,8 +732,6 @@ class GUI:
             self.webhookText.place(relx=0.15, rely=0.19, anchor="n")
             self.webhook.place(relx=0.15, rely=0.27, anchor="n")
 
-
-
     def saveSettings(self):
         self.maxLoadTimeChange()
         self.webhookChange()
@@ -748,10 +746,4 @@ class GUI:
         self.channelIDChange()
         self.botModeChange()
 
-
         self.window.after(1000, self.saveSettings)
-
-
-
-        self.window.after(1000, self.saveSettings)
-
