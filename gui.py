@@ -183,7 +183,7 @@ class GUI:
         try:
             self.moveSpeed.insert(0, readFile("guiFiles/moveSpeed.txt"))
         except:
-            self.moveSpeed.insert(0, "")
+            self.moveSpeed.insert(0, "33.35")
 
         try:
             self.importantWebhook.insert(0, readFile("guiFiles/important_webhook.txt"))
@@ -586,6 +586,8 @@ class GUI:
         self.planter2EnabledCheckbox.place(relx=0.5, rely=0.1, anchor="n")
         self.planter3EnabledCheckbox.place(relx=0.8, rely=0.1, anchor="n")
 
+        self.saveSettings()
+
     # Add to saveSettings method
     def beesmasChange(self):
         writeFile("guiFiles/beesmasToggle.txt", True if self.beesmas.get() else False)
@@ -732,6 +734,8 @@ class GUI:
             self.webhookText.place(relx=0.15, rely=0.19, anchor="n")
             self.webhook.place(relx=0.15, rely=0.27, anchor="n")
 
+
+
     def saveSettings(self):
         self.maxLoadTimeChange()
         self.webhookChange()
@@ -745,5 +749,6 @@ class GUI:
         self.botTokenChange()
         self.channelIDChange()
         self.botModeChange()
+        self.plantersChange()
 
         self.window.after(1000, self.saveSettings)
