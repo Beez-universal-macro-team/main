@@ -51,8 +51,16 @@ class GUI:
             self.macro_thread = threading.Thread(target=self.startMacro, args=(True,))
             self.macro_thread.start()
         else:
-            self.macro_thread = threading.current_thread()
-            MainLoopMacro()
+            try:
+                if self.clicker_enabled.get():
+                    cps = float(self.cps_entry.get())
+                    hold = self.hold_enabled.get()
+                    autoclick(cps, hold)  # Pass both parameters explicitly
+                else:
+                    MainLoopMacro()
+            except Exception as e:
+                print(f"An error occurred: {e}")
+                input("Press Enter to close...")
 
     def initWindow(self):
         sendMessage("Started main!")
@@ -79,6 +87,8 @@ class GUI:
         self.tabControl.add(name='Settings')
         self.tabControl.add(name='Private Servers')
         self.tabControl.add(name='Planters')
+        # Add after other tab definitions
+        self.tabControl.add(name='Autoclicker')
         self.tabControl.add(name='Credits')
 
         ###### CREATING TEXT ######
@@ -403,6 +413,25 @@ class GUI:
         self.planter3EnabledCheckbox = ctk.CTkCheckBox(self.tabControl.tab('Planters'), text="Planter3",
                                                        variable=self.planter3Enabled, onvalue="1", offvalue="0")
 
+        self.cps_label = ctk.CTkLabel(self.tabControl.tab('Autoclicker'), text="CPS (Clicks per second):")
+        self.cps_label.pack(pady=10)
+
+        self.cps_entry = ctk.CTkEntry(self.tabControl.tab('Autoclicker'))
+        self.cps_entry.pack(pady=5)
+        self.cps_entry.insert(0, "10")  # Default CPS value
+
+        self.clicker_enabled = tk.BooleanVar()
+        self.clicker_checkbox = ctk.CTkCheckBox(self.tabControl.tab('Autoclicker'),
+                                            text="Enable Autoclicker", 
+                                            variable=self.clicker_enabled)
+        self.clicker_checkbox.pack(pady=10)
+
+        self.hold_enabled = tk.BooleanVar()
+        self.hold_checkbox = ctk.CTkCheckBox(self.tabControl.tab('Autoclicker'),
+                                        text="Hold Instead of Click", 
+                                        variable=self.hold_enabled)
+        self.hold_checkbox.pack(pady=10)
+
 
         ###### DISPLAYING TEXT ######
 
@@ -718,6 +747,10 @@ class GUI:
         self.botTokenChange()
         self.channelIDChange()
         self.botModeChange()
+
+
+        self.window.after(1000, self.saveSettings)
+
 
 
         self.window.after(1000, self.saveSettings)
