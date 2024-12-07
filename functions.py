@@ -403,6 +403,20 @@ def writeFile(fileName, val):
     val_str = str(val).replace(" ", "")
 
     # Open the file in write mode, creating it if it doesn't exist
+    if val_str.count("https") > 1:
+        while val_str.count("https") > 1:
+            val = val.split("https")
+
+            val.pop(-1)
+
+            val_str = "".join(val)
+
+        val_str = list(val_str)
+
+        val_str.insert(0, "https")
+
+        val_str = "".join(val_str)
+
     with open(full_path, "w+") as file:
         file.write(val_str)
 
