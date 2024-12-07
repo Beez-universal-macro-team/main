@@ -1236,7 +1236,7 @@ if remote_Control == "True":
 
     @bot.command(aliases=['ss', 'picture'])
     async def screenshot(ctx):
-        sendMessage("Here's your screenshot", 1)
+        sendMessageBot("Here's your screenshot", 1)
 
     @bot.command()
     async def shutdown(ctx):
@@ -1266,7 +1266,7 @@ if remote_Control == "True":
     async def send_message_async(message, picture=0):
         await bot_send(message, picture)
 
-    def sendMessage(message, picture=0):
+    def sendMessageBotmessage, picture=0):
         bot.loop.create_task(send_message_async(message, picture))
 
 
