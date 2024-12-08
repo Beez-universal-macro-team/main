@@ -112,11 +112,3 @@ def hourlyReport():
         screen = Image.open("hourly.png")
 
         sendImage("Hourly Report!", screen)
-
-
-while True:
-    if keyboard.is_pressed("o"):
-        hourlyReport()
-
-    elif keyboard.is_pressed("b"):
-        print(mouse.get_position())
