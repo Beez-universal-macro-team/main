@@ -1002,7 +1002,7 @@ def getPlanterImgPath(planter):
         return "pop"
 
 def harvestPlanterInField(field):
-    from paths import *
+    import paths
     
     sendMessage("Harvesting planter...")
 
@@ -1039,7 +1039,7 @@ def harvestPlanterInField(field):
     sendScreenshot("Harvested planter!")
 
 def placePlanterInField(field, planter):
-    from paths import *
+    import paths
     
     sendMessage(f"Searching for {planter} planter")
 
