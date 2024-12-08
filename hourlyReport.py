@@ -101,6 +101,8 @@ def hourlyReport():
 
         currentHourVicBees = int(readFile("currentHourVicBees.txt"))
 
+        writeFile("currentHourVicBees.txt", "0")
+
         vicHours.append(currentHourVicBees)
 
         currentStingers = getCurrentStingers()
