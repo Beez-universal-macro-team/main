@@ -1266,7 +1266,7 @@ if remote_Control == "True":
     async def send_message_async(message, picture=0):
         await bot_send(message, picture)
 
-    def sendMessageBotmessage, picture=0):
+    def sendMessageBot(message, picture=0):
         bot.loop.create_task(send_message_async(message, picture))
 
 
