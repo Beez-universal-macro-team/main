@@ -43,8 +43,6 @@ def harvestPlanterInField(field, tries=0):
 
         field = "".join(field)
 
-        print("going to field")
-
         globals()["canonTo" + field](calibrate=True)
 
         time.sleep(0.1)
