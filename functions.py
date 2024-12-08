@@ -314,7 +314,7 @@ def reset(hive=True):
     time.sleep(8)
 
     if hive:
-        if not findImg("images/make_honey1.png", 0.7) and not findImg("images/make_honey2.png", 0.7):
+        if not findImg("images/gui/make_honey1.png", 0.7) and not findImg("images/gui/make_honey2.png", 0.7):
             press("w", "d", 3)
 
 
@@ -866,7 +866,7 @@ def ClaimHiveWithRetries():
 
         if ClaimHive():
             writeFile(os.path.join(main_dir, "guiFiles", "hiveSlot.txt"), str(6 - attempt))
-            
+
             print(f"Successfully claimed hive on attempt {attempt + 1}")
             return True  # Success, exit the function
 
