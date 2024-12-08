@@ -1,6 +1,7 @@
 from functions import *
 from paths import *
 
+
 def getPlanterImgPath(planter):
     if planter == "BlueClay":
         return "blueClay"
@@ -29,6 +30,7 @@ def getPlanterImgPath(planter):
     elif planter == "Pop":
         return "pop"
 
+
 def harvestPlanterInField(field, tries=0):
     try:
         sendMessage("Harvesting planter...")
@@ -40,6 +42,8 @@ def harvestPlanterInField(field, tries=0):
         field[0] = field[0].upper()
 
         field = "".join(field)
+
+        print("going to field")
 
         globals()["canonTo" + field](calibrate=True)
 
@@ -54,7 +58,8 @@ def harvestPlanterInField(field, tries=0):
 
         time.sleep(0.1)
 
-        pos = locateImageOnScreen3("screenshot.png", os.path.join(main_dir, "planters", "yesButton.png"), confidence=0.8)
+        pos = locateImageOnScreen3("screenshot.png", os.path.join(main_dir, "planters", "yesButton.png"),
+                                   confidence=0.8)
 
         moveMouseAhk(pos[0] - 5, pos[1] - 5)
         moveMouseAhk(pos[0], pos[1])
@@ -70,6 +75,7 @@ def harvestPlanterInField(field, tries=0):
 
         if tries < 2:
             harvestPlanterInField(field, tries=tries + 1)
+
 
 def placePlanterInField(field, planter):
     import paths
@@ -112,7 +118,8 @@ def placePlanterInField(field, planter):
 
     paths.time.sleep(0.1)
 
-    pos = paths.locateImageOnScreen3("screenshot.png", paths.os.path.join(paths.main_dir, "planters", "yesButton.png"), confidence=0.8)
+    pos = paths.locateImageOnScreen3("screenshot.png", paths.os.path.join(paths.main_dir, "planters", "yesButton.png"),
+                                     confidence=0.8)
 
     paths.moveMouseAhk(pos[0] - 5, pos[1] - 5)
     paths.moveMouseAhk(pos[0], pos[1])
@@ -126,6 +133,7 @@ def placePlanterInField(field, planter):
     paths.scrollUpInv()
 
     paths.sendScreenshot(f"Placed {planter} planter!")
+
 
 def plantersLogic():
     plantersStatus = eval(readFile(os.path.join("guiFiles", "plantersStatus.txt")))
@@ -141,14 +149,16 @@ def plantersLogic():
                     plantersStatus[planter]["status"] = "harvest"
 
             if planterDisp == "free":
-                res = placePlanterInField(plantersStatus[planter]["field"], getPlanterImgPath(plantersStatus[planter]["typ"]))
-                
+                res = placePlanterInField(plantersStatus[planter]["field"],
+                                          getPlanterImgPath(plantersStatus[planter]["typ"]))
+
                 if res == False:
                     harvestPlanterInField(plantersStatus[planter]["field"])
 
                     time.sleep(1)
 
-                    placePlanterInField(plantersStatus[planter]["field"], getPlanterImgPath(plantersStatus[planter]["typ"]))
+                    placePlanterInField(plantersStatus[planter]["field"],
+                                        getPlanterImgPath(plantersStatus[planter]["typ"]))
 
                 plantersStatus[planter]["status"] = "growing"
 
