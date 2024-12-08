@@ -175,4 +175,6 @@ def plantersLogic():
 
                 plantersStatus[planter]["tmStarted"] = str(time.time())
 
-        writeFile(os.path.join("guiFiles", "plantersStatus.txt"), str(plantersStatus))
+            writeFile(os.path.join("guiFiles", "plantersStatus.txt"), str(plantersStatus))
+
+    writeFile(os.path.join("guiFiles", "plantersStatus.txt"), str(plantersStatus))
