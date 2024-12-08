@@ -153,8 +153,15 @@ def MountVic():
     keyboard.tap(".")
     keyboard.tap(".")
 
+    press("a", 0.5)
+
     keyboard.press("d")
     Waitspeed(6.9)
+
+    press(" ", 0.1)
+
+    Waitspeed(6.9)
+
     keyboard.release("d")
     time.sleep(0.10)
     keyboard.press("s")
@@ -197,7 +204,7 @@ def CactusVic():
     time.sleep(0.1)
     keyboard.press("d")
     keyboard.press("w")
-    Waitspeed(27)
+    Waitspeed(29)
     keyboard.release("w")
     Waitspeed(13)
     keyboard.release("d")
