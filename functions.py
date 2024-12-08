@@ -865,6 +865,8 @@ def ClaimHiveWithRetries():
             Reset()
 
         if ClaimHive():
+            writeFile(os.path.join(main_dir, "guiFiles", "hiveSlot.txt"), str(attempt))
+            
             print(f"Successfully claimed hive on attempt {attempt + 1}")
             return True  # Success, exit the function
 
