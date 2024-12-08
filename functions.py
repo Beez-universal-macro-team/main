@@ -250,6 +250,21 @@ def sendScreenshot(message):
         print(f"Exception in sendScreenshot: {e}")
 
 
+def sendImage(message, image):
+    try:
+        image.save(os.path.join(main_dir, "images", "screenshot.png"))
+
+        image = open(os.path.join(main_dir, "images", "screenshot.png"), "rb")
+
+        t = threading.Thread(target=sendMessage, args=(message, discord.File(image)))
+        t.daemon = True
+
+        t.start()
+
+    except Exception as e:
+        print(f"Exception in sendScreenshot: {e}")
+
+
 def sendImportantMessage(message, picture=None):
     try:
         webhook = discord.SyncWebhook.from_url(readFile("guiFiles/important_webhook.txt"))
@@ -920,12 +935,14 @@ def DetectLoading(timeout):
 
 def ServerSetup():
     from placePlanters import plantersLogic
+    from hourlyReport import hourlyReport
 
     if not ClaimHiveWithRetries():
         print("Failed to claim hive after multiple attempts. Exiting MainLoop.")
         return False
     sendMessage("Claimed hive")
 
+    hourlyReport()
     plantersLogic()
 
     WalkToRedCannon()
