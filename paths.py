@@ -9,6 +9,7 @@ def canon(rst=True):
             break
 
         if rst or loop > 0:
+            print("reseting")
             reset()
 
         time.sleep(0.05)
@@ -38,7 +39,11 @@ def canon(rst=True):
 
 
 def PepperVic():
+    print("e")
+
     sendMessage("Searching pepper")
+
+    print("ee")
 
     press("d", 2)
 
@@ -376,38 +381,18 @@ def CactusMoveFromDetection():
     keyboard.release("w")
 
     keyboard.press("d")
-    Waitspeed(35.5)
+    Waitspeed(30)
     keyboard.release("d")
 
     keyboard.press("s")
     Waitspeed(30)
     keyboard.release("s")
 
-    keyboard.press("d")
-    Waitspeed(6.5)
-    keyboard.release("d")
+    press("w", 0.5)
 
-    keyboard.press("w")
-    Waitspeed(26)
-    keyboard.release("w")
+    press("d", 0.75)
 
-    keyboard.press("d")
-    Waitspeed(4)
-    keyboard.release("d")
-
-    keyboard.press("s")
-    Waitspeed(40)
-    keyboard.release("s")
-
-    keyboard.press("a")
-    Waitspeed(6.5)
-    keyboard.release("a")
-
-    keyboard.press("w")
-    keyboard.press("d")
-    Waitspeed(6.5)
-    keyboard.release("d")
-    keyboard.release("w")
+    press("w", 2.5)
 
 
 def RoseMoveFromDetection():
@@ -568,6 +553,15 @@ def CactusKillCycle():
     start_time = time.time()
     timeout = 240  # 4 minutes in seconds
 
+    for _ in range(2):
+        press(",", 0.1)
+
+        time.sleep(0.1)
+
+    press("w", 0.5)
+
+    press("a", 1.5)
+
     while True:
         # Check if 4 minutes have passed
         if time.time() - start_time > timeout:
@@ -583,6 +577,17 @@ def CactusKillCycle():
                 print("Health detected, exiting cycle")
                 return False
 
+        for _ in range(3):
+            keyboard.press("s")
+
+            Waitspeed(2)
+
+            keyboard.release("s")
+
+            if detect_health_in_screenshot():
+                print("Health detected, exiting cycle")
+                return False
+
         # A movement
         for _ in range(7):
             keyboard.press("a")
@@ -594,6 +599,17 @@ def CactusKillCycle():
         if detect_vic_defeat():
             sendScreenshot("Vic defeated, exiting cycle")
             return True
+
+        for _ in range(3):
+            keyboard.press("w")
+
+            Waitspeed(2)
+
+            keyboard.release("w")
+
+            if detect_health_in_screenshot():
+                print("Health detected, exiting cycle")
+                return False
 
 
 def RoseKillCycle():
