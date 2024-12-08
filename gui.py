@@ -354,9 +354,9 @@ class GUI:
         self.planter2Field = tk.StringVar()
         self.planter3Field = tk.StringVar()
 
-        self.planter1Status = "free"
-        self.planter2Status = "free"
-        self.planter3Status = "free"
+        self.planter1Status = self.plantersVals["planter1"]["status"]
+        self.planter2Status = self.plantersVals["planter2"]["status"]
+        self.planter3Status = self.plantersVals["planter3"]["status"]
 
         self.planter1Time = ctk.StringVar(value=self.plantersVals["planter1"]["tm"])
         self.planter2Time = ctk.StringVar(value=self.plantersVals["planter2"]["tm"])
