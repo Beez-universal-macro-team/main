@@ -130,7 +130,8 @@ def plantersLogic():
             planterDisp = plantersStatus[planter]["status"]
 
             if planterDisp == "growing":
-                if time.time() - float(plantersStatus[planter]["tmStarted"]) >= int(plantersStatus[planter]["tm"]) * 60 * 60:
+                print(time.time() - float(plantersStatus[planter]["tmStarted"]))
+                if time.time() - float(plantersStatus[planter]["tmStarted"]) >= int(plantersStatus[planter]["tm"]) * 60:
                     planterDisp = "harvest"
 
                     plantersStatus[planter]["status"] = "harvest"
