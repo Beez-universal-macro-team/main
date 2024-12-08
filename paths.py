@@ -26,7 +26,7 @@ def canon(rst=True):
 
         press("w", 0.2)
 
-        time.sleep(0.5)
+        time.sleep(0.35)
 
         keyboard.release("d")
 
@@ -152,6 +152,8 @@ def MountVic():
     keyboard.tap(".")
     keyboard.tap(".")
     keyboard.tap(".")
+
+    press("s", 0.1)
 
     press("a", 0.5)
 
@@ -910,6 +912,10 @@ def KillVicBees():
     img = screenshot()
 
     if detectVicBee(img):
+        vicBees = int(readFile(os.path.join(main_dir, "guiFiles", "currentHourVicBees.txt")))
+
+        writeFile(os.path.join(main_dir, "guiFiles", "currentHourVicBees.txt"), str(vicBees + 1))
+
         sendScreenshot("Detected vic bee")
         for _ in range(2):
             time.sleep(0.1)
@@ -1220,20 +1226,24 @@ def canonToClover(calibrate=False):
 def canonToBlueFlower(calibrate=False):
     press("e", 0.05)
 
-    time.sleep(0.25)
+    time.sleep(0.2)
 
     for _ in range(2):
         press(" ", 0.1)
 
         time.sleep(0.1)
 
-    press("a", 5)
+    press("a", 3)
 
-    press("s", 3)
+    press(" ", 0.1)
 
-    press("w", 1)
+    time.sleep(0.1)
 
-    press("d", 2)
+    time.sleep(2)
+
+    press("w", 2.5)
+
+    press("d", 2.5)
 
 def canonToSunflower(calibrate=False):
     press("a", 0.5)
