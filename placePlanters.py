@@ -81,7 +81,7 @@ def harvestPlanterInField(field, tries=0):
             harvestPlanterInField(field, tries=tries + 1)
 
 
-def placePlanterInField(field, planter):
+def placePlanterInField(field, planter, harvest=False):
     import paths
 
     paths.sendMessage(f"Searching for {planter} planter")
@@ -101,13 +101,14 @@ def placePlanterInField(field, planter):
 
     paths.sendMessage(f"Found {planter} planter! Placing it...")
 
-    paths.canon(rst=True)
+    if not harvest:
+        paths.canon(rst=True)
 
-    field2 = list(field)
-    field2[0] = field2[0].upper()
-    field2 = "".join(field2)
+        field2 = list(field)
+        field2[0] = field2[0].upper()
+        field2 = "".join(field2)
 
-    globals()["canonTo" + field2](calibrate=True)
+        globals()["canonTo" + field2](calibrate=True)
 
     if pos != False:
         paths.moveMouseAhk(pos[0] - 5, pos[1] - 5)
@@ -152,7 +153,7 @@ def plantersLogic():
             planterDisp = plantersStatus[planter]["status"]
 
             if planterDisp == "growing":
-                sendMessage(f"Time left before harvesting planters: {time.time() - float(plantersStatus[planter]["tmStarted"])}")
+                sendMessage(f"Time left before harvesting planters: {max(0, round(int(plantersStatus[planter]["tm"]) - (time.time() - float(plantersStatus[planter]["tmStarted"])) / 60))} minutes")
 
                 if time.time() - float(plantersStatus[planter]["tmStarted"]) >= int(plantersStatus[planter]["tm"]) * 60:
                     planterDisp = "harvest"
@@ -168,8 +169,7 @@ def plantersLogic():
 
                     time.sleep(1)
 
-                    placePlanterInField(plantersStatus[planter]["field"],
-                                        getPlanterImgPath(plantersStatus[planter]["typ"]))
+                    placePlanterInField(plantersStatus[planter]["field"], getPlanterImgPath(plantersStatus[planter]["typ"]), harvest=True)
 
                 plantersStatus[planter]["status"] = "growing"
 
@@ -182,7 +182,7 @@ def plantersLogic():
 
                 time.sleep(1)
 
-                placePlanterInField(plantersStatus[planter]["field"], getPlanterImgPath(plantersStatus[planter]["typ"]))
+                placePlanterInField(plantersStatus[planter]["field"], getPlanterImgPath(plantersStatus[planter]["typ"]), harvest=True)
 
                 plantersStatus[planter]["status"] = "growing"
 
