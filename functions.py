@@ -639,7 +639,11 @@ def MoveUntilHive():
 
             print(current_hive)
 
-            writeFile(os.path.join(main_dir, "guiFiles", "hiveSlot.txt"), str(current_hive))
+            writeFile(os.path.join("guiFiles", "hiveSlot.txt"), str(7 - current_hive))
+
+            print("wrote current hive")
+
+            sendMessage(f"Claimed hive slot number {current_hive}")
 
             time.sleep(1)
 
