@@ -637,13 +637,17 @@ def MoveUntilHive():
 
             current_hive = attempt  # Update the current hive number
 
+            print(current_hive)
+
+            writeFile(os.path.join(main_dir, "guiFiles", "hiveSlot.txt"), str(current_hive))
+
             time.sleep(1)
 
             return True  # Image found
 
         except pyautogui.ImageNotFoundException:
-            if attempt < 5:
-                press("a", 1)
+            if attempt < 6:
+                press("a", 0.9)
 
                 time.sleep(1)
 
