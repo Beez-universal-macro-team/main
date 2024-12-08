@@ -97,7 +97,7 @@ def hourlyReport():
     if time.time() - hourTime >= 60 * 60:
         hourTime = time.time()
 
-        hours.append(len(hours) + 1)
+        hours.append(len(hours))
 
         currentHourVicBees = int(readFile("currentHourVicBees.txt"))
 
