@@ -152,6 +152,8 @@ def plantersLogic():
             planterDisp = plantersStatus[planter]["status"]
 
             if planterDisp == "growing":
+                sendMessage(f"Time left before harvesting planters: {time.time() - float(plantersStatus[planter]["tmStarted"])}")
+
                 if time.time() - float(plantersStatus[planter]["tmStarted"]) >= int(plantersStatus[planter]["tm"]) * 60:
                     planterDisp = "harvest"
 
@@ -173,6 +175,8 @@ def plantersLogic():
 
                 plantersStatus[planter]["tmStarted"] = str(time.time())
 
+                writeFile(os.path.join("guiFiles", "plantersStatus.txt"), str(plantersStatus))
+
             if planterDisp == "harvest":
                 harvestPlanterInField(plantersStatus[planter]["field"])
 
@@ -183,6 +187,8 @@ def plantersLogic():
                 plantersStatus[planter]["status"] = "growing"
 
                 plantersStatus[planter]["tmStarted"] = str(time.time())
+
+                writeFile(os.path.join("guiFiles", "plantersStatus.txt"), str(plantersStatus))
 
             writeFile(os.path.join("guiFiles", "plantersStatus.txt"), str(plantersStatus))
 
