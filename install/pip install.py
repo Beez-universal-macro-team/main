@@ -24,8 +24,9 @@ required_libraries = {
     'numpy': '1.21.0',
     'colorama': None,
     'ImageHash': None,
-    'pyautogui': None
-    'discord.ext': None
+    'pyautogui': None,
+    'discord.ext': None,
+    'mouse': None
 }
 
 def install_visual_c_redistributable():
