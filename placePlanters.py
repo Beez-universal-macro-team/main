@@ -130,7 +130,6 @@ def plantersLogic():
             planterDisp = plantersStatus[planter]["status"]
 
             if planterDisp == "growing":
-                print(time.time() - float(plantersStatus[planter]["tmStarted"]))
                 if time.time() - float(plantersStatus[planter]["tmStarted"]) >= int(plantersStatus[planter]["tm"]) * 60:
                     planterDisp = "harvest"
 
@@ -139,15 +138,19 @@ def plantersLogic():
             if planterDisp == "free":
                 placePlanterInField(plantersStatus[planter]["field"], getPlanterImgPath(plantersStatus[planter]["typ"]))
 
-            else:
+                plantersStatus[planter]["status"] = "growing"
+
+                plantersStatus[planter]["tmStarted"] = str(time.time())
+
+            if planterDisp == "harvest":
                 harvestPlanterInField(plantersStatus[planter]["field"])
 
                 time.sleep(1)
 
                 placePlanterInField(plantersStatus[planter]["field"], getPlanterImgPath(plantersStatus[planter]["typ"]))
 
-        plantersStatus[planter]["status"] = "growing"
+                plantersStatus[planter]["status"] = "growing"
 
-        plantersStatus[planter]["tmStarted"] = str(time.time())
+                plantersStatus[planter]["tmStarted"] = str(time.time())
 
     writeFile(os.path.join("guiFiles", "plantersStatus.txt"), str(plantersStatus))
