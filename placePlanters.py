@@ -61,19 +61,23 @@ def harvestPlanterInField(field, tries=0):
         pos = locateImageOnScreen3("screenshot.png", os.path.join(main_dir, "planters", "yesButton.png"),
                                    confidence=0.8)
 
-        moveMouseAhk(pos[0] - 5, pos[1] - 5)
-        moveMouseAhk(pos[0], pos[1])
+        if pos != False:
+            moveMouseAhk(pos[0] - 5, pos[1] - 5)
+            moveMouseAhk(pos[0], pos[1])
 
-        time.sleep(0.1)
+            time.sleep(0.1)
 
-        mouse.click()
+            mouse.click()
 
-        sendScreenshot("Harvested planter!")
+            sendScreenshot("Harvested planter!")
+
+        else:
+            harvestPlanterInField(field, tries=tries + 1)
 
     except Exception as e:
         print(e)
 
-        if tries < 2:
+        if tries < 3:
             harvestPlanterInField(field, tries=tries + 1)
 
 
@@ -110,6 +114,11 @@ def placePlanterInField(field, planter):
         paths.moveMouseAhk(pos[0], pos[1])
 
         paths.pyautogui.dragTo(paths.screenDims[0] // 2, paths.screenDims[1] // 2)
+
+    else:
+        placePlanterInField(field, planter)
+
+        return
 
     paths.time.sleep(0.5)
 
