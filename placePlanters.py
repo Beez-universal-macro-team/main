@@ -37,11 +37,13 @@ def harvestPlanterInField(field, tries=0):
 
         canon(rst=True)
 
-        field = list(field.lower())
+        field = list(field)
 
         field[0] = field[0].upper()
 
         field = "".join(field)
+
+        print("going to field")
 
         globals()["canonTo" + field](calibrate=True)
 
