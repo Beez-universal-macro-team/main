@@ -22,7 +22,6 @@ import imagehash
 from discord.ext import commands
 from ahkMoveMouse import moveMouseAhk
 import mouse
-from paths import *
 
 mouse2 = mouseController()
 
@@ -1003,6 +1002,8 @@ def getPlanterImgPath(planter):
         return "pop"
 
 def harvestPlanterInField(field):
+    from paths import *
+    
     sendMessage("Harvesting planter...")
 
     canon(rst=True)
@@ -1038,6 +1039,8 @@ def harvestPlanterInField(field):
     sendScreenshot("Harvested planter!")
 
 def placePlanterInField(field, planter):
+    from paths import *
+    
     sendMessage(f"Searching for {planter} planter")
 
     pos = scrollTo(os.path.join("planters", planter))
