@@ -29,42 +29,47 @@ def getPlanterImgPath(planter):
     elif planter == "Pop":
         return "pop"
 
-def harvestPlanterInField(field):
-    import paths
+def harvestPlanterInField(field, tries=0):
+    try:
+        sendMessage("Harvesting planter...")
 
-    sendMessage("Harvesting planter...")
+        canon(rst=True)
 
-    canon(rst=True)
+        field = list(field.lower())
 
-    field = list(field.lower())
+        field[0] = field[0].upper()
 
-    field[0] = field[0].upper()
+        field = "".join(field)
 
-    field = "".join(field)
+        globals()["canonTo" + field](calibrate=True)
 
-    globals()["canonTo" + field](calibrate=True)
+        time.sleep(0.1)
 
-    time.sleep(0.1)
+        press("e", 0.05)
 
-    press("e", 0.05)
+        time.sleep(0.5)
 
-    time.sleep(0.5)
+        screen = screenshot()
+        screen.save("screenshot.png")
 
-    screen = screenshot()
-    screen.save("screenshot.png")
+        time.sleep(0.1)
 
-    time.sleep(0.1)
+        pos = locateImageOnScreen3("screenshot.png", os.path.join(main_dir, "planters", "yesButton.png"), confidence=0.8)
 
-    pos = locateImageOnScreen3("screenshot.png", os.path.join(main_dir, "planters", "yesButton.png"), confidence=0.8)
+        moveMouseAhk(pos[0] - 5, pos[1] - 5)
+        moveMouseAhk(pos[0], pos[1])
 
-    moveMouseAhk(pos[0] - 5, pos[1] - 5)
-    moveMouseAhk(pos[0], pos[1])
+        time.sleep(0.1)
 
-    time.sleep(0.1)
+        mouse.click()
 
-    mouse.click()
+        sendScreenshot("Harvested planter!")
 
-    sendScreenshot("Harvested planter!")
+    except Exception as e:
+        print(e)
+
+        if tries < 2:
+            harvestPlanterInField(field, tries=tries + 1)
 
 def placePlanterInField(field, planter):
     import paths
@@ -82,7 +87,7 @@ def placePlanterInField(field, planter):
 
         paths.time.sleep(0.1)
 
-        return
+        return False
 
     paths.sendMessage(f"Found {planter} planter! Placing it...")
 
@@ -136,7 +141,14 @@ def plantersLogic():
                     plantersStatus[planter]["status"] = "harvest"
 
             if planterDisp == "free":
-                placePlanterInField(plantersStatus[planter]["field"], getPlanterImgPath(plantersStatus[planter]["typ"]))
+                res = placePlanterInField(plantersStatus[planter]["field"], getPlanterImgPath(plantersStatus[planter]["typ"]))
+                
+                if res == False:
+                    harvestPlanterInField(plantersStatus[planter]["field"])
+
+                    time.sleep(1)
+
+                    placePlanterInField(plantersStatus[planter]["field"], getPlanterImgPath(plantersStatus[planter]["typ"]))
 
                 plantersStatus[planter]["status"] = "growing"
 
@@ -153,4 +165,4 @@ def plantersLogic():
 
                 plantersStatus[planter]["tmStarted"] = str(time.time())
 
-    writeFile(os.path.join("guiFiles", "plantersStatus.txt"), str(plantersStatus))
+        writeFile(os.path.join("guiFiles", "plantersStatus.txt"), str(plantersStatus))
