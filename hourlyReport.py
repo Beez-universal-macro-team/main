@@ -1,3 +1,5 @@
+from os import write
+
 import mouse
 from functions import *
 import easyocr
@@ -39,7 +41,7 @@ def getText(image_path):
 def getCurrentStingers():
     openInv()
 
-    time.sleep(0.5)
+    time.sleep(1)
 
     if findImg(os.path.join(main_dir, "images", "gui", "stinger.png"), 0.8):
         screen = screenshot()
@@ -48,7 +50,10 @@ def getCurrentStingers():
 
         cropImg("screenshot.png", stingerBox)
 
-        stingers = int(getText("screenshot.png"))
+        stingers = getText("screenshot.png")
+
+        if stingers == '':
+            stingers = 0
 
         openInv()
 
