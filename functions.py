@@ -25,20 +25,24 @@ import mouse
 
 mouse2 = mouseController()
 
+
 def mssScreenshot(x, y, w, h):
     with mss.mss() as sct:
         monitor = {"top": y, "left": x, "width": w, "height": h}
         screen = sct.grab(monitor)
         return Image.frombytes("RGB", screen.size, screen.bgra, "raw", "BGRX")
 
+
 def mssScreenshotNP(x, y, w, h):
     with mss.mss() as sct:
         monitor = {"top": y, "left": x, "width": w, "height": h}
         return np.array(sct.grab(monitor))
 
+
 def templateMatch(smallImg, bigImg):
     res = cv2.matchTemplate(bigImg, smallImg, cv2.TM_CCOEFF_NORMED)
     return cv2.minMaxLoc(res)
+
 
 def locateImageOnScreen(target, x, y, w, h, threshold=0):
     screen = mssScreenshot(x, y, w, h)
@@ -47,6 +51,7 @@ def locateImageOnScreen(target, x, y, w, h, threshold=0):
     if max_val < threshold:
         return None
     return (max_val, max_loc)
+
 
 def locateTransparentImageOnScreen(target, x, y, w, h, threshold=0):
     screen = mssScreenshotNP(x, y, w, h)
@@ -57,8 +62,10 @@ def locateTransparentImageOnScreen(target, x, y, w, h, threshold=0):
         return None
     return (max_val, max_loc)
 
+
 def similarHashes(hash1, hash2, threshold):
-    return hash1-hash2 < threshold
+    return hash1 - hash2 < threshold
+
 
 def cropImg(imgPath, box):
     img = Image.open(imgPath)
@@ -66,6 +73,7 @@ def cropImg(imgPath, box):
     img = img.crop(box)
 
     img.save(imgPath)
+
 
 def locateImageWithMaskOnScreen(image, mask, x, y, w, h, threshold=0):
     screen = mssScreenshotNP(x, y, w, h)
@@ -75,6 +83,7 @@ def locateImageWithMaskOnScreen(image, mask, x, y, w, h, threshold=0):
     if max_val < threshold:
         return None
     return (max_val, max_loc)
+
 
 def detect_image_beside(image_path, x_offset, y_offset, width, height, threshold=0.75):
     template = cv2.imread(os.path.join(main_dir, image_path))
@@ -98,19 +107,24 @@ screenDims = pyautogui.size()
 if sys.platform == "win32":
     try:
         import pydirectinput as pag
+
         pag.PAUSE = 0.1
     except ImportError:
         pag = pyautogui
 
 from pynput.mouse import Button, Controller
+
 pynputMouse = Controller()
 
-def teleport(x,y):
-    pag.moveTo(int(x),int(y))
 
-def moveTo(x,y, delay = 0.1):
-    pag.moveTo(int(x),int(y), delay)
+def teleport(x, y):
+    pag.moveTo(int(x), int(y))
+
+
+def moveTo(x, y, delay=0.1):
+    pag.moveTo(int(x), int(y), delay)
     pynputMouse.position = (int(x), int(y))
+
 
 def mouseDown():
     pynputMouse.press(Button.left)
@@ -120,6 +134,7 @@ def mouseDown():
         except:
             pass
 
+
 def mouseUp():
     pynputMouse.release(Button.left)
     if sys.platform == "win32":
@@ -128,17 +143,21 @@ def mouseUp():
         except:
             pass
 
-def moveBy(x = 0,y = 0):
-    pag.move(x, y)  
+
+def moveBy(x=0, y=0):
+    pag.move(x, y)
+
 
 def click():
     mouseDown()
     time.sleep(0.04)
     mouseUp()
 
+
 def fastClick():
     pynputMouse.press(Button.left)
     pynputMouse.release(Button.left)
+
 
 def autoclick(cps, hold=False):
     try:
@@ -172,9 +191,8 @@ def readFile(fileName):
                 time.sleep(0.1)  # Brief pause between attempts
         except:
             time.sleep(0.1)
-            
-    return "0"  # Return "0" after 3 failed attempts
 
+    return "0"  # Return "0" after 3 failed attempts
 
 
 def isColorClose(color1, color2, maxDiff):
@@ -201,7 +219,6 @@ def isWindowOpen(windowName):
 
 
 def sendMessage(message, picture=None):
-
     try:
         webhook = discord.SyncWebhook.from_url(readFile("guiFiles/webhook.txt"))
 
@@ -232,6 +249,7 @@ def sendScreenshot(message):
     except Exception as e:
         print(f"Exception in sendScreenshot: {e}")
 
+
 def sendImportantMessage(message, picture=None):
     try:
         webhook = discord.SyncWebhook.from_url(readFile("guiFiles/important_webhook.txt"))
@@ -241,6 +259,7 @@ def sendImportantMessage(message, picture=None):
             f"[{tm.hour}:{tm.minute}:{tm.second}] {message}", file=picture)
     except:
         pass
+
 
 def sendImportantScreenshot(message):
     try:
@@ -295,6 +314,7 @@ def findImg(img, confidence):
     except:
         return False
 
+
 def locateImageOnScreen3(imgPath, templatePath, confidence=0.8):
     try:
         # Read the main image and template
@@ -315,7 +335,7 @@ def locateImageOnScreen3(imgPath, templatePath, confidence=0.8):
             match_top_left = max_loc
             match_height, match_width, _ = template.shape
             matched_region = img[match_top_left[1]:match_top_left[1] + match_height,
-                                  match_top_left[0]:match_top_left[0] + match_width]
+                             match_top_left[0]:match_top_left[0] + match_width]
 
             # Calculate pixel-wise color difference (Mean Squared Error - MSE)
             color_diff = np.mean((matched_region - template) ** 2)
@@ -394,7 +414,7 @@ def writeFile(fileName, val):
             fileName = fileName.replace("/", "\\")
 
     full_path = os.path.join(main_dir, fileName)
-    
+
     # Create the directory if it doesn't exist
     os.makedirs(os.path.dirname(full_path), exist_ok=True)
 
@@ -418,6 +438,7 @@ def writeFile(fileName, val):
 
     with open(full_path, "w+") as file:
         file.write(val_str)
+
 
 def joinRandomServer(place_id=1537690962):
     global lastRequest
@@ -543,6 +564,7 @@ def screenshot_health_area():
     height = offsetDims(200, "y")  # Height of capture area
 
     return screenshot_area(x, y, width, height)
+
 
 # Paths and FUNCTIONS
 print("loading vic bee AI...")
@@ -897,13 +919,15 @@ def DetectLoading(timeout):
 
 
 def ServerSetup():
+    from placePlanters import plantersLogic
+
     if not ClaimHiveWithRetries():
         print("Failed to claim hive after multiple attempts. Exiting MainLoop.")
         return False
     sendMessage("Claimed hive")
 
     plantersLogic()
-    
+
     WalkToRedCannon()
     sendMessage("Moved to cannon")
     return True
@@ -916,6 +940,7 @@ def ShiftLock():
     print("Shift lock released")
     time.sleep(0.5)  # Wait to confirm state change
     return True
+
 
 def scrollTo(*imgPaths):
     openInv()
@@ -973,175 +998,25 @@ def openInv():
 
     mouse.click()
 
-def getPlanterImgPath(planter):
-    if planter == "BlueClay":
-        return "blueClay"
-
-    elif planter == "RedClay":
-        return "redClay"
-
-    elif planter == "Candy":
-        return "candy"
-
-    elif planter == "HeatTreated":
-        return "heatTreated"
-
-    elif planter == "Hydroponic":
-        return "hydroponic"
-
-    elif planter == "Pesticide":
-        return "pesticide"
-
-    elif planter == "Plastic":
-        return "plastic"
-
-    elif planter == "Tacky":
-        return "tacky"
-
-    elif planter == "Pop":
-        return "pop"
-
-def harvestPlanterInField(field):
-    import paths
-    
-    sendMessage("Harvesting planter...")
-
-    canon(rst=True)
-
-    field = list(field.lower())
-
-    field[0] = field[0].upper()
-
-    field = "".join(field)
-
-    globals()["canonTo" + field](calibrate=True)
-
-    time.sleep(0.1)
-
-    press("e", 0.05)
-
-    time.sleep(0.5)
-
-    screen = screenshot()
-    screen.save("screenshot.png")
-
-    time.sleep(0.1)
-
-    pos = locateImageOnScreen3("screenshot.png", os.path.join(main_dir, "planters", "yesButton.png"), confidence=0.8)
-
-    moveMouseAhk(pos[0] - 5, pos[1] - 5)
-    moveMouseAhk(pos[0], pos[1])
-
-    time.sleep(0.1)
-
-    mouse.click()
-
-    sendScreenshot("Harvested planter!")
-
-def placePlanterInField(field, planter):
-    import paths
-    
-    sendMessage(f"Searching for {planter} planter")
-
-    pos = scrollTo(os.path.join("planters", planter))
-
-    if not pos:
-        sendMessage(f"Did not find {planter} planter... ;(")
-
-        time.sleep(0.5)
-
-        scrollUpInv()
-
-        time.sleep(0.1)
-
-        return
-
-    sendMessage(f"Found {planter} planter! Placing it...")
-
-    canon(rst=True)
-
-    field2 = list(field)
-    field2[0] = field2[0].upper()
-    field2 = "".join(field2)
-
-    globals()["canonTo" + field2](calibrate=True)
-
-    if pos != False:
-        moveMouseAhk(pos[0] - 5, pos[1] - 5)
-        moveMouseAhk(pos[0], pos[1])
-
-        pyautogui.dragTo(screenDims[0] // 2, screenDims[1] // 2)
-
-    time.sleep(0.5)
-
-    screen = screenshot()
-    screen.save("screenshot.png")
-
-    time.sleep(0.1)
-
-    pos = locateImageOnScreen3("screenshot.png", os.path.join(main_dir, "planters", "yesButton.png"), confidence=0.8)
-
-    moveMouseAhk(pos[0] - 5, pos[1] - 5)
-    moveMouseAhk(pos[0], pos[1])
-
-    time.sleep(0.1)
-
-    mouse.click()
-
-    time.sleep(0.5)
-
-    scrollUpInv()
-
-    sendScreenshot(f"Placed {planter} planter!")
-
-def plantersLogic():
-    plantersStatus = eval(readFile(os.path.join("guiFiles", "plantersStatus.txt")))
-
-    for planter in plantersStatus.keys():
-        if plantersStatus[planter]["enabled"] == "1":
-            planterDisp = plantersStatus[planter]["status"]
-
-            if planterDisp == "growing":
-                if time.time() - float(plantersStatus[planter]["tmStarted"]) >= int(plantersStatus[planter]["tm"]) * 60:
-                    planterDisp = "harvest"
-
-                    plantersStatus[planter]["status"] = "harvest"
-
-            if planterDisp == "free":
-                placePlanterInField(plantersStatus[planter]["field"], getPlanterImgPath(plantersStatus[planter]["typ"]))
-
-            else:
-                harvestPlanterInField(plantersStatus[planter]["field"])
-
-                time.sleep(1)
-
-                placePlanterInField(plantersStatus[planter]["field"], getPlanterImgPath(plantersStatus[planter]["typ"]))
-
-        plantersStatus[planter]["status"] = "growing"
-
-        plantersStatus[planter]["tmStarted"] = str(time.time())
-
-    writeFile(os.path.join("guiFiles", "plantersStatus.txt"), str(plantersStatus))
-
 
 def webhook_send(message, picture=0):
     try:
         webhook = discord.SyncWebhook.from_url(readFile("guiFiles/webhook.txt"))
         tm = datetime.now()
         timestamp = f"[{tm.hour}:{tm.minute}:{tm.second}]"
-        
+
         embed = discord.Embed(
             description=message,
             color=0x000000
         )
-        
+
         icon_file = discord.File(os.path.join(main_dir, "basicbeeface.png"), filename="icon.png")
-        
+
         embed.set_author(
             name="Beez Universal Macro",
             icon_url="attachment://icon.png"
         )
-        
+
         embed.set_footer(text=f"{timestamp}")
 
         if picture:
@@ -1152,41 +1027,43 @@ def webhook_send(message, picture=0):
             webhook.send(files=[icon_file, file], embed=embed)
         else:
             webhook.send(files=[icon_file], embed=embed)
-        
+
         print(message)
-        
+
     except Exception as e:
         print(f"Error in webhook_send: {e}")
+
 
 remote_Control = readFile("guiFiles/bot_mode.txt")
 if remote_Control == "True":
     intents = discord.Intents.all()
     bot = commands.Bot(command_prefix='?', intents=intents)
 
+
     async def bot_send(message, picture=0):
         try:
             channel_ID = int(readFile("guiFiles/channel_ID.txt"))
             channel = bot.get_channel(channel_ID)
-        
+
             if not channel:
                 print(f"Channel not found: {channel_ID}")
                 return
 
             tm = datetime.now()
             timestamp = f"[{tm.hour}:{tm.minute}:{tm.second}]"
-        
+
             embed = discord.Embed(
                 description=message,
                 color=0x000000
             )
-        
+
             icon_file = discord.File(os.path.join(main_dir, "basicbeeface.png"), filename="icon.png")
-        
+
             embed.set_author(
                 name="Beez Universal Macro",
                 icon_url="attachment://icon.png"
             )
-        
+
             embed.set_footer(text=timestamp)
 
             if picture:
@@ -1198,11 +1075,12 @@ if remote_Control == "True":
                 await channel.send(files=[icon_file, screenshot_file], embed=embed)
             else:
                 await channel.send(files=[icon_file], embed=embed)
-        
+
             print(message)
-        
+
         except Exception as e:
             print(f"Error in bot_send: {e}")
+
 
     @bot.event
     async def on_ready():
@@ -1211,6 +1089,7 @@ if remote_Control == "True":
         channel = bot.get_channel(channel_ID)
         if channel:
             await bot_send("Bot is online! 🚀")
+
 
     @bot.command()
     async def start(ctx):
@@ -1222,6 +1101,7 @@ if remote_Control == "True":
             macro_thread = threading.Thread(target=MainLoopMacro)
             macro_thread.start()
 
+
     @bot.command()
     async def stop(ctx):
         global running, macroActive
@@ -1232,14 +1112,17 @@ if remote_Control == "True":
             macroActive = False
             await ctx.send('Macro stopped!')
 
+
     @bot.command()
     async def exit(ctx):
         await ctx.send('Quitting macro completely! 👋')
         os._exit(0)
 
+
     @bot.command(aliases=['ss', 'picture'])
     async def screenshot(ctx):
         sendMessageBot("Here's your screenshot", 1)
+
 
     @bot.command()
     async def shutdown(ctx):
@@ -1249,33 +1132,38 @@ if remote_Control == "True":
         elif platform.system() == "Darwin":
             os.system('shutdown -h +1')
 
+
     @bot.command()
     async def restart(ctx):
         await ctx.send('Restarting PC in 10 seconds! 🔄')
         if platform.system() == "Windows":
             os.system('shutdown /r /t 10')
-        elif platform.system() == "Darwin": 
+        elif platform.system() == "Darwin":
             os.system('sudo shutdown -r +1')
+
 
     def run_bot():
         token = readFile("guiFiles/bot_Token.txt")
         if token:
             bot.run(token)
 
+
     bot_thread = threading.Thread(target=run_bot, daemon=True)
     bot_thread.start()
     time.sleep(2)
 
+
     async def send_message_async(message, picture=0):
         await bot_send(message, picture)
+
 
     def sendMessageBot(message, picture=0):
         bot.loop.create_task(send_message_async(message, picture))
 
 
 def JoinServersUntilNight():
-    import paths
-    
+    from paths import KillVicBees
+
     while True:
         joinRandomServer()
         sendMessage("searching for night")
@@ -1310,8 +1198,8 @@ def JoinServersUntilNight():
 
                 break  # Breaks inner while loop to go back to joinRandomServer()
 
+
 def MainLoopMacro():
     # PepperKillCycle()
     # KillVicBees()
     JoinServersUntilNight()
-
