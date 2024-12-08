@@ -1274,6 +1274,8 @@ if remote_Control == "True":
 
 
 def JoinServersUntilNight():
+    import paths
+    
     while True:
         joinRandomServer()
         sendMessage("searching for night")
