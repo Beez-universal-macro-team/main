@@ -85,6 +85,7 @@ class GUI:
         self.tabControl.add(name='Vic Hop')
         self.tabControl.add(name='Connecting')
         self.tabControl.add(name='Settings')
+        self.tabControl.add(name='Settings2')
         self.tabControl.add(name='Private Servers')
         self.tabControl.add(name='Planters')
         # Add after other tab definitions
@@ -123,29 +124,29 @@ class GUI:
 
         self.botCheck = tk.BooleanVar(value=False)
 
-        self.botCheckBox = ctk.CTkCheckBox(self.tabControl.tab('Settings'), text="Bot", variable=self.botCheck, onvalue=True, offvalue=False, command=self.checkBotCheckBoxValue)
+        self.botCheckBox = ctk.CTkCheckBox(self.tabControl.tab('Settings2'), text="Bot", variable=self.botCheck, onvalue=True, offvalue=False, command=self.checkBotCheckBoxValue)
         self.botCheckBox.pack()
-        self.tokenText = ctk.CTkLabel(self.tabControl.tab('Settings'), text="Discord Bot Token:")
+        self.tokenText = ctk.CTkLabel(self.tabControl.tab('Settings2'), text="Discord Bot Token:")
         self.tokenText.configure(font=(self.font, 14))
-        self.botToken = ctk.CTkEntry(self.tabControl.tab('Settings'))
+        self.botToken = ctk.CTkEntry(self.tabControl.tab('Settings2'))
 
-        self.channelIDText = ctk.CTkLabel(self.tabControl.tab('Settings'), text="Discord Channel ID:")
+        self.channelIDText = ctk.CTkLabel(self.tabControl.tab('Settings2'), text="Discord Channel ID:")
         self.channelIDText.configure(font=(self.font, 14))
-        self.channelID = ctk.CTkEntry(self.tabControl.tab('Settings'))
+        self.channelID = ctk.CTkEntry(self.tabControl.tab('Settings2'))
 
-        self.webhookText = ctk.CTkLabel(self.tabControl.tab('Settings'), text="Discord webhook:")
+        self.webhookText = ctk.CTkLabel(self.tabControl.tab('Settings2'), text="Discord webhook:")
         self.webhookText.configure(font=(self.font, 14))
-        self.webhook = ctk.CTkEntry(self.tabControl.tab('Settings'))
+        self.webhook = ctk.CTkEntry(self.tabControl.tab('Settings2'))
         try:
             self.webhook.insert(0, readFile("guiFiles/webhook.txt"))
         except:
             self.webhook.insert(0, "")
 
 
-        self.importantWebhookText = ctk.CTkLabel(self.tabControl.tab('Settings'), text="Important webhook:")
+        self.importantWebhookText = ctk.CTkLabel(self.tabControl.tab('Settings2'), text="Important webhook:")
         self.importantWebhookText.configure(font=(self.font, 14))
 
-        self.importantWebhook = ctk.CTkEntry(self.tabControl.tab('Settings'))
+        self.importantWebhook = ctk.CTkEntry(self.tabControl.tab('Settings2'))
 
         self.userIdText = ctk.CTkLabel(self.tabControl.tab('Settings'), text="Discord user ID:")
         self.userIdText.configure(font=(self.font, 14))
@@ -432,6 +433,13 @@ class GUI:
                                         variable=self.hold_enabled)
         self.hold_checkbox.pack(pady=10)
 
+        self.minLoadText = ctk.CTkLabel(self.tabControl.tab('Join Settings'), text="Min load time:")
+
+        minLoadTime = readFile(os.path.join("guiFiles", "minLoadTime.txt"))
+
+        self.minLoadTime = ctk.CTkEntry(self.tabControl.tab('Join Settings'), width=40)
+        self.minLoadTime.insert(0, minLoadTime if minLoadTime != "0" else "17")
+
 
         ###### DISPLAYING TEXT ######
 
@@ -458,8 +466,8 @@ class GUI:
 
         self.importantWebhookText.pack()
         self.importantWebhook.pack()
-        self.importantWebhookText.place(relx=0.8, rely=0.11, anchor="n")
-        self.importantWebhook.place(relx=0.8, rely=0.19, anchor="n")
+        self.importantWebhookText.place(relx=0.5, rely=0.51, anchor="n")
+        self.importantWebhook.place(relx=0.5, rely=0.59, anchor="n")
 
         self.userIdText.pack()
         self.userId.pack()
@@ -586,6 +594,12 @@ class GUI:
         self.planter2EnabledCheckbox.place(relx=0.5, rely=0.1, anchor="n")
         self.planter3EnabledCheckbox.place(relx=0.8, rely=0.1, anchor="n")
 
+        self.minLoadText.pack()
+        self.minLoadText.place(relx=0.5, rely=0.1, anchor="n")
+
+        self.minLoadTime.pack()
+        self.minLoadTime.place(relx=0.5, rely=0.2, anchor="n")
+
         self.saveSettings()
 
     # Add to saveSettings method
@@ -594,12 +608,13 @@ class GUI:
 
     def maxLoadTimeChange(self):
         tm = self.maxLoad.get()
+        tm2 = self.minLoadTime.get()
 
         if str(tm).isnumeric():
             writeFile("guiFiles/maxLoadTime.txt", tm)
 
-        else:
-            pyautogui.alert("Make sure to set max load time to a number!")
+        if str(tm2).isnumeric():
+            writeFile("guiFiles/minLoadTime.txt", tm2)
 
     def webhookChange(self):
         webhook = self.webhook.get()
@@ -741,8 +756,6 @@ class GUI:
             self.botToken.place_forget()
             self.channelIDText.place_forget()
             self.channelID.place_forget()
-            self.webhookText.place(relx=0.15, rely=0.19, anchor="n")
-            self.webhook.place(relx=0.15, rely=0.27, anchor="n")
 
 
 
