@@ -354,9 +354,9 @@ class GUI:
         self.planter2Field = tk.StringVar()
         self.planter3Field = tk.StringVar()
 
-        self.planter1Status = self.plantersVals["planter1"]["status"]
-        self.planter2Status = self.plantersVals["planter2"]["status"]
-        self.planter3Status = self.plantersVals["planter3"]["status"]
+        self.planter1Status = "free"
+        self.planter2Status = "free"
+        self.planter3Status = "free"
 
         self.planter1Time = ctk.StringVar(value=self.plantersVals["planter1"]["tm"])
         self.planter2Time = ctk.StringVar(value=self.plantersVals["planter2"]["tm"])
@@ -643,10 +643,14 @@ class GUI:
 
     def plantersChange(self):
         plantersStatus = eval(readFile(os.path.join("guiFiles", "plantersStatus.txt")))
-        
+
         self.planter1Status = plantersStatus["planter1"]["status"]
         self.planter2Status = plantersStatus["planter2"]["status"]
         self.planter3Status = plantersStatus["planter3"]["status"]
+
+        self.planter1Time.set(plantersStatus["planter1"]["tmStarted"])
+        self.planter2Time.set(plantersStatus["planter2"]["tmStarted"])
+        self.planter3Time.set(plantersStatus["planter3"]["tmStarted"])
         
         self.plantersVals = {
             "planter1": dict(typ=self.planter1.get(), field=self.planter1Field.get(), status=self.planter1Status, tm=self.planter1Time.get(), tmStarted=self.planter1TimeLeft, enabled=self.planter1Enabled.get()),
