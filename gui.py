@@ -648,10 +648,10 @@ class GUI:
         self.planter2Status = plantersStatus["planter2"]["status"]
         self.planter3Status = plantersStatus["planter3"]["status"]
 
-        self.planter1Time.set(plantersStatus["planter1"]["tmStarted"])
-        self.planter2Time.set(plantersStatus["planter2"]["tmStarted"])
-        self.planter3Time.set(plantersStatus["planter3"]["tmStarted"])
-        
+        self.planter1Timeleft = plantersStatus["planter1"]["tmStarted"]
+        self.planter2Timeleft = plantersStatus["planter2"]["tmStarted"]
+        self.planter3Timeleft = plantersStatus["planter3"]["tmStarted"]
+
         self.plantersVals = {
             "planter1": dict(typ=self.planter1.get(), field=self.planter1Field.get(), status=self.planter1Status, tm=self.planter1Time.get(), tmStarted=self.planter1TimeLeft, enabled=self.planter1Enabled.get()),
             "planter2": dict(typ=self.planter2.get(), field=self.planter2Field.get(), status=self.planter2Status, tm=self.planter2Time.get(), tmStarted=self.planter2TimeLeft, enabled=self.planter2Enabled.get()),
