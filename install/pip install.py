@@ -26,7 +26,8 @@ required_libraries = {
     'ImageHash': None,
     'pyautogui': None,
     'discord.ext': None,
-    'mouse': None
+    'mouse': None,
+    'easyocr': None,
 }
 
 def install_visual_c_redistributable():
