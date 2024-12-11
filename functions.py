@@ -949,7 +949,7 @@ def ServerSetup():
         return False
     sendMessage("Claimed hive")
 
-    hourlyReport()
+    #hourlyReport()
     plantersLogic()
 
     WalkToRedCannon()
