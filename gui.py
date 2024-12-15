@@ -201,9 +201,13 @@ class GUI:
             self.timeout.insert(0, readFile("guiFiles/timeout.txt"))
 
             if self.timeout.get() == "0":
+                self.timeout.delete(0, ctk.END)
+
                 self.timeout.insert(0, "20")
 
         except:
+            self.timeout.delete(0, ctk.END)
+            
             self.timeout.insert(0, "20")
 
         try:
