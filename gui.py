@@ -199,6 +199,10 @@ class GUI:
 
         try:
             self.timeout.insert(0, readFile("guiFiles/timeout.txt"))
+
+            if self.timeout.get() == "0":
+                self.timeout.insert(0, "20")
+
         except:
             self.timeout.insert(0, "20")
 
@@ -212,6 +216,23 @@ class GUI:
         self.confidenceText.configure(font=(self.font, 14))
 
         self.confidence = ctk.CTkEntry(self.tabControl.tab('Settings'))
+
+        self.maxVicBeeKillTimeText = ctk.CTkLabel(self.tabControl.tab('Settings2'),
+                                           text="Max vic bee kill time (mins):")
+        self.maxVicBeeKillTimeText.configure(font=(self.font, 14))
+
+        self.maxVicBeeKillTime = ctk.CTkEntry(self.tabControl.tab('Settings2'))
+
+        try:
+            maxKillTime = readFile("guiFiles/maxVicBeeKillTime.txt")
+
+            if maxKillTime == "0":
+                maxKillTime = "2"
+
+            self.maxVicBeeKillTime.insert(0, maxKillTime)
+
+        except:
+            self.maxVicBeeKillTime.insert(0, "2")
 
         try:
             self.confidence.insert(0, readFile("guiFiles/confidence.txt"))
@@ -464,6 +485,9 @@ class GUI:
         self.webhookText.pack()
         self.webhook.pack()
 
+        self.maxVicBeeKillTimeText.pack()
+        self.maxVicBeeKillTime.pack()
+
         self.importantWebhookText.pack()
         self.importantWebhook.pack()
         self.importantWebhookText.place(relx=0.5, rely=0.51, anchor="n")
@@ -696,6 +720,11 @@ class GUI:
     def botModeChange(self):
         writeFile("guiFiles/bot_mode.txt", str(self.botCheckBox.get()))
 
+    def maxKillTimeChange(self):
+        maxKillTime = self.maxVicBeeKillTime.get()
+
+        writeFile("guiFiles/maxVicBeeKillTime.txt", maxKillTime)
+
     
     def startMacro(self, main=False):
         self.saveSettings()
@@ -773,5 +802,6 @@ class GUI:
         self.channelIDChange()
         self.botModeChange()
         self.plantersChange()
+        self.maxKillTimeChange()
 
         self.window.after(1000, self.saveSettings)
