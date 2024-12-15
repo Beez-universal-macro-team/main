@@ -635,7 +635,8 @@ def MoveUntilHive():
     global current_hive
 
     claim_image_path = os.path.join(main_dir, 'images', 'gui', 'claimhive.png')
-
+    
+    trade_image_path = os.path.join('images', 'gui', 'disabled_trade.png')
     e_image_path = os.path.join(main_dir, 'images', 'gui', 'e.png')
 
     confidence = float(readFile("guiFiles/confidence.txt"))
@@ -660,10 +661,10 @@ def MoveUntilHive():
 
         else:
             if attempt < 6:
-                while findImg(e_image_path, confidence):
+                while findImg(e_image_path, confidence) or findImg(trade_image_path, confidence):
                     press("a", 0.3)
 
-                while not findImg(e_image_path, confidence):
+                while not findImg(e_image_path, confidence) and not findImg(trade_image_path, confidence):
                     press("a", 0.3)
 
                 time.sleep(1)
