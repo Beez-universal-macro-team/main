@@ -25,6 +25,8 @@ import mouse
 
 mouse2 = mouseController()
 
+lastLoadTime = 0
+
 
 def mssScreenshot(x, y, w, h):
     with mss.mss() as sct:
@@ -233,7 +235,7 @@ def sendMessage(message, picture=None):
         print(f"Exception in sendMessage: {e}")
 
 
-def sendScreenshot(message):
+def sendScreenshotThread(message):
     try:
         screen = screenshot()
 
@@ -248,6 +250,13 @@ def sendScreenshot(message):
 
     except Exception as e:
         print(f"Exception in sendScreenshot: {e}")
+
+
+def sendScreenshot(message):
+    t = threading.Thread(target=sendScreenshotThread, args=(message,))
+    t.daemon = True
+
+    t.start()
 
 
 def sendImage(message, image):
@@ -625,14 +634,14 @@ def Reset():
 def MoveUntilHive():
     global current_hive
 
-    image_path = os.path.join(main_dir, 'images', 'gui', 'claimhive.png')
+    claim_image_path = os.path.join(main_dir, 'images', 'gui', 'claimhive.png')
+
+    e_image_path = os.path.join(main_dir, 'images', 'gui', 'e.png')
 
     confidence = float(readFile("guiFiles/confidence.txt"))
 
     for attempt in range(1, 6):  # Loop 5 times, from 1 to 5
-        try:
-            location = pyautogui.locateOnScreen(image_path, confidence=confidence)
-
+        if findImg(claim_image_path, confidence):
             keyboard.tap("e")
 
             current_hive = attempt  # Update the current hive number
@@ -649,9 +658,13 @@ def MoveUntilHive():
 
             return True  # Image found
 
-        except pyautogui.ImageNotFoundException:
+        else:
             if attempt < 6:
-                press("a", 0.9)
+                while findImg(e_image_path, confidence):
+                    press("a", 0.3)
+
+                while not findImg(e_image_path, confidence):
+                    press("a", 0.3)
 
                 time.sleep(1)
 
@@ -949,7 +962,7 @@ def ServerSetup():
         return False
     sendMessage("Claimed hive")
 
-    #hourlyReport()
+    hourlyReport()
     plantersLogic()
 
     WalkToRedCannon()
@@ -1186,6 +1199,8 @@ if remote_Control == "True":
 
 
 def JoinServersUntilNight():
+    global lastLoadTime
+
     from paths import KillVicBees
 
     while True:
@@ -1211,7 +1226,22 @@ def JoinServersUntilNight():
                 time.sleep(1)
 
                 break  # Breaks inner while loop to go back to joinRandomServer()
+
             else:
+                minLoadTime = int(readFile(os.path.join("guiFiles", "minLoadTime.txt")))
+
+                if lastLoadTime != 0:
+                    print(max(min(minLoadTime - (time.time() - lastLoadTime), minLoadTime), 0))
+
+                    print(time.time() - lastLoadTime)
+
+                    time.sleep(max(min(minLoadTime - (time.time() - lastLoadTime), minLoadTime), 0))
+
+                    lastLoadTime = time.time()
+
+                else:
+                    lastLoadTime = time.time()
+
                 print("Night not detected. Retrying...")
 
                 # sendScreenshot("Night not detected. Retrying...") lowering screenshot send rate
