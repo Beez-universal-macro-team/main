@@ -155,14 +155,22 @@ def MountVic():
 
     press("s", 0.1)
 
-    press("a", 0.5)
+    press("a", 0.75)
 
     keyboard.press("d")
-    Waitspeed(6.9)
+    Waitspeed(10)
 
-    press(" ", 0.1)
+    keyboard.release("d")
 
-    Waitspeed(6.9)
+    time.sleep(0.10)
+
+    press("a", 0.1)
+
+    press(Key.space, 0.1)
+
+    keyboard.press("d")
+
+    Waitspeed(10)
 
     keyboard.release("d")
     time.sleep(0.10)
@@ -460,7 +468,8 @@ def RoseMoveFromDetection():
 
 def PepperKillCycle():
     start_time = time.time()
-    timeout = 240  # 4 minutes in seconds
+
+    timeout = eval(readFile("guiFiles/maxVicBeeKillTime.txt")) * 60
 
     while True:
         # Check if 4 minutes have passed
@@ -510,7 +519,8 @@ def PepperKillCycle():
 
 def MountKillCycle():
     start_time = time.time()
-    timeout = 240  # 4 minutes in seconds
+
+    timeout = eval(readFile("guiFiles/maxVicBeeKillTime.txt")) * 60
 
     while True:
         # Check if 4 minutes have passed
@@ -560,7 +570,8 @@ def MountKillCycle():
 
 def CactusKillCycle():
     start_time = time.time()
-    timeout = 240  # 4 minutes in seconds
+
+    timeout = eval(readFile("guiFiles/maxVicBeeKillTime.txt")) * 60
 
     for _ in range(2):
         press(",", 0.1)
@@ -623,7 +634,8 @@ def CactusKillCycle():
 
 def RoseKillCycle():
     start_time = time.time()
-    timeout = 240  # 4 minutes in seconds
+
+    timeout = eval(readFile("guiFiles/maxVicBeeKillTime.txt")) * 60
 
     while True:
         # Check if 4 minutes have passed
@@ -911,6 +923,9 @@ def KillVicBees():
 
     img = screenshot()
 
+    if findImg(os.path.join(main_dir, "images", "chat", "attacking_vic.png"), 0.7):
+        return
+
     if detectVicBee(img):
         vicBees = int(readFile(os.path.join(main_dir, "guiFiles", "currentHourVicBees.txt")))
 
@@ -936,6 +951,9 @@ def KillVicBees():
 
     img = screenshot()
 
+    if findImg(os.path.join(main_dir, "images", "chat", "attacking_vic.png"), 0.7):
+        return
+
     if detectVicBee(img):
         sendScreenshot("Detected vic bee")
         for _ in range(2):
@@ -947,11 +965,17 @@ def KillVicBees():
         MountKillCycleLoop()
         return
 
+    if findImg(os.path.join(main_dir, "images", "chat", "attacking_vic.png"), 0.7):
+        return
+
     CactusVic()
 
     time.sleep(0.1)
 
     img = screenshot()
+
+    if findImg(os.path.join(main_dir, "images", "chat", "attacking_vic.png"), 0.7):
+        return
 
     if detectVicBee(img):
         sendScreenshot("Detected vic bee")
@@ -969,12 +993,16 @@ def KillVicBees():
         CactusMoveFromDetection()
         CactusKillCycleLoop()
         return
+
     keyboard.tap(Key.page_up)
     keyboard.tap(Key.page_up)
     keyboard.tap(Key.page_up)
     keyboard.tap(Key.page_up)
     keyboard.tap(Key.page_up)
     keyboard.tap(Key.page_up)
+
+    if findImg(os.path.join(main_dir, "images", "chat", "attacking_vic.png"), 0.7):
+        return
 
     RoseVic()
 
@@ -1221,7 +1249,6 @@ def canonToClover(calibrate=False):
         time.sleep(0.1)
 
     press("a", 5)
-
 
 def canonToBlueFlower(calibrate=False):
     press("e", 0.05)
