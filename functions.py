@@ -635,7 +635,7 @@ def MoveUntilHive():
     global current_hive
 
     claim_image_path = os.path.join(main_dir, 'images', 'gui', 'claimhive.png')
-    
+
     trade_image_path = os.path.join('images', 'gui', 'disabled_trade.png')
     e_image_path = os.path.join(main_dir, 'images', 'gui', 'e.png')
 
@@ -647,11 +647,7 @@ def MoveUntilHive():
 
             current_hive = attempt  # Update the current hive number
 
-            print(current_hive)
-
             writeFile(os.path.join("guiFiles", "hiveSlot.txt"), str(7 - current_hive))
-
-            print("wrote current hive")
 
             sendMessage(f"Claimed hive slot number {current_hive}")
 
@@ -661,10 +657,22 @@ def MoveUntilHive():
 
         else:
             if attempt < 6:
+                pressTries = 0
+
                 while findImg(e_image_path, confidence) or findImg(trade_image_path, confidence):
+                    pressTries += 1
+
+                    if pressTries >= 50:
+                        return False
+
                     press("a", 0.3)
 
                 while not findImg(e_image_path, confidence) and not findImg(trade_image_path, confidence):
+                    pressTries += 1
+
+                    if pressTries >= 50:
+                        return False
+
                     press("a", 0.3)
 
                 time.sleep(1)
@@ -963,7 +971,7 @@ def ServerSetup():
         return False
     sendMessage("Claimed hive")
 
-    hourlyReport()
+    #hourlyReport()
     plantersLogic()
 
     WalkToRedCannon()
