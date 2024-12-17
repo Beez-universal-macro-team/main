@@ -28,6 +28,7 @@ required_libraries = {
     'discord.ext': None,
     'mouse': None,
     'easyocr': None,
+    'keyboard',
 }
 
 def install_visual_c_redistributable():
