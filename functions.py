@@ -602,7 +602,7 @@ print("Health AI loaded!")
 
 def validateMoveSpeed():
     try:
-        walkSpeed = int(readFile("guiFiles/moveSpeed.txt"))
+        walkSpeed = float(readFile("guiFiles/moveSpeed.txt"))
         if walkSpeed < 10 or walkSpeed > 50:
             writeFile("guiFiles/moveSpeed.txt", "29")
             return 29
