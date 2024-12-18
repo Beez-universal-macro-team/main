@@ -783,7 +783,7 @@ def close_roblox():
 def NightDetect():
     target_colors = [(86, 100, 107), (24, 76, 28)]
 
-    max_diff = 35  # Adjust this value for color tolerance
+    max_diff = 10 # Adjust this value for color tolerance
 
     screen_width, screen_height = pyautogui.size()
 
