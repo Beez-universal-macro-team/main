@@ -781,18 +781,9 @@ def close_roblox():
 
 
 def NightDetect():
-    try:
-        beesmas_enabled = int(readFile("guiFiles/beesmasToggle.txt"))
-    except:
-        beesmas_enabled = 0
+    target_colors = [(86, 100, 107), (24, 76, 28)]
 
-    # Load model based on toggle
-    if beesmas_enabled:
-        target_color = (86, 100, 107)
-    else:
-        target_color = (24, 76, 28)
-
-    max_diff = 10  # Adjust this value for color tolerance
+    max_diff = 35  # Adjust this value for color tolerance
 
     screen_width, screen_height = pyautogui.size()
 
@@ -804,12 +795,15 @@ def NightDetect():
     ]
 
     for point in check_points:
-        pixel_color = pyautogui.pixel(point[0], point[1])
-
-        if isColorClose(pixel_color, target_color, max_diff):
-            print(f"Night detected at point {point}!")
-
-            return True
+        for target_color in target_colors:
+            pixel_color = pyautogui.pixel(point[0], point[1])
+            
+            print(pixel_color)
+    
+            if isColorClose(pixel_color, target_color, max_diff):
+                print(f"Night detected at point {point}!")
+    
+                return True
 
     print("Night not detected.")
 
