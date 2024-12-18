@@ -398,7 +398,7 @@ def CactusMoveFromDetection():
     keyboard.release("w")
 
     keyboard.press("d")
-    Waitspeed(30)
+    Waitspeed(37)
     keyboard.release("d")
 
     keyboard.press("s")
