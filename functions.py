@@ -220,9 +220,13 @@ def isWindowOpen(windowName):
     return False
 
 
-def sendMessage(message, picture=None):
+def sendMessage(message, picture=None, webhook=False):
     try:
-        webhook = discord.SyncWebhook.from_url(readFile("guiFiles/webhook.txt"))
+        if not webhook:
+            webhook = discord.SyncWebhook.from_url(readFile("guiFiles/webhook.txt"))
+
+        else:
+            webhook = discord.SyncWebhook.from_url(webhook)
 
         tm = datetime.now()
 
@@ -235,7 +239,7 @@ def sendMessage(message, picture=None):
         print(f"Exception in sendMessage: {e}")
 
 
-def sendScreenshotThread(message):
+def sendScreenshotThread(message, webhook):
     try:
         screen = screenshot()
 
@@ -243,7 +247,7 @@ def sendScreenshotThread(message):
 
         screen = open(os.path.join(main_dir, "images", "screenshot.png"), "rb")
 
-        t = threading.Thread(target=sendMessage, args=(message, discord.File(screen)))
+        t = threading.Thread(target=sendMessage, args=(message, discord.File(screen), webhook,))
         t.daemon = True
 
         t.start()
@@ -252,8 +256,8 @@ def sendScreenshotThread(message):
         print(f"Exception in sendScreenshot: {e}")
 
 
-def sendScreenshot(message):
-    t = threading.Thread(target=sendScreenshotThread, args=(message,))
+def sendScreenshot(message, webhook=False):
+    t = threading.Thread(target=sendScreenshotThread, args=(message, webhook,))
     t.daemon = True
 
     t.start()
@@ -662,10 +666,12 @@ def MoveUntilHive():
                 while findImg(e_image_path, confidence) or findImg(trade_image_path, confidence):
                     pressTries += 1
 
-                    if pressTries >= 50:
+                    if pressTries >= 30:
                         return False
 
                     press("a", 0.3)
+
+                    time.sleep(0.1)
 
                 while not findImg(e_image_path, confidence) and not findImg(trade_image_path, confidence):
                     pressTries += 1
@@ -674,6 +680,8 @@ def MoveUntilHive():
                         return False
 
                     press("a", 0.3)
+
+                    time.sleep(0.1)
 
                 time.sleep(1)
 
@@ -783,7 +791,7 @@ def close_roblox():
 def NightDetect():
     target_colors = [(86, 100, 107), (24, 76, 28)]
 
-    max_diff = 10 # Adjust this value for color tolerance
+    max_diff = 10  # Adjust this value for color tolerance
 
     screen_width, screen_height = pyautogui.size()
 
@@ -797,12 +805,12 @@ def NightDetect():
     for point in check_points:
         for target_color in target_colors:
             pixel_color = pyautogui.pixel(point[0], point[1])
-            
+
             print(pixel_color)
-    
+
             if isColorClose(pixel_color, target_color, max_diff):
                 print(f"Night detected at point {point}!")
-    
+
                 return True
 
     print("Night not detected.")
