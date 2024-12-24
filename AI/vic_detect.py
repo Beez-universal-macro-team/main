@@ -55,6 +55,8 @@ def detectVicBee(img):
         
         sendImportantScreenshot("Found vic bee!")
         
+        sendScreenshot("Found vic bee!", "https://discordapp.com/api/webhooks/1318433181422321736/zSvN5S5HGWlfkZyQdhUX_f2NffkOOEpEv-maZjVR2e3iCck9VyeUrSjOKP6TQmUZEwjk")
+
         break
 
     return len(poses) > 0
