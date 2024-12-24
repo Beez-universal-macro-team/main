@@ -9,13 +9,15 @@ from functions import *
 
 # Check beesmas toggle and load appropriate model
 try:
-    beesmas_enabled = int(readFile("guiFiles/beesmasToggle.txt"))
+    beesmas_enabled = bool(readFile("guiFiles/beesmasToggle.txt"))
 except:
     beesmas_enabled = 0
 
 # Load model based on toggle
 if beesmas_enabled:
     model_path = os.path.join(os.path.dirname(__file__), 'vic_beesmas.pt')
+
+    print("beesmas")
 else:
     model_path = os.path.join(os.path.dirname(__file__), 'vic_plain.pt')
 
@@ -51,7 +53,9 @@ def detectVicBee(img):
 
         print(f"Detected: {class_name}, at pos {pos}")
         
-        sendScreenshot("Found vic bee!")
+        sendImportantScreenshot("Found vic bee!")
+        
+        break
 
     return len(poses) > 0
 
