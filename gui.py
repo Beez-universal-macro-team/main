@@ -735,23 +735,24 @@ class GUI:
 
         writeFile("guiFiles/maxVicBeeKillTime.txt", maxKillTime)
 
-    
+        
     def startMacro(self, main=False):
-        self.saveSettings()
-        if not main:
-            self.macro_thread = threading.Thread(target=self.startMacro, args=(True,))
-            self.macro_thread.start()
-        else:
-            try:
-                if self.clicker_enabled.get():
-                    cps = float(self.cps_entry.get())
-                    hold = self.hold_enabled.get()
-                    autoclick(cps, hold)  # Pass both parameters explicitly
-                else:
-                    MainLoopMacro()
-            except Exception as e:
-                print(f"An error occurred: {e}")
-                input("Press Enter to close...")
+            self.saveSettings()
+            if not main:
+                self.macro_thread = threading.Thread(target=self.startMacro, args=(True,))
+                self.macro_thread.start()
+            else:
+                try:
+                    if self.clicker_enabled.get():
+                        cps = float(self.cps_entry.get())
+                        hold = self.hold_enabled.get()
+                        right_click = self.right_click_enabled.get()
+                        autoclick(cps, hold, right_click)
+                    else:
+                        MainLoopMacro()
+                except Exception as e:
+                    print(f"An error occurred: {e}")
+                    input("Press Enter to close...")
 
 
 
