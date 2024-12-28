@@ -991,6 +991,8 @@ def ServerSetup():
             keyboard.release(Key.f10)
 
             time.sleep(0.02)
+            
+        firstJoin = False
 
         sendMessage("Set graphics to minimum")
 
