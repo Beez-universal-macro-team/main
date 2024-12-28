@@ -161,19 +161,21 @@ def fastClick():
     pynputMouse.release(Button.left)
 
 
-def autoclick(cps, hold=False):
+def autoclick(cps, hold=False, right_click=False):
+    button = Button.right if right_click else Button.left
     try:
         if hold:
-            mouseDown()  # Press and hold
+            pynputMouse.press(button)
             while True:
-                time.sleep(0.1)  # Keep thread alive while holding
+                time.sleep(0.1)
         else:
             delay = 1.0 / float(cps) if float(cps) > 0 else 2.0
             while True:
-                fastClick()
+                pynputMouse.press(button)
+                pynputMouse.release(button)
                 time.sleep(delay)
     except (ValueError, SystemExit):
-        mouseUp()  # Ensure mouse is released when stopping
+        pynputMouse.release(button)
         raise
 
 
