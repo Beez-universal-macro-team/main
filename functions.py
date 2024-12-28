@@ -991,7 +991,7 @@ def ServerSetup():
             keyboard.release(Key.f10)
 
             time.sleep(0.02)
-            
+
         sendMessage("Set graphics to minimum")
 
     #hourlyReport()
