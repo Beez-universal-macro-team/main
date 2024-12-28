@@ -980,13 +980,19 @@ def ServerSetup():
         sendMessage("Setting graphics to minimum...")
 
         for _ in range(10):
-            keyboard.press("shift, f10")
+            keyboard.press(Key.shift)
+
+            keyboard.press(Key.f10)
 
             time.sleep(0.02)
 
-            keyboard.release("shift, f10")
+            keyboard.release(Key.shift)
+
+            keyboard.release(Key.f10)
 
             time.sleep(0.02)
+            
+        sendMessage("Set graphics to minimum")
 
     #hourlyReport()
     plantersLogic()
