@@ -1,3 +1,4 @@
+from fontTools.merge.util import first
 from pynput.mouse import Button, Controller as mouseController
 from pynput.keyboard import Controller as keyboardController, Key
 import time
@@ -22,6 +23,8 @@ import imagehash
 from discord.ext import commands
 from ahkMoveMouse import moveMouseAhk
 import mouse
+
+firstJoin = True
 
 mouse2 = mouseController()
 
@@ -161,21 +164,19 @@ def fastClick():
     pynputMouse.release(Button.left)
 
 
-def autoclick(cps, hold=False, right_click=False):
-    button = Button.right if right_click else Button.left
+def autoclick(cps, hold=False):
     try:
         if hold:
-            pynputMouse.press(button)
+            mouseDown()  # Press and hold
             while True:
-                time.sleep(0.1)
+                time.sleep(0.1)  # Keep thread alive while holding
         else:
             delay = 1.0 / float(cps) if float(cps) > 0 else 2.0
             while True:
-                pynputMouse.press(button)
-                pynputMouse.release(button)
+                fastClick()
                 time.sleep(delay)
     except (ValueError, SystemExit):
-        pynputMouse.release(button)
+        mouseUp()  # Ensure mouse is released when stopping
         raise
 
 
@@ -941,7 +942,7 @@ def DetectLoading(timeout):
         if time.time() - start_time >= timeout:
             return False
 
-        time.sleep(1)  # Increased to 1 second
+        time.sleep(0.1)  # Increased to 1 second
 
     # Wait for loading color to disappear with timeout
     start_time = time.time()  # Reset timer for disappearance check
@@ -961,7 +962,7 @@ def DetectLoading(timeout):
             close_roblox()
             return False
 
-        time.sleep(1)  # Increased to 1 second
+        time.sleep(0.1)  # Increased to 1 second
 
     return True
 
@@ -974,6 +975,18 @@ def ServerSetup():
         print("Failed to claim hive after multiple attempts. Exiting MainLoop.")
         return False
     sendMessage("Claimed hive")
+
+    if firstJoin:
+        sendMessage("Setting graphics to minimum...")
+
+        for _ in range(10):
+            keyboard.press("shift, f10")
+
+            time.sleep(0.02)
+
+            keyboard.release("shift, f10")
+
+            time.sleep(0.02)
 
     #hourlyReport()
     plantersLogic()
