@@ -208,6 +208,9 @@ def MountVic():
 
 def CactusVic():
     sendMessage("Checking cactus")
+
+    keyboard.tap(".")
+
     keyboard.tap(Key.page_up)
     keyboard.tap(Key.page_up)
     press(Key.space, 0.1)
@@ -299,6 +302,34 @@ def RoseVic():
     keyboard.tap("i")
     time.sleep(1)
 
+def spiderVic():
+    sendMessage("Checking spider")
+    
+    press("a", 3)
+
+    press("d", 0.075)
+
+    keyboard.press("a")
+
+    press(Key.space, 0.1)
+
+    time.sleep(2.4)
+
+    keyboard.release("a")
+
+    press(Key.space, 0.1)
+
+    press("s", 1.75)
+
+    press("a", 2)
+
+    press("s", 0.6)
+
+    press("d", 2)
+
+    press("s", 0.6)
+
+    press("a", 2)
 
 def PepperMoveFromDetection():
     press(Key.space, 0.1)
@@ -467,6 +498,8 @@ def RoseMoveFromDetection():
 
 
 def PepperKillCycle():
+    sendScreenshot("Attacking vic bee")
+    
     start_time = time.time()
 
     timeout = eval(readFile("guiFiles/maxVicBeeKillTime.txt")) * 60
@@ -518,6 +551,8 @@ def PepperKillCycle():
 
 
 def MountKillCycle():
+    sendScreenshot("Attacking vic bee")
+    
     start_time = time.time()
 
     timeout = eval(readFile("guiFiles/maxVicBeeKillTime.txt")) * 60
@@ -569,6 +604,8 @@ def MountKillCycle():
 
 
 def CactusKillCycle():
+    sendScreenshot("Attacking vic bee")
+    
     start_time = time.time()
 
     timeout = eval(readFile("guiFiles/maxVicBeeKillTime.txt")) * 60
@@ -633,6 +670,8 @@ def CactusKillCycle():
 
 
 def RoseKillCycle():
+    sendScreenshot("Attacking vic bee")
+    
     start_time = time.time()
 
     timeout = eval(readFile("guiFiles/maxVicBeeKillTime.txt")) * 60
@@ -678,6 +717,47 @@ def RoseKillCycle():
             if detect_health_in_screenshot():
                 print("Health detected, exiting cycle")
                 return False
+        if detect_vic_defeat():
+            sendScreenshot("Vic defeated, exiting cycle")
+            return True
+
+def spiderKillCycle():
+    sendScreenshot("Attacking vic bee")
+    
+    start_time = time.time()
+
+    timeout = eval(readFile("guiFiles/maxVicBeeKillTime.txt")) * 60
+
+    while True:
+        # Check if 4 minutes have passed
+        if time.time() - start_time > timeout:
+            print("4 minute timeout reached")
+            return True
+
+        for _ in range(4):
+            press("w", 0.5)
+
+            if detect_health_in_screenshot():
+                return False
+
+        for _ in range(4):
+            press("d", 0.5)
+
+            if detect_health_in_screenshot():
+                return False
+
+        for _ in range(4):
+            press("s", 0.5)
+
+            if detect_health_in_screenshot():
+                return False
+
+        for _ in range(4):
+            press("a", 0.5)
+
+            if detect_health_in_screenshot():
+                return False
+
         if detect_vic_defeat():
             sendScreenshot("Vic defeated, exiting cycle")
             return True
@@ -923,7 +1003,7 @@ def KillVicBees():
 
     img = screenshot()
 
-    if findImg(os.path.join(main_dir, "images", "chat", "attacking_vic.png"), 0.7):
+    if findImg(os.path.join(main_dir, "images", "chat", "attacking_vic.png"), 0.5):
         return
 
     if detectVicBee(img):
@@ -951,7 +1031,7 @@ def KillVicBees():
 
     img = screenshot()
 
-    if findImg(os.path.join(main_dir, "images", "chat", "attacking_vic.png"), 0.7):
+    if findImg(os.path.join(main_dir, "images", "chat", "attacking_vic.png"), 0.5):
         return
 
     if detectVicBee(img):
@@ -965,7 +1045,7 @@ def KillVicBees():
         MountKillCycleLoop()
         return
 
-    if findImg(os.path.join(main_dir, "images", "chat", "attacking_vic.png"), 0.7):
+    if findImg(os.path.join(main_dir, "images", "chat", "attacking_vic.png"), 0.5):
         return
 
     CactusVic()
@@ -974,7 +1054,7 @@ def KillVicBees():
 
     img = screenshot()
 
-    if findImg(os.path.join(main_dir, "images", "chat", "attacking_vic.png"), 0.7):
+    if findImg(os.path.join(main_dir, "images", "chat", "attacking_vic.png"), 0.5):
         return
 
     if detectVicBee(img):
@@ -1001,7 +1081,7 @@ def KillVicBees():
     keyboard.tap(Key.page_up)
     keyboard.tap(Key.page_up)
 
-    if findImg(os.path.join(main_dir, "images", "chat", "attacking_vic.png"), 0.7):
+    if findImg(os.path.join(main_dir, "images", "chat", "attacking_vic.png"), 0.5):
         return
 
     RoseVic()
@@ -1027,6 +1107,10 @@ def KillVicBees():
         RoseKillCycleLoop()
         return
 
+    spiderVic()
+
+    if findImg(os.path.join(main_dir, "images", "chat", "attacking_vic.png"), 0.5):
+        spiderKillCycle()
 
 def canonToPepper(calibrate=False):
     press("d", 3)
