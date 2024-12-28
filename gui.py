@@ -458,6 +458,12 @@ class GUI:
                                         variable=self.hold_enabled)
         self.hold_checkbox.pack(pady=10)
 
+        self.right_click_enabled = tk.BooleanVar()
+        self.right_click_checkbox = ctk.CTkCheckBox(self.tabControl.tab('Autoclicker'),
+                                            text="Right Click", 
+                                            variable=self.right_click_enabled)
+        self.right_click_checkbox.pack(pady=10)
+
         self.minLoadText = ctk.CTkLabel(self.tabControl.tab('Join Settings'), text="Min load time:")
 
         minLoadTime = readFile(os.path.join("guiFiles", "minLoadTime.txt"))
