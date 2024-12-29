@@ -303,7 +303,7 @@ def RoseVic():
 def spiderVic():
     sendMessage("Checking spider")
 
-    press("a", 2.6)
+    press("a", 2.75)
 
     press("d", 0.075)
 
@@ -311,13 +311,19 @@ def spiderVic():
 
     press(Key.space, 0.1)
 
-    time.sleep(2.4)
+    time.sleep(2.3)
 
     keyboard.release("a")
+    
+    keyboard.press("s")
+    
+    time.sleep(0.1)
 
     press(Key.space, 0.1)
+    
+    time.sleep(1.75)
 
-    press("s", 1.75)
+    keyboard.release("s")
 
     press("a", 2)
 
