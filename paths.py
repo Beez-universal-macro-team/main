@@ -1110,6 +1110,8 @@ def KillVicBees():
         return
 
     spiderVic()
+    
+    sendScreenshot("Checking vic bee")
 
     if findImg(os.path.join(main_dir, "images", "chat", "attacking_vic.png"), 0.5):
         spiderKillCycle()
