@@ -970,6 +970,8 @@ def DetectLoading(timeout):
 def ServerSetup():
     from placePlanters import plantersLogic
     from hourlyReport import hourlyReport
+    
+    global firstJoin
 
     if not ClaimHiveWithRetries():
         print("Failed to claim hive after multiple attempts. Exiting MainLoop.")
@@ -991,7 +993,7 @@ def ServerSetup():
             keyboard.release(Key.f10)
 
             time.sleep(0.02)
-            
+
         firstJoin = False
 
         sendMessage("Set graphics to minimum")
