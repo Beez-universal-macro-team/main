@@ -303,7 +303,7 @@ def RoseVic():
 def spiderVic():
     sendMessage("Checking spider")
 
-    press("a", 2.75)
+    press("a", 2.6)
 
     press("d", 0.075)
 
