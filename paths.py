@@ -209,8 +209,6 @@ def MountVic():
 def CactusVic():
     sendMessage("Checking cactus")
 
-    keyboard.tap(".")
-
     keyboard.tap(Key.page_up)
     keyboard.tap(Key.page_up)
     press(Key.space, 0.1)
