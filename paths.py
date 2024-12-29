@@ -304,7 +304,7 @@ def RoseVic():
 
 def spiderVic():
     sendMessage("Checking spider")
-    
+
     press("a", 3)
 
     press("d", 0.075)
@@ -330,6 +330,10 @@ def spiderVic():
     press("s", 0.6)
 
     press("a", 2)
+
+    press("/", 0.1)
+
+    press(Key.enter, 0.1)
 
 def PepperMoveFromDetection():
     press(Key.space, 0.1)
@@ -499,7 +503,7 @@ def RoseMoveFromDetection():
 
 def PepperKillCycle():
     sendScreenshot("Attacking vic bee")
-    
+
     start_time = time.time()
 
     timeout = eval(readFile("guiFiles/maxVicBeeKillTime.txt")) * 60
@@ -552,7 +556,7 @@ def PepperKillCycle():
 
 def MountKillCycle():
     sendScreenshot("Attacking vic bee")
-    
+
     start_time = time.time()
 
     timeout = eval(readFile("guiFiles/maxVicBeeKillTime.txt")) * 60
@@ -605,7 +609,7 @@ def MountKillCycle():
 
 def CactusKillCycle():
     sendScreenshot("Attacking vic bee")
-    
+
     start_time = time.time()
 
     timeout = eval(readFile("guiFiles/maxVicBeeKillTime.txt")) * 60
@@ -671,7 +675,7 @@ def CactusKillCycle():
 
 def RoseKillCycle():
     sendScreenshot("Attacking vic bee")
-    
+
     start_time = time.time()
 
     timeout = eval(readFile("guiFiles/maxVicBeeKillTime.txt")) * 60
@@ -723,7 +727,7 @@ def RoseKillCycle():
 
 def spiderKillCycle():
     sendScreenshot("Attacking vic bee")
-    
+
     start_time = time.time()
 
     timeout = eval(readFile("guiFiles/maxVicBeeKillTime.txt")) * 60
