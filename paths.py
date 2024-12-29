@@ -303,7 +303,7 @@ def RoseVic():
 def spiderVic():
     sendMessage("Checking spider")
 
-    press("a", 3)
+    press("a", 2.75)
 
     press("d", 0.075)
 
@@ -1110,7 +1110,7 @@ def KillVicBees():
         return
 
     spiderVic()
-    
+
     sendScreenshot("Checking vic bee")
 
     if findImg(os.path.join(main_dir, "images", "chat", "attacking_vic.png"), 0.5):
