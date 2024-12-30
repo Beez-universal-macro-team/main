@@ -314,13 +314,15 @@ def spiderVic():
     time.sleep(2.3)
 
     keyboard.release("a")
-    
+
     keyboard.press("s")
+
+    time.sleep(0.25)
     
-    time.sleep(0.1)
+    press("w", 0.1)
 
     press(Key.space, 0.1)
-    
+
     time.sleep(1.75)
 
     keyboard.release("s")
