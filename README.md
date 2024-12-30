@@ -38,7 +38,7 @@ If you want to connect an / alts:
 2. Set settings as you like for alt
 3. Go to connecting tab, on main, and note your computer's name
 4. Click on connect a new alt
-5. Enter a port (usually 8888, or a series of four digits; can be any series of four digits)
+5. Enter a port (any series of four digits *of your choice* like 8888 or 0000)
 6. In alt, enter the computer's name you noted as well as port. The port has to be the same as the one you've entered in main
 7. Click connect
 
