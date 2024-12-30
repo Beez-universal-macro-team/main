@@ -29,7 +29,7 @@ Run main.py and wait a bit, load time is kinda big due to loading AI models so i
 
 ## Step 5
 
-Set the settings to your needs
+Set the settings to your needs *Don't forget movespeed*
 
 ## Step 6
 
@@ -38,7 +38,7 @@ If you want to connect an / alts:
 2. Set settings as you like for alt
 3. Go to connecting tab, on main, and note your computer's name
 4. Click on connect a new alt
-5. Enter a port (usually 8888, or a series of four digits)
+5. Enter a port (usually 8888, or a series of four digits; can be any series of four digits)
 6. In alt, enter the computer's name you noted as well as port. The port has to be the same as the one you've entered in main
 7. Click connect
 
