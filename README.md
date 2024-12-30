@@ -29,7 +29,7 @@ Run main.py and wait a bit, load time is kinda big due to loading AI models so i
 
 ## Step 5
 
-Set the settings to your needs *Don't forget movespeed*
+Set the settings to your needs; *Don't forget movespeed*
 
 ## Step 6
 
