@@ -970,7 +970,7 @@ def DetectLoading(timeout):
 def ServerSetup():
     from placePlanters import plantersLogic
     from hourlyReport import hourlyReport
-    
+
     global firstJoin
 
     if not ClaimHiveWithRetries():
@@ -1105,6 +1105,19 @@ def webhook_send(message, picture=0):
 
     except Exception as e:
         print(f"Error in webhook_send: {e}")
+
+def killProcess(task_name):
+    for proc in psutil.process_iter(['pid', 'name']):
+        if proc.info['name'] == task_name:
+            try:
+                proc.kill()
+                print(f"Killed process: {proc.info['name']} (PID: {proc.info['pid']})")
+            except psutil.NoSuchProcess:
+                print(f"Process {proc.info['pid']} no longer exists.")
+            except psutil.AccessDenied:
+                print(f"Access denied to kill process {proc.info['pid']}.")
+            except psutil.ZombieProcess:
+                print(f"Zombie process {proc.info['pid']} encountered.")
 
 
 remote_Control = readFile("guiFiles/bot_mode.txt")
@@ -1285,6 +1298,8 @@ def JoinServersUntilNight():
                 leave()
 
                 time.sleep(2)
+
+                killProcess("RobloxPlayerBeta.exe")
 
                 break  # Breaks inner while loop to go back to joinRandomServer()
 
